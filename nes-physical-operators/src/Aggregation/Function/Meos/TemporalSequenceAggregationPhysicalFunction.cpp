@@ -71,7 +71,6 @@ static void ensureMeosInitialized() {
     }
 }
 
-// Single-field constructor removed - TEMPORAL_SEQUENCE requires three separate field functions
 
 TemporalSequenceAggregationPhysicalFunction::TemporalSequenceAggregationPhysicalFunction(
     DataType inputType,
@@ -92,10 +91,7 @@ TemporalSequenceAggregationPhysicalFunction::TemporalSequenceAggregationPhysical
 void TemporalSequenceAggregationPhysicalFunction::lift(
     const nautilus::val<AggregationState*>& aggregationState, ExecutionContext& executionContext, const Nautilus::Record& record)
 {
-    // Debug: Print when lift is called
-    printf("DEBUG: TEMPORAL_SEQUENCE lift() called - adding point to aggregation\n");
     
-    // Cast to PagedVector pointer consistently with combine() and lower()
     const auto pagedVectorPtr = static_cast<nautilus::val<Nautilus::Interface::PagedVector*>>(aggregationState);
     
     // For TEMPORAL_SEQUENCE, we need to store lon, lat, and timestamp values
@@ -144,15 +140,12 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
     const auto numberOfEntries = invoke(
         +[](const Nautilus::Interface::PagedVector* pagedVector)
         {
-            auto count = pagedVector->getTotalNumberOfEntries();
-            printf("DEBUG: PagedVector contains %lu entries\n", (unsigned long)count);
-            return count;
+            return pagedVector->getTotalNumberOfEntries();
         },
         pagedVectorPtr);
 
     // Handle empty PagedVector case
     if (numberOfEntries == nautilus::val<size_t>(0)) {
-        printf("DEBUG: Empty PagedVector - returning BINARY(0)\n");
         // Create BINARY(0) string for empty trajectory
         const char* emptyBinaryStr = "BINARY(0)";
         auto strLen = nautilus::val<size_t>(strlen(emptyBinaryStr));
@@ -216,15 +209,20 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         trajectoryStr = nautilus::invoke(
             +[](char* buffer, double lonVal, double latVal, int64_t tsVal, int64_t counter) -> char*
             {
-                printf("DEBUG: Processing point %ld: POINT(%.6f %.6f)@adjusted_timestamp_%ld\n", counter, lonVal, latVal, tsVal);
-                
                 if (counter > 0) {
                     strcat(buffer, ", ");
                 }
                 
-                // Convert timestamp to proper MEOS format
-                // tsVal is in milliseconds since epoch, convert to seconds
-                time_t adjustedTime = tsVal / 1000;  // Convert milliseconds to seconds
+                // Convert timestamp to MEOS format
+                // Determine if timestamp is in seconds or milliseconds
+                time_t adjustedTime;
+                if (tsVal > 1000000000000LL) {
+                    // Milliseconds (13+ digits)
+                    adjustedTime = tsVal / 1000;
+                } else {
+                    // Seconds (10 digits or less) - Unix timestamp
+                    adjustedTime = tsVal;
+                }
                 struct tm* timeinfo = gmtime(&adjustedTime);
                 
                 char timestampStr[32];
@@ -232,11 +230,8 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
                 
                 char pointStr[120];
                 // Use Point format that MEOS expects: Point(lon lat)@timestamp
-                // Note: Point with capital P, space-separated coordinates
                 sprintf(pointStr, "Point(%.6f %.6f)@%s", lonVal, latVal, timestampStr);
                 strcat(buffer, pointStr);
-                
-                printf("DEBUG: Added point: Point(%.6f %.6f)@%s\n", lonVal, latVal, timestampStr);
                 return buffer;
             },
             trajectoryStr,
@@ -265,68 +260,41 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         pointCounter);
     
     // Convert string to MEOS binary format and get size
-    // For temporal instant sets, we use tgeompoint_in() which can handle both single instants and instant sets
     auto binarySize = nautilus::invoke(
         +[](const char* trajStr) -> size_t
         {
-            printf("DEBUG: Converting temporal instant string to MEOS binary format\n");
-            printf("DEBUG: Input temporal instant string: %s\n", trajStr);
-            
             // Validate string is not empty
             if (!trajStr || strlen(trajStr) == 0) {
-                printf("ERROR: Empty temporal instant string\n");
                 return 0;
             }
             
             // Parse the temporal instant string into a MEOS temporal object
-            // tgeompoint_in() can handle both single instants and instant sets
-            printf("DEBUG: Calling tgeompoint_in()...\n");
+            // Lock mutex for thread-safe MEOS operations
+            std::lock_guard<std::mutex> lock(meos_mutex);
             
             // Clear any previous errors
             meos_errno_reset();
             
             Temporal* temp = tgeompoint_in(trajStr);
             if (!temp) {
-                printf("ERROR: Failed to parse temporal instant string: %s\n", trajStr);
-                printf("ERROR: tgeompoint_in() returned NULL\n");
-                
-                // Get MEOS error details
-                int errcode = meos_errno();
-                printf("ERROR: MEOS error code: %d\n", errcode);
-                
-                printf("ERROR: Check if the format matches MEOS expectations for temporal instants\n");
-                printf("ERROR: Expected format - Single: Point(lon lat)@YYYY-MM-DD HH:MM:SS\n");
-                printf("ERROR: Expected format - Multiple: {Point(lon lat)@YYYY-MM-DD HH:MM:SS, ...}\n");
-                
                 // Try with SRID prefix as fallback
-                printf("DEBUG: Trying with SRID prefix...\n");
                 char sridBuffer[1024];
                 snprintf(sridBuffer, sizeof(sridBuffer), "SRID=4326;%s", trajStr);
                 temp = tgeompoint_in(sridBuffer);
-                if (temp) {
-                    printf("DEBUG: Success with SRID prefix!\n");
-                } else {
-                    printf("ERROR: Also failed with SRID prefix\n");
+                if (!temp) {
                     return 0;
                 }
             }
-            if (temp) {
-                printf("DEBUG: Successfully parsed temporal instant string into MEOS Temporal object\n");
-            }
             
             // Get the size needed for binary WKB format
-            // WKB_EXTENDED = 0x08 for extended WKB format
-            printf("DEBUG: Calling temporal_as_wkb() to get binary size...\n");
             size_t size = 0;
             uint8_t* data = temporal_as_wkb(temp, 0x08, &size);
             
             if (!data) {
-                printf("ERROR: temporal_as_wkb() returned NULL\n");
                 free(temp);
                 return 0;
             }
             
-            printf("DEBUG: temporal_as_wkb() successful, binary size: %zu bytes\n", size);
             free(data);
             free(temp);
             
@@ -334,9 +302,7 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         },
         trajectoryStr);
     
-    // Check if binary size is valid before proceeding
     if (binarySize == nautilus::val<size_t>(0)) {
-        printf("ERROR: Binary size is 0, cannot allocate memory or convert\n");
         // Return empty record or handle error appropriately
         auto emptyVariableSized = pipelineMemoryProvider.arena.allocateVariableSizedData(0);
         Nautilus::Record resultRecord;
@@ -351,7 +317,6 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
             // Allocate buffer for "BINARY(N)" string
             char* buffer = (char*)malloc(32);  // More than enough for "BINARY(" + number + ")"
             sprintf(buffer, "BINARY(%zu)", size);
-            printf("DEBUG: Created BINARY format string: %s\n", buffer);
             
             // Free the trajectory string as we don't need it anymore
             free((void*)trajStr);
@@ -376,7 +341,6 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         +[](int8_t* dest, const char* formatStr, size_t len) -> void
         {
             memcpy(dest, formatStr, len);
-            printf("DEBUG: Copied BINARY format string to result buffer\n");
             free((void*)formatStr);
         },
         variableSized.getContent(),
