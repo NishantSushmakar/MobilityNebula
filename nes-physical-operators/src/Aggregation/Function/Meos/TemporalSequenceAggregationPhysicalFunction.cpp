@@ -244,18 +244,15 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         pointCounter = pointCounter + nautilus::val<int64_t>(1);
     }
     
-    // Close the trajectory string and handle single vs multiple points
+    // Close the trajectory string - always use braces for temporal instant sets
     trajectoryStr = nautilus::invoke(
         +[](char* buffer, int64_t totalPoints) -> char*
         {
+            // Always close with brace - temporal instant sets require {} even for single points
+            strcat(buffer, "}");
             if (totalPoints == 1) {
-                // For single point, remove the opening brace
-                // Move content left by 1 character to remove the '{'
-                memmove(buffer, buffer + 1, strlen(buffer));
                 printf("DEBUG: Single point trajectory string: %s\n", buffer);
             } else {
-                // For multiple points, close with brace
-                strcat(buffer, "}");
                 printf("DEBUG: Multiple points trajectory string: %s\n", buffer);
             }
             return buffer;
