@@ -179,11 +179,15 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         +[](const Nautilus::Interface::PagedVector* pagedVector) -> char*
         {
             // Allocate a buffer for the trajectory string
-            // Each point is approximately 100 chars: POINT(-123.456789 12.345678)@2000-01-01 08:00:00
-            size_t bufferSize = pagedVector->getTotalNumberOfEntries() * 100 + 20;
+            // Each point is approximately 100 chars: Point(-123.456789 12.345678)@2000-01-01 08:00:00
+            // Add extra space to prevent buffer issues
+            size_t bufferSize = pagedVector->getTotalNumberOfEntries() * 150 + 50;
             char* buffer = (char*)malloc(bufferSize);
             
-            // Start with opening brace for multiple points (will handle single point case later)
+            // Initialize buffer to zeros to ensure proper null termination
+            memset(buffer, 0, bufferSize);
+            
+            // Start with opening brace for temporal instant set
             strcpy(buffer, "{");
             return buffer;
         },
@@ -277,19 +281,38 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
             // Parse the temporal instant string into a MEOS temporal object
             // tgeompoint_in() can handle both single instants and instant sets
             printf("DEBUG: Calling tgeompoint_in()...\n");
-            Temporal* temp = NULL;
             
-            // Wrap in try-catch equivalent (C error handling)
-            temp = tgeompoint_in(trajStr);
+            // Clear any previous errors
+            meos_errno_reset();
+            
+            Temporal* temp = tgeompoint_in(trajStr);
             if (!temp) {
                 printf("ERROR: Failed to parse temporal instant string: %s\n", trajStr);
                 printf("ERROR: tgeompoint_in() returned NULL\n");
+                
+                // Get MEOS error details
+                int errcode = meos_errno();
+                printf("ERROR: MEOS error code: %d\n", errcode);
+                
                 printf("ERROR: Check if the format matches MEOS expectations for temporal instants\n");
                 printf("ERROR: Expected format - Single: Point(lon lat)@YYYY-MM-DD HH:MM:SS\n");
                 printf("ERROR: Expected format - Multiple: {Point(lon lat)@YYYY-MM-DD HH:MM:SS, ...}\n");
-                return 0;
+                
+                // Try with SRID prefix as fallback
+                printf("DEBUG: Trying with SRID prefix...\n");
+                char sridBuffer[1024];
+                snprintf(sridBuffer, sizeof(sridBuffer), "SRID=4326;%s", trajStr);
+                temp = tgeompoint_in(sridBuffer);
+                if (temp) {
+                    printf("DEBUG: Success with SRID prefix!\n");
+                } else {
+                    printf("ERROR: Also failed with SRID prefix\n");
+                    return 0;
+                }
             }
-            printf("DEBUG: Successfully parsed temporal instant string into MEOS Temporal object\n");
+            if (temp) {
+                printf("DEBUG: Successfully parsed temporal instant string into MEOS Temporal object\n");
+            }
             
             // Get the size needed for binary WKB format
             // WKB_EXTENDED = 0x08 for extended WKB format
