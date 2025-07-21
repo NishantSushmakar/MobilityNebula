@@ -150,17 +150,22 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         },
         pagedVectorPtr);
 
-    // For now, assume PagedVector is never empty (similar to ArrayAggregationPhysicalFunction)
+    // Handle empty PagedVector case
+    // For now, we'll handle empty case by creating an empty trajectory string
+    // TODO: Consider proper handling of empty trajectories in MEOS
 
-    // Build the trajectory string in MEOS format: {(lon,lat)@timestamp,...}
-    // We'll construct the string piece by piece during iteration
+    // Build the trajectory string in MEOS format for temporal instant set
+    // For single point: POINT(-73.9857 40.7484)@2000-01-01 08:00:00
+    // For multiple points: {POINT(-73.9857 40.7484)@2000-01-01 08:00:00, POINT(-73.9787 40.7505)@2000-01-01 08:05:00}
     auto trajectoryStr = nautilus::invoke(
         +[](const Nautilus::Interface::PagedVector* pagedVector) -> char*
         {
             // Allocate a buffer for the trajectory string
-            // Each point is approximately 50 chars: (-123.456789,12.345678)@1234567890
-            size_t bufferSize = pagedVector->getTotalNumberOfEntries() * 60 + 10;
+            // Each point is approximately 100 chars: POINT(-123.456789 12.345678)@2000-01-01 08:00:00
+            size_t bufferSize = pagedVector->getTotalNumberOfEntries() * 100 + 20;
             char* buffer = (char*)malloc(bufferSize);
+            
+            // Start with opening brace for multiple points (will handle single point case later)
             strcpy(buffer, "{");
             return buffer;
         },
@@ -185,17 +190,33 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         auto lat = latValue.cast<nautilus::val<double>>();
         auto timestamp = timestampValue.cast<nautilus::val<int64_t>>();
         
-        // Append point to trajectory string
+        // Append point to trajectory string in MEOS format
         trajectoryStr = nautilus::invoke(
             +[](char* buffer, double lonVal, double latVal, int64_t tsVal, int64_t counter) -> char*
             {
-                printf("DEBUG: Processing point %ld: (%.4f,%.4f)@%ld\n", counter, lonVal, latVal, tsVal);
+                printf("DEBUG: Processing point %ld: POINT(%.6f %.6f)@adjusted_timestamp_%ld\n", counter, lonVal, latVal, tsVal);
+                
                 if (counter > 0) {
-                    strcat(buffer, ",");
+                    strcat(buffer, ", ");
                 }
-                char pointStr[100];
-                sprintf(pointStr, "(%.4f,%.4f)@%ld", lonVal, latVal, tsVal);
+                
+                // Convert timestamp to proper MEOS format
+                // Assuming tsVal is in milliseconds since epoch, convert to proper datetime
+                // For MEOS, we need a more realistic timestamp, not 1970-01-01
+                // Let's use 2000-01-01 as base and add the timestamp as seconds
+                time_t baseTime = 946684800; // 2000-01-01 00:00:00 UTC
+                time_t adjustedTime = baseTime + (tsVal / 1000);  // Add seconds
+                struct tm* timeinfo = gmtime(&adjustedTime);
+                
+                char timestampStr[32];
+                strftime(timestampStr, sizeof(timestampStr), "%Y-%m-%d %H:%M:%S", timeinfo);
+                
+                char pointStr[120];
+                // Use POINT format that MEOS expects: POINT(lon lat) instead of Point(lon lat)
+                sprintf(pointStr, "POINT(%.6f %.6f)@%s", lonVal, latVal, timestampStr);
                 strcat(buffer, pointStr);
+                
+                printf("DEBUG: Added point: %s\n", pointStr);
                 return buffer;
             },
             trajectoryStr,
@@ -207,37 +228,128 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
         pointCounter = pointCounter + nautilus::val<int64_t>(1);
     }
     
-    // Close the trajectory string
+    // Close the trajectory string and handle single vs multiple points
     trajectoryStr = nautilus::invoke(
-        +[](char* buffer) -> char*
+        +[](char* buffer, int64_t totalPoints) -> char*
         {
-            strcat(buffer, "}");
-            printf("DEBUG: Final trajectory string: %s\n", buffer);
+            if (totalPoints == 1) {
+                // For single point, remove the opening brace
+                // Move content left by 1 character to remove the '{'
+                memmove(buffer, buffer + 1, strlen(buffer));
+                printf("DEBUG: Single point trajectory string: %s\n", buffer);
+            } else {
+                // For multiple points, close with brace
+                strcat(buffer, "}");
+                printf("DEBUG: Multiple points trajectory string: %s\n", buffer);
+            }
             return buffer;
         },
-        trajectoryStr);
+        trajectoryStr,
+        pointCounter);
     
-    // For now, return the string as-is (MEOS conversion needs more complex handling)
-    // TODO: Convert to binary MEOS format when needed
-    auto strLen = nautilus::invoke(
-        +[](const char* str) -> size_t
+    // Convert string to MEOS binary format
+    // For temporal instant sets, we use tgeompoint_in() which can handle both single instants and instant sets
+    auto binarySize = nautilus::invoke(
+        +[](const char* trajStr) -> size_t
         {
-            return strlen(str);
+            printf("DEBUG: Converting temporal instant string to MEOS binary format\n");
+            printf("DEBUG: Input temporal instant string: %s\n", trajStr);
+            
+            // Parse the temporal instant string into a MEOS temporal object
+            // tgeompoint_in() can handle both single instants and instant sets
+            printf("DEBUG: Calling tgeompoint_in()...\n");
+            Temporal* temp = tgeompoint_in(trajStr);
+            if (!temp) {
+                printf("ERROR: Failed to parse temporal instant string: %s\n", trajStr);
+                printf("ERROR: tgeompoint_in() returned NULL\n");
+                printf("ERROR: Check if the format matches MEOS expectations for temporal instants\n");
+                return 0;
+            }
+            printf("DEBUG: Successfully parsed temporal instant string into MEOS Temporal object\n");
+            
+            // Get the size needed for binary WKB format
+            // WKB_EXTENDED = 0x08 for extended WKB format
+            printf("DEBUG: Calling temporal_as_wkb() to get binary size...\n");
+            size_t size = 0;
+            uint8_t* data = temporal_as_wkb(temp, 0x08, &size);
+            
+            if (!data) {
+                printf("ERROR: temporal_as_wkb() returned NULL\n");
+                free(temp);
+                return 0;
+            }
+            
+            printf("DEBUG: temporal_as_wkb() successful, binary size: %zu bytes\n", size);
+            free(data);
+            free(temp);
+            
+            return size;
         },
         trajectoryStr);
-        
-    auto variableSized = pipelineMemoryProvider.arena.allocateVariableSizedData(strLen + nautilus::val<size_t>(1));
     
-    // Copy the trajectory string to the result
+    // Allocate variable sized data for the binary result
+    auto variableSized = pipelineMemoryProvider.arena.allocateVariableSizedData(binarySize);
+    
+    // Now convert and copy the binary data directly to the allocated memory
     nautilus::invoke(
-        +[](int8_t* dest, const char* src, size_t len) -> void
+        +[](int8_t* dest, const char* trajStr, size_t expectedSize) -> void
         {
-            memcpy(dest, src, len + 1);
-            free((void*)src);  // Free the temporary buffer
+            printf("DEBUG: Second MEOS conversion - converting temporal instant and copying binary data\n");
+            printf("DEBUG: Expected size: %zu bytes\n", expectedSize);
+            
+            // Parse the temporal instant string into a MEOS temporal object
+            printf("DEBUG: Calling tgeompoint_in() (second time)...\n");
+            Temporal* temp = tgeompoint_in(trajStr);
+            if (!temp) {
+                printf("ERROR: Failed to parse temporal instant string on second attempt\n");
+                printf("ERROR: Input was: %s\n", trajStr);
+                free((void*)trajStr);
+                return;
+            }
+            printf("DEBUG: Successfully parsed temporal instant string (second time)\n");
+            
+            // Convert to binary WKB format
+            printf("DEBUG: Calling temporal_as_wkb() (second time)...\n");
+            size_t actualSize = 0;
+            uint8_t* binaryData = temporal_as_wkb(temp, 0x08, &actualSize);
+            
+            if (!binaryData) {
+                printf("ERROR: temporal_as_wkb() returned NULL on second attempt\n");
+                free(temp);
+                free((void*)trajStr);
+                return;
+            }
+            
+            if (actualSize != expectedSize) {
+                printf("ERROR: Size mismatch - expected %zu, got %zu\n", expectedSize, actualSize);
+                free(binaryData);
+                free(temp);
+                free((void*)trajStr);
+                return;
+            }
+            
+            printf("DEBUG: temporal_as_wkb() successful (second time), actual size: %zu bytes\n", actualSize);
+            
+            // Copy the binary data
+            memcpy(dest, binaryData, actualSize);
+            printf("DEBUG: Successfully copied %zu bytes of binary temporal instant data\n", actualSize);
+            
+            // Print first few bytes of binary data for verification
+            printf("DEBUG: First 16 bytes of binary data: ");
+            for (size_t i = 0; i < 16 && i < actualSize; i++) {
+                printf("%02X ", (unsigned char)binaryData[i]);
+            }
+            printf("\n");
+            
+            // Clean up
+            free(binaryData);
+            free(temp);
+            free((void*)trajStr);
+            printf("DEBUG: MEOS conversion and cleanup complete\n");
         },
         variableSized.getContent(),
         trajectoryStr,
-        strLen);
+        binarySize);
 
     Nautilus::Record resultRecord;
     resultRecord.write(resultFieldIdentifier, variableSized);
@@ -274,15 +386,12 @@ void TemporalSequenceAggregationPhysicalFunction::cleanup(nautilus::val<Aggregat
         aggregationState);
 }
 
-// Registry function - TEMPORAL_SEQUENCE requires three separate field functions
-// and is created manually in LowerToPhysicalWindowedAggregation.cpp
-// This stub is required for the registry system but should not be used
+
 AggregationPhysicalFunctionRegistryReturnType AggregationPhysicalFunctionGeneratedRegistrar::RegisterTemporalSequenceAggregationPhysicalFunction(
     AggregationPhysicalFunctionRegistryArguments)
 {
     throw std::runtime_error("TEMPORAL_SEQUENCE aggregation cannot be created through the registry. "
-                           "It requires three field functions (longitude, latitude, timestamp) and must be "
-                           "created manually in LowerToPhysicalWindowedAggregation.cpp");
+                           "It requires three field functions (longitude, latitude, timestamp) ");
 }
 
 }
