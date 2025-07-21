@@ -26,6 +26,7 @@
 #include <mutex>
 #include <cstring>
 #include <cstdio>
+#include <string>
 
 #include <MemoryLayout/ColumnLayout.hpp>
 #include <Nautilus/Interface/MemoryProvider/ColumnTupleBufferMemoryProvider.hpp>
@@ -41,11 +42,8 @@
 #include <val_concepts.hpp>
 #include <val_ptr.hpp>
 
-// MEOS C API headers
-extern "C" {
-#include <meos.h>
-#include <meos_geo.h>
-}
+// MEOS wrapper header
+#include <MEOSWrapper.hpp>
 
 namespace NES
 {
@@ -54,22 +52,8 @@ constexpr static std::string_view LonFieldName = "lon";
 constexpr static std::string_view LatFieldName = "lat";
 constexpr static std::string_view TimestampFieldName = "timestamp";
 
-// Global MEOS initialization
-static bool meos_initialized = false;
+// Mutex for thread-safe MEOS operations
 static std::mutex meos_mutex;
-
-static void ensureMeosInitialized() {
-    std::lock_guard<std::mutex> lock(meos_mutex);
-    if (!meos_initialized) {
-        // Set timezone to UTC if not set
-        if (!std::getenv("TZ")) {
-            setenv("TZ", "UTC", 1);
-            tzset();
-        }
-        meos_initialize();
-        meos_initialized = true;
-    }
-}
 
 
 TemporalSequenceAggregationPhysicalFunction::TemporalSequenceAggregationPhysicalFunction(
@@ -131,7 +115,7 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
     const nautilus::val<AggregationState*> aggregationState, PipelineMemoryProvider& pipelineMemoryProvider)
 {
     // Ensure MEOS is initialized
-    ensureMeosInitialized();
+    MEOS::Meos::ensureMeosInitialized();
     
     // Getting the paged vector from the aggregation state
     const auto pagedVectorPtr = static_cast<nautilus::val<Nautilus::Interface::PagedVector*>>(aggregationState);
@@ -215,7 +199,7 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
                 
                 // Convert timestamp to MEOS format
                 // Determine if timestamp is in seconds or milliseconds
-                time_t adjustedTime;
+                long long adjustedTime;
                 if (tsVal > 1000000000000LL) {
                     // Milliseconds (13+ digits)
                     adjustedTime = tsVal / 1000;
@@ -223,10 +207,10 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
                     // Seconds (10 digits or less) - Unix timestamp
                     adjustedTime = tsVal;
                 }
-                struct tm* timeinfo = gmtime(&adjustedTime);
                 
-                char timestampStr[32];
-                strftime(timestampStr, sizeof(timestampStr), "%Y-%m-%d %H:%M:%S", timeinfo);
+                // Use MEOS wrapper to convert timestamp
+                std::string timestampString = MEOS::Meos::convertSecondsToTimestamp(adjustedTime);
+                const char* timestampStr = timestampString.c_str();
                 
                 char pointStr[120];
                 // Use Point format that MEOS expects: Point(lon lat)@timestamp
@@ -272,31 +256,24 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
             // Lock mutex for thread-safe MEOS operations
             std::lock_guard<std::mutex> lock(meos_mutex);
             
-            // Clear any previous errors
-            meos_errno_reset();
-            
-            Temporal* temp = tgeompoint_in(trajStr);
+            // Parse using the wrapper function
+            std::string trajString(trajStr);
+            void* temp = MEOS::Meos::parseTemporalPoint(trajString);
             if (!temp) {
-                // Try with SRID prefix as fallback
-                char sridBuffer[1024];
-                snprintf(sridBuffer, sizeof(sridBuffer), "SRID=4326;%s", trajStr);
-                temp = tgeompoint_in(sridBuffer);
-                if (!temp) {
-                    return 0;
-                }
+                return 0;
             }
             
             // Get the size needed for binary WKB format
             size_t size = 0;
-            uint8_t* data = temporal_as_wkb(temp, 0x08, &size);
+            uint8_t* data = MEOS::Meos::temporalToWKB(temp, size);
             
             if (!data) {
-                free(temp);
+                MEOS::Meos::freeTemporalObject(temp);
                 return 0;
             }
             
             free(data);
-            free(temp);
+            MEOS::Meos::freeTemporalObject(temp);
             
             return size;
         },
