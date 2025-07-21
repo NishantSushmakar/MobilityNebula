@@ -12,7 +12,7 @@
     limitations under the License.
 */
 
-#include "include/MEOSWrapper.hpp"
+#include <MEOSWrapper.hpp>
 
 #include <string>
 #include <chrono>
@@ -116,8 +116,6 @@ namespace MEOS {
     }
     
 
-
-
     // Constructor for creating trajectory from multiple temporal instants
     Meos::TemporalSequence::TemporalSequence(const std::vector<TemporalInstant*>& instants) {
         // Ensure MEOS is initialized
@@ -162,6 +160,47 @@ namespace MEOS {
         return 0.0;
     }
     
+    // Static wrapper functions for MEOS API
+    void* Meos::parseTemporalPoint(const std::string& trajStr) {
+        ensureMeosInitialized();
+        
+        if (trajStr.empty()) {
+            return nullptr;
+        }
+        
+        // Clear any previous errors
+        meos_errno_reset();
+        
+        Temporal* temp = tgeompoint_in(trajStr.c_str());
+        if (!temp) {
+            // Try with SRID prefix as fallback
+            std::string sridStr = "SRID=4326;" + trajStr;
+            temp = tgeompoint_in(sridStr.c_str());
+        }
+        
+        return temp;
+    }
+    
+    void Meos::freeTemporalObject(void* temporal) {
+        if (temporal) {
+            free(temporal);
+        }
+    }
+    
+    uint8_t* Meos::temporalToWKB(void* temporal, size_t& size) {
+        if (!temporal) {
+            size = 0;
+            return nullptr;
+        }
+        
+        // Use extended WKB format (0x08)
+        uint8_t* data = temporal_as_wkb((Temporal*)temporal, 0x08, &size);
+        return data;
+    }
+    
+    void Meos::ensureMeosInitialized() {
+        MEOS::ensureMeosInitialized();
+    }
 
     // SpatioTemporalBox implementation
     Meos::SpatioTemporalBox::SpatioTemporalBox(const std::string& wkt_string) {
