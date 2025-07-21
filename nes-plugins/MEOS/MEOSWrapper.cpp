@@ -12,7 +12,7 @@
     limitations under the License.
 */
 
-#include "include/MEOSWrapper.hpp"
+#include <MEOSWrapper.hpp>
 
 #include <string>
 #include <chrono>

@@ -115,11 +115,11 @@ void TemporalSequenceAggregationPhysicalFunction::combine(
     const nautilus::val<AggregationState*> aggregationState2,
     PipelineMemoryProvider&)
 {
-    /// Getting the paged vectors from the aggregation states
+    // Getting the paged vectors from the aggregation states
     const auto memArea1 = static_cast<nautilus::val<Nautilus::Interface::PagedVector*>>(aggregationState1);
     const auto memArea2 = static_cast<nautilus::val<Nautilus::Interface::PagedVector*>>(aggregationState2);
 
-    /// Calling the copyFrom function of the paged vector to combine the two paged vectors by copying the content of the second paged vector to the first paged vector
+    // Calling the copyFrom function of the paged vector to combine the two paged vectors by copying the content of the second paged vector to the first paged vector
     nautilus::invoke(
         +[](Nautilus::Interface::PagedVector* vector1, const Nautilus::Interface::PagedVector* vector2) -> void
         { vector1->copyFrom(*vector2); },
@@ -133,7 +133,7 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
     // Ensure MEOS is initialized
     ensureMeosInitialized();
     
-    /// Getting the paged vector from the aggregation state
+    // Getting the paged vector from the aggregation state
     const auto pagedVectorPtr = static_cast<nautilus::val<Nautilus::Interface::PagedVector*>>(aggregationState);
     const Nautilus::Interface::PagedVectorRef pagedVectorRef(pagedVectorPtr, memProviderPagedVector);
     const auto allFieldNames = memProviderPagedVector->getMemoryLayout()->getSchema().getFieldNames();
@@ -189,7 +189,7 @@ Nautilus::Record TemporalSequenceAggregationPhysicalFunction::lower(
     // Track if this is the first point using a counter
     auto pointCounter = nautilus::val<int64_t>(0);
     
-    /// Read from paged vector
+    // Read from paged vector
     const auto endIt = pagedVectorRef.end(allFieldNames);
     for (auto candidateIt = pagedVectorRef.begin(allFieldNames); candidateIt != endIt; ++candidateIt)
     {
@@ -358,7 +358,7 @@ void TemporalSequenceAggregationPhysicalFunction::reset(const nautilus::val<Aggr
     nautilus::invoke(
         +[](AggregationState* pagedVectorMemArea) -> void
         {
-            /// Allocates a new PagedVector in the memory area provided by the pointer to the pagedvector
+            // Allocates a new PagedVector in the memory area provided by the pointer to the pagedvector
             auto* pagedVector = reinterpret_cast<Nautilus::Interface::PagedVector*>(pagedVectorMemArea);
             new (pagedVector) Nautilus::Interface::PagedVector();
         },
@@ -374,9 +374,9 @@ void TemporalSequenceAggregationPhysicalFunction::cleanup(nautilus::val<Aggregat
     nautilus::invoke(
         +[](AggregationState* pagedVectorMemArea) -> void
         {
-            /// Calls the destructor of the PagedVector
+            // Calls the destructor of the PagedVector
             auto* pagedVector = reinterpret_cast<Nautilus::Interface::PagedVector*>(
-                pagedVectorMemArea); /// NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
+                pagedVectorMemArea); // NOLINT(cppcoreguidelines-pro-type-reinterpret-cast)
             pagedVector->~PagedVector();
         },
         aggregationState);
