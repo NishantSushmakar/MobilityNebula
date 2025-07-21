@@ -85,6 +85,33 @@ class Meos {
 
 
     static std::string convertSecondsToTimestamp(long long seconds);
+    
+    /**
+     * @brief Parse a temporal point string into a MEOS Temporal object
+     * @param trajStr String representation of temporal point (e.g., "{Point(1.0 2.0)@2023-01-01 00:00:00}")
+     * @return Void pointer to Temporal object, nullptr on failure. Caller must free with freeTemporalObject()
+     */
+    static void* parseTemporalPoint(const std::string& trajStr);
+    
+    /**
+     * @brief Free a MEOS Temporal object
+     * @param temporal Pointer to Temporal object to free
+     */
+    static void freeTemporalObject(void* temporal);
+    
+    /**
+     * @brief Convert a Temporal object to WKB format
+     * @param temporal Pointer to Temporal object
+     * @param size Output parameter for the size of the WKB data
+     * @return Pointer to WKB data, nullptr on failure. Caller must free the returned pointer.
+     */
+    static uint8_t* temporalToWKB(void* temporal, size_t& size);
+    
+    /**
+     * @brief Ensure MEOS is initialized
+     */
+    static void ensureMeosInitialized();
+    
     bool finalized=false;
 
 };
