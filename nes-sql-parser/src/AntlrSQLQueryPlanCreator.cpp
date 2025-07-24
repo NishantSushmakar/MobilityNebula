@@ -57,6 +57,7 @@
 #include <Operators/Windows/Aggregations/SumAggregationLogicalFunction.hpp>
 #include <Operators/Windows/Aggregations/Meos/VarAggregationLogicalFunction.hpp>
 #include <Operators/Windows/Aggregations/Meos/TemporalSequenceAggregationLogicalFunction.hpp>
+#include <Functions/Meos/TemporalIntersectsGeometryLogicalFunction.hpp>
 #include <Operators/Windows/JoinLogicalOperator.hpp>
 #include <Plans/LogicalPlan.hpp>
 #include <Plans/LogicalPlanBuilder.hpp>
@@ -1000,6 +1001,19 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
                 // Push back one field access function to satisfy parser expectations
                 // This prevents the functionBuilder from being empty when processing the identifier
                 helpers.top().functionBuilder.push_back(longitudeFunction);
+            }
+            break;
+        case AntlrSQLLexer::TEMPORAL_INTERSECTS_GEOMETRY:
+            if (helpers.top().functionBuilder.size() != 1) {
+                throw InvalidQuerySyntax("TEMPORAL_INTERSECTS_GEOMETRY requires exactly one argument (temporal geometry WKT string), but got {}", helpers.top().functionBuilder.size());
+            }
+            {
+                const auto geometryStringFunction = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                
+                // Create the temporal intersects geometry function
+                const auto function = TemporalIntersectsGeometryLogicalFunction(geometryStringFunction);
+                helpers.top().functionBuilder.push_back(function);
             }
             break;
         default:

@@ -1,0 +1,19 @@
+# name: function/spatiotemporal/MEOS_Intersects_Temporal_Geometry_String.test
+# description: Test TEMPORAL_INTERSECTS_GEOMETRY with string-based temporal geometries
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, String]
+
+# Test 1: Basic temporal point intersection with hardcoded temporal polygon
+Source temporal_points UINT32 id VARSIZED temporal_geometry_wkt INLINE
+1,'SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 12:00:00'
+2,'SRID=4326;POINT(-73.9800 40.7500)@2021-01-01 12:00:00'
+3,'SRID=4326;POINT(-74.0000 40.7000)@2021-01-01 12:00:00'
+
+SINK point_results UINT32 temporal_points$id BOOLEAN temporal_points$intersects
+
+SELECT id, TEMPORAL_INTERSECTS_GEOMETRY(temporal_geometry_wkt) AS intersects
+FROM temporal_points
+INTO point_results
+----
+1,0
+2,1
+3,0

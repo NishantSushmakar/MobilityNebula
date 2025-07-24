@@ -60,6 +60,29 @@ class Meos {
     private:
         Temporal* instant;
     };
+
+    class StaticGeometry {
+    public:
+        explicit StaticGeometry(const std::string& wkt_string);
+        ~StaticGeometry();
+
+        GSERIALIZED* getGeometry() const { return geometry; }
+
+    private:
+        GSERIALIZED* geometry;
+    };
+
+    class TemporalGeometry {
+    public:
+        explicit TemporalGeometry(const std::string& wkt_string);
+        ~TemporalGeometry();
+
+        bool intersects(const TemporalGeometry& geom) const;
+        bool intersectsStatic(const StaticGeometry& static_geom) const;
+
+    private:
+        Temporal* geometry;
+    };
     
     class TemporalSequence {
     public:

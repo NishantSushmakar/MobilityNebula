@@ -98,6 +98,7 @@ namespace MEOS {
         }
     }
 
+
     Meos::TemporalInstant::~TemporalInstant() { 
         if (instant) {
             free(instant); 
@@ -115,6 +116,64 @@ namespace MEOS {
         return result;
     }
     
+
+    Meos::TemporalGeometry::TemporalGeometry(const std::string& wkt_string){
+
+        ensureMeosInitialized();
+
+        std::cout << "Creating MEOS TemporalGeometry from: " << wkt_string << std::endl;
+
+        Temporal *temp = tgeometry_in(wkt_string.c_str());
+
+        if (temp == nullptr) {
+            std::cout << "Failed to parse temporal geometry with temporal_from_text" << std::endl;
+            // Try alternative format or set to null
+            geometry = nullptr;
+        } else {
+            geometry = temp;
+            std::cout << "Successfully created temporal geometry" << std::endl;
+        }        
+
+    }
+
+    Meos::TemporalGeometry::~TemporalGeometry() { 
+        if (geometry) {
+            free(geometry); 
+        }
+    }
+
+    bool Meos::TemporalGeometry::intersects(const TemporalGeometry& geom) const{
+        std::cout << "TemporalGeometry::intersects called" << std::endl;
+        
+        // // Debug test with hardcoded values from first test case
+        // std::cout << "=== HARDCODED MEOS TEST ===" << std::endl;
+        // try {
+        //     // Test case 1: Point that should intersect
+        //     std::string test_point = "SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 12:00:00";
+        //     std::string test_polygon = "SRID=4326;{POLYGON((-73.9900 40.7450, -73.9800 40.7450, -73.9800 40.7500, -73.9900 40.7500, -73.9900 40.7450))@2021-01-01 00:00:00, POLYGON((-73.9850 40.7475, -73.9750 40.7475, -73.9750 40.7525, -73.9850 40.7525, -73.9850 40.7475))@2021-01-01 12:00:00}";
+            
+        //     std::cout << "Creating test point: " << test_point << std::endl;
+        //     TemporalGeometry hardcoded_point(test_point);
+            
+        //     std::cout << "Creating test polygon: " << test_polygon << std::endl;
+        //     TemporalGeometry hardcoded_polygon(test_polygon);
+            
+        //     std::cout << "Testing hardcoded intersection..." << std::endl;
+        //     bool hardcoded_result = eintersects_tgeo_tgeo((const Temporal *)hardcoded_polygon.geometry, (const Temporal *)hardcoded_point.geometry);
+        //     std::cout << "Hardcoded test result: " << hardcoded_result << std::endl;
+        // } catch (...) {
+        //     std::cout << "Error in hardcoded test" << std::endl;
+        // }
+        // std::cout << "=== END HARDCODED TEST ===" << std::endl;
+        
+        bool result = eintersects_tgeo_tgeo((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
+        if (result) {
+            std::cout << "TemporalGeometry Intersects" << std::endl;
+        }
+
+        return result;
+    }   
+
 
     // Constructor for creating trajectory from multiple temporal instants
     Meos::TemporalSequence::TemporalSequence(const std::vector<TemporalInstant*>& instants) {
