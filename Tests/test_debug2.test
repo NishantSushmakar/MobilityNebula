@@ -1,0 +1,17 @@
+# name: debug_test2  
+# description: Debug TEMPORAL_INTERSECTS_GEOMETRY with mixed references and constants
+
+# Test mixing column references with constants (like the original failing test)
+Source test_data UINT32 id FLOAT64 lon1 FLOAT64 lat1 UINT64 timestamp1 FLOAT64 lon2 FLOAT64 lat2 UINT64 timestamp2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml test_data INLINE
+1|-73.9857|40.7484|1609459200|-73.9857|40.7484|1609459200
+
+SINK test_results UINT32 test_data$id INT32 test_data$result1 INT32 test_data$result2
+
+SELECT id,
+       TEMPORAL_INTERSECTS_GEOMETRY(lon1, lat1, timestamp1, -73.9857, 40.7484, 1609459200) AS result1,
+       TEMPORAL_INTERSECTS_GEOMETRY(lon2, lat2, timestamp2, -73.9857, 40.7484, 1609459200) AS result2
+FROM test_data
+INTO test_results
+----
+1,1,1
