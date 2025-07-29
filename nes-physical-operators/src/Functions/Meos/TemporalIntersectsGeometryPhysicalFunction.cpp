@@ -1,17 +1,3 @@
-/*
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        https://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
-
 #include <utility>
 #include <vector>
 #include <string>
@@ -32,86 +18,179 @@
 
 namespace NES {
 
+// Constructor with 4 parameters for temporal-static intersection
+TemporalIntersectsGeometryPhysicalFunction::TemporalIntersectsGeometryPhysicalFunction(PhysicalFunction lon1Function, PhysicalFunction lat1Function, PhysicalFunction timestamp1Function, PhysicalFunction staticGeometryFunction)
+    : isTemporal6Param(false)
+{
+    parameterFunctions.reserve(4);
+    parameterFunctions.push_back(std::move(lon1Function));
+    parameterFunctions.push_back(std::move(lat1Function));
+    parameterFunctions.push_back(std::move(timestamp1Function));
+    parameterFunctions.push_back(std::move(staticGeometryFunction));
+}
+
+// Constructor with 6 parameters for temporal-temporal intersection
+TemporalIntersectsGeometryPhysicalFunction::TemporalIntersectsGeometryPhysicalFunction(PhysicalFunction lon1Function, PhysicalFunction lat1Function, PhysicalFunction timestamp1Function, PhysicalFunction lon2Function, PhysicalFunction lat2Function, PhysicalFunction timestamp2Function)
+    : isTemporal6Param(true)
+{
+    parameterFunctions.reserve(6);
+    parameterFunctions.push_back(std::move(lon1Function));
+    parameterFunctions.push_back(std::move(lat1Function));
+    parameterFunctions.push_back(std::move(timestamp1Function));
+    parameterFunctions.push_back(std::move(lon2Function));
+    parameterFunctions.push_back(std::move(lat2Function));
+    parameterFunctions.push_back(std::move(timestamp2Function));
+}
+
 VarVal TemporalIntersectsGeometryPhysicalFunction::execute(const Record& record, ArenaRef& arena) const
 {
-    const auto geometryStringValue = geometryStringFunction.execute(record, arena);
+    std::cout << "TemporalIntersectsGeometryPhysicalFunction::execute called with " << parameterFunctions.size() << " arguments" << std::endl;
     
-    std::cout << "TemporalIntersectsGeometryPhysicalFunction::execute called" << std::endl;
+    // Execute all parameter functions to get their values
+    std::vector<VarVal> parameterValues;
+    parameterValues.reserve(parameterFunctions.size());
+    for (const auto& paramFunc : parameterFunctions) {
+        parameterValues.push_back(paramFunc.execute(record, arena));
+    }
     
-    // Extract VariableSizedData value from VarVal 
-    auto geometry_varsized_val = geometryStringValue.cast<NES::Nautilus::VariableSizedData>();
+    if (isTemporal6Param) {
+        // 6-parameter case: temporal-temporal intersection
+        return executeTemporal6Param(parameterValues);
+    } else {
+        // 4-parameter case: temporal-static intersection
+        return executeTemporal4Param(parameterValues);
+    }
+}
+
+VarVal TemporalIntersectsGeometryPhysicalFunction::executeTemporal6Param(const std::vector<VarVal>& params) const
+{
+    // Extract coordinate values: lon1, lat1, timestamp1, lon2, lat2, timestamp2
+    auto lon1 = params[0].cast<nautilus::val<double>>();
+    auto lat1 = params[1].cast<nautilus::val<double>>();
+    auto timestamp1 = params[2].cast<nautilus::val<uint64_t>>();
+    auto lon2 = params[3].cast<nautilus::val<double>>();
+    auto lat2 = params[4].cast<nautilus::val<double>>();
+    auto timestamp2 = params[5].cast<nautilus::val<uint64_t>>();
     
-    std::cout << "TemporalIntersectsGeometryPhysicalFunction processing variable-sized string value" << std::endl;
+    std::cout << "6-param temporal-temporal intersection with coordinate values" << std::endl;
     
-    // Use nautilus::invoke to call external MEOS function with variable-sized data
+    // Use nautilus::invoke to call external MEOS function with coordinate parameters
     const auto result = nautilus::invoke(
-        +[](int8_t* data_ptr, uint32_t data_size) -> bool {
+        +[](double lon1_val, double lat1_val, uint64_t ts1_val, double lon2_val, double lat2_val, uint64_t ts2_val) -> int {
             try {
                 // Use the existing global MEOS initialization mechanism
                 MEOS::Meos::ensureMeosInitialized();
                 
-                // Convert raw data to C++ string
-                std::string geometry_wkt(reinterpret_cast<const char*>(data_ptr), data_size);
-                std::cout << "Processing temporal geometry WKT: " << geometry_wkt << std::endl;
+                // Convert UINT64 timestamps to MEOS timestamp strings
+                std::string timestamp1_str = MEOS::Meos::convertSecondsToTimestamp(ts1_val);
+                std::string timestamp2_str = MEOS::Meos::convertSecondsToTimestamp(ts2_val);
                 
-                // Strip quotes if present (CSV parsing includes quotes in the string value)
-                if (geometry_wkt.size() >= 2 && geometry_wkt.front() == '\'' && geometry_wkt.back() == '\'') {
-                    geometry_wkt = geometry_wkt.substr(1, geometry_wkt.size() - 2);
-                    std::cout << "Stripped quotes, processed WKT: " << geometry_wkt << std::endl;
-                }
+                // Build temporal geometry WKT strings from coordinates and timestamps
+                std::string left_geometry_wkt = fmt::format("SRID=4326;POINT({} {})@{}", lon1_val, lat1_val, timestamp1_str);
+                std::string right_geometry_wkt = fmt::format("SRID=4326;POINT({} {})@{}", lon2_val, lat2_val, timestamp2_str);
                 
-                // Validate input string is not empty
-                if (geometry_wkt.empty()) {
-                    std::cout << "Empty geometry WKT string" << std::endl;
-                    return false;
-                }
+                std::cout << "Built temporal geometries:" << std::endl;
+                std::cout << "Left: " << left_geometry_wkt << std::endl;
+                std::cout << "Right: " << right_geometry_wkt << std::endl;
                 
-                // Create temporal geometry from input WKT string
-                MEOS::Meos::TemporalGeometry input_geometry(geometry_wkt);
+                // Both geometries are temporal points, use temporal-temporal intersection
+                std::cout << "Using temporal-temporal intersection (eintersects_tgeo_tgeo)" << std::endl;
+                MEOS::Meos::TemporalGeometry left_temporal(left_geometry_wkt);
+                MEOS::Meos::TemporalGeometry right_temporal(right_geometry_wkt);
+                int intersection_result = left_temporal.intersects(right_temporal);
+                std::cout << "eintersects_tgeo_tgeo result: " << intersection_result << std::endl;
                 
-                // Create hardcoded reference temporal geometry for intersection testing
-                // Example: temporal polygon that changes over time in Manhattan area
-                std::string reference_temporal_geom = 
-                    "SRID=4326;{POLYGON((-73.9900 40.7450, -73.9800 40.7450, -73.9800 40.7500, -73.9900 40.7500, -73.9900 40.7450))@2021-01-01 00:00:00, "
-                    "POLYGON((-73.9850 40.7475, -73.9750 40.7475, -73.9750 40.7525, -73.9850 40.7525, -73.9850 40.7475))@2021-01-01 12:00:00}";
-                
-                std::cout << "Reference temporal geometry for comparison: " << reference_temporal_geom << std::endl;
-                MEOS::Meos::TemporalGeometry reference_geometry(reference_temporal_geom);
-                
-                std::cout << "About to compare:" << std::endl;
-                std::cout << "  Input: " << geometry_wkt << std::endl;
-                std::cout << "  Reference: " << reference_temporal_geom << std::endl;
-                
-                // Perform temporal geometry vs temporal geometry intersection using eintersects_tgeo_tgeo
-                bool intersection_result = input_geometry.intersects(reference_geometry);
-                std::cout << "MEOS temporal geometry intersection result: " << intersection_result << std::endl;
-
                 return intersection_result;
             } catch (const std::exception& e) {
                 std::cout << "MEOS exception in temporal geometry intersection: " << e.what() << std::endl;
-                return false;
+                return -1;  // Error case
             } catch (...) {
                 std::cout << "Unknown error in temporal geometry intersection" << std::endl;
-                return false;
+                return -1;  // Error case
             }
         },
-        geometry_varsized_val.getContent(),
-        geometry_varsized_val.getContentSize()
+        lon1, lat1, timestamp1, lon2, lat2, timestamp2
     );
     
     return VarVal(result);
 }
 
-TemporalIntersectsGeometryPhysicalFunction::TemporalIntersectsGeometryPhysicalFunction(PhysicalFunction geometryStringFunction)
-    : geometryStringFunction(std::move(geometryStringFunction))
+VarVal TemporalIntersectsGeometryPhysicalFunction::executeTemporal4Param(const std::vector<VarVal>& params) const
 {
+    // Extract values: lon1, lat1, timestamp1, static_geometry_wkt
+    auto lon1 = params[0].cast<nautilus::val<double>>();
+    auto lat1 = params[1].cast<nautilus::val<double>>();
+    auto timestamp1 = params[2].cast<nautilus::val<uint64_t>>();
+    auto static_geometry_varsized = params[3].cast<VariableSizedData>();
+    
+    std::cout << "4-param temporal-static intersection with coordinate values" << std::endl;
+    
+    // Use nautilus::invoke to call external MEOS function with coordinate and geometry parameters
+    const auto result = nautilus::invoke(
+        +[](double lon1_val, double lat1_val, uint64_t ts1_val, const char* static_geom_ptr, uint32_t static_geom_size) -> int {
+            try {
+                // Use the existing global MEOS initialization mechanism
+                MEOS::Meos::ensureMeosInitialized();
+                
+                // Convert UINT64 timestamp to MEOS timestamp string
+                std::string timestamp1_str = MEOS::Meos::convertSecondsToTimestamp(ts1_val);
+                
+                // Build temporal geometry WKT string from coordinates and timestamp
+                std::string left_geometry_wkt = fmt::format("SRID=4326;POINT({} {})@{}", lon1_val, lat1_val, timestamp1_str);
+                
+                // Extract static geometry WKT from VariableSizedData
+                std::string right_geometry_wkt(static_geom_ptr, static_geom_size);
+                
+                // Strip quotes if present (CSV parsing includes quotes in the string values)
+                while (!right_geometry_wkt.empty() && (right_geometry_wkt.front() == '\'' || right_geometry_wkt.front() == '"')) {
+                    right_geometry_wkt = right_geometry_wkt.substr(1);
+                }
+                while (!right_geometry_wkt.empty() && (right_geometry_wkt.back() == '\'' || right_geometry_wkt.back() == '"')) {
+                    right_geometry_wkt = right_geometry_wkt.substr(0, right_geometry_wkt.size() - 1);
+                }
+                
+                std::cout << "Built geometries:" << std::endl;
+                std::cout << "Left (temporal): " << left_geometry_wkt << std::endl;
+                std::cout << "Right (static): " << right_geometry_wkt << std::endl;
+                
+                // Validate input strings are not empty
+                if (left_geometry_wkt.empty() || right_geometry_wkt.empty()) {
+                    std::cout << "Empty geometry WKT string(s)" << std::endl;
+                    return -1;
+                }
+                
+                // Use temporal-static intersection
+                std::cout << "Using temporal-static intersection (eintersects_tgeo_geo)" << std::endl;
+                MEOS::Meos::TemporalGeometry left_temporal(left_geometry_wkt);
+                MEOS::Meos::StaticGeometry right_static(right_geometry_wkt);
+                int intersection_result = left_temporal.intersectsStatic(right_static);
+                std::cout << "eintersects_tgeo_geo result: " << intersection_result << std::endl;
+                
+                return intersection_result;
+            } catch (const std::exception& e) {
+                std::cout << "MEOS exception in temporal geometry intersection: " << e.what() << std::endl;
+                return -1;  // Error case
+            } catch (...) {
+                std::cout << "Unknown error in temporal geometry intersection" << std::endl;
+                return -1;  // Error case
+            }
+        },
+        lon1, lat1, timestamp1, static_geometry_varsized.getContent(), static_geometry_varsized.getContentSize()
+    );
+    
+    return VarVal(result);
 }
 
 PhysicalFunctionRegistryReturnType
 PhysicalFunctionGeneratedRegistrar::RegisterTemporalIntersectsGeometryPhysicalFunction(PhysicalFunctionRegistryArguments physicalFunctionRegistryArguments)
 {
-    PRECONDITION(physicalFunctionRegistryArguments.childFunctions.size() == 1, "TemporalIntersectsGeometry function must have exactly one sub-function");
-    return TemporalIntersectsGeometryPhysicalFunction(physicalFunctionRegistryArguments.childFunctions[0]);
+    if (physicalFunctionRegistryArguments.childFunctions.size() == 4) {
+        return TemporalIntersectsGeometryPhysicalFunction(physicalFunctionRegistryArguments.childFunctions[0], physicalFunctionRegistryArguments.childFunctions[1], physicalFunctionRegistryArguments.childFunctions[2], physicalFunctionRegistryArguments.childFunctions[3]);
+    } else if (physicalFunctionRegistryArguments.childFunctions.size() == 6) {
+        return TemporalIntersectsGeometryPhysicalFunction(physicalFunctionRegistryArguments.childFunctions[0], physicalFunctionRegistryArguments.childFunctions[1], physicalFunctionRegistryArguments.childFunctions[2], physicalFunctionRegistryArguments.childFunctions[3], physicalFunctionRegistryArguments.childFunctions[4], physicalFunctionRegistryArguments.childFunctions[5]);
+    } else {
+        PRECONDITION(false, "TemporalIntersectsGeometryPhysicalFunction requires 4 or 6 child functions, but got {}", physicalFunctionRegistryArguments.childFunctions.size());
+    }
 }
 
 }

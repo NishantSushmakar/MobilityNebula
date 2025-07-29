@@ -77,8 +77,8 @@ class Meos {
         explicit TemporalGeometry(const std::string& wkt_string);
         ~TemporalGeometry();
 
-        bool intersects(const TemporalGeometry& geom) const;
-        bool intersectsStatic(const StaticGeometry& static_geom) const;
+        int intersects(const TemporalGeometry& geom) const;
+        int intersectsStatic(const StaticGeometry& static_geom) const;
 
     private:
         Temporal* geometry;

@@ -1,16 +1,3 @@
-/*
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        https://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
 
 #include <string>
 #include <string_view>
@@ -31,10 +18,30 @@
 namespace NES
 {
 
-TemporalIntersectsGeometryLogicalFunction::TemporalIntersectsGeometryLogicalFunction(LogicalFunction geometryString)
-    : dataType(DataTypeProvider::provideDataType(DataType::Type::BOOLEAN))
-    , geometryString(std::move(geometryString))
+// 4-parameter constructor for temporal-static intersection
+TemporalIntersectsGeometryLogicalFunction::TemporalIntersectsGeometryLogicalFunction(LogicalFunction lon1, LogicalFunction lat1, LogicalFunction timestamp1, LogicalFunction staticGeometry)
+    : dataType(DataTypeProvider::provideDataType(DataType::Type::INT32))
+    , isTemporal6Param(false)
 {
+    parameters.reserve(4);
+    parameters.push_back(std::move(lon1));
+    parameters.push_back(std::move(lat1));
+    parameters.push_back(std::move(timestamp1));
+    parameters.push_back(std::move(staticGeometry));
+}
+
+// 6-parameter constructor for temporal-temporal intersection
+TemporalIntersectsGeometryLogicalFunction::TemporalIntersectsGeometryLogicalFunction(LogicalFunction lon1, LogicalFunction lat1, LogicalFunction timestamp1, LogicalFunction lon2, LogicalFunction lat2, LogicalFunction timestamp2)
+    : dataType(DataTypeProvider::provideDataType(DataType::Type::INT32))
+    , isTemporal6Param(true)
+{
+    parameters.reserve(6);
+    parameters.push_back(std::move(lon1));
+    parameters.push_back(std::move(lat1));
+    parameters.push_back(std::move(timestamp1));
+    parameters.push_back(std::move(lon2));
+    parameters.push_back(std::move(lat2));
+    parameters.push_back(std::move(timestamp2));
 }
 
 DataType TemporalIntersectsGeometryLogicalFunction::getDataType() const
@@ -51,14 +58,15 @@ LogicalFunction TemporalIntersectsGeometryLogicalFunction::withDataType(const Da
 
 std::vector<LogicalFunction> TemporalIntersectsGeometryLogicalFunction::getChildren() const
 {
-    return {geometryString};
+    return parameters;
 };
 
 LogicalFunction TemporalIntersectsGeometryLogicalFunction::withChildren(const std::vector<LogicalFunction>& children) const
 {
-    PRECONDITION(children.size() == 1, "TemporalIntersectsGeometryLogicalFunction requires exactly one child, but got {}", children.size());
+    PRECONDITION(children.size() == 4 || children.size() == 6, "TemporalIntersectsGeometryLogicalFunction requires 4 or 6 children, but got {}", children.size());
     auto copy = *this;
-    copy.geometryString = children[0];
+    copy.parameters = children;
+    copy.isTemporal6Param = (children.size() == 6);
     return copy;
 };
 
@@ -71,14 +79,19 @@ bool TemporalIntersectsGeometryLogicalFunction::operator==(const LogicalFunction
 {
     if (const auto* other = dynamic_cast<const TemporalIntersectsGeometryLogicalFunction*>(&rhs))
     {
-        return geometryString == other->geometryString;
+        return parameters == other->parameters && isTemporal6Param == other->isTemporal6Param;
     }
     return false;
 }
 
 std::string TemporalIntersectsGeometryLogicalFunction::explain(ExplainVerbosity verbosity) const
 {
-    return fmt::format("TEMPORAL_INTERSECTS_GEOMETRY({})", geometryString.explain(verbosity));
+    std::string args;
+    for (size_t i = 0; i < parameters.size(); ++i) {
+        if (i > 0) args += ", ";
+        args += parameters[i].explain(verbosity);
+    }
+    return fmt::format("TEMPORAL_INTERSECTS_GEOMETRY({})", args);
 }
 
 LogicalFunction TemporalIntersectsGeometryLogicalFunction::withInferredDataType(const Schema& schema) const
@@ -89,11 +102,21 @@ LogicalFunction TemporalIntersectsGeometryLogicalFunction::withInferredDataType(
         newChildren.push_back(node.withInferredDataType(schema));
     }
     
-    /// Check if child dataType is correct - temporal geometry should be VARSIZED (string)
-    INVARIANT(
-        newChildren[0].getDataType().isType(DataType::Type::VARSIZED), 
-        "TemporalIntersectsGeometry requires VARSIZED input for WKT temporal geometry, but was: {}", 
-        newChildren[0].getDataType());
+    if (isTemporal6Param) {
+        // 6-parameter case: lon1, lat1, timestamp1, lon2, lat2, timestamp2
+        INVARIANT(newChildren[0].getDataType().isNumeric(), "lon1 must be numeric, but was: {}", newChildren[0].getDataType());
+        INVARIANT(newChildren[1].getDataType().isNumeric(), "lat1 must be numeric, but was: {}", newChildren[1].getDataType());
+        INVARIANT(newChildren[2].getDataType().isType(DataType::Type::UINT64), "timestamp1 must be UINT64, but was: {}", newChildren[2].getDataType());
+        INVARIANT(newChildren[3].getDataType().isNumeric(), "lon2 must be numeric, but was: {}", newChildren[3].getDataType());
+        INVARIANT(newChildren[4].getDataType().isNumeric(), "lat2 must be numeric, but was: {}", newChildren[4].getDataType());
+        INVARIANT(newChildren[5].getDataType().isType(DataType::Type::UINT64), "timestamp2 must be UINT64, but was: {}", newChildren[5].getDataType());
+    } else {
+        // 4-parameter case: lon1, lat1, timestamp1, static_geometry
+        INVARIANT(newChildren[0].getDataType().isNumeric(), "lon1 must be numeric, but was: {}", newChildren[0].getDataType());
+        INVARIANT(newChildren[1].getDataType().isNumeric(), "lat1 must be numeric, but was: {}", newChildren[1].getDataType());
+        INVARIANT(newChildren[2].getDataType().isType(DataType::Type::UINT64), "timestamp1 must be UINT64, but was: {}", newChildren[2].getDataType());
+        INVARIANT(newChildren[3].getDataType().isType(DataType::Type::VARSIZED), "static_geometry must be VARSIZED, but was: {}", newChildren[3].getDataType());
+    }
         
     return this->withChildren(newChildren);
 }
@@ -102,15 +125,22 @@ SerializableFunction TemporalIntersectsGeometryLogicalFunction::serialize() cons
 {
     SerializableFunction serializedFunction;
     serializedFunction.set_function_type(NAME);
-    serializedFunction.add_children()->CopyFrom(geometryString.serialize());
+    for (const auto& param : parameters) {
+        serializedFunction.add_children()->CopyFrom(param.serialize());
+    }
     DataTypeSerializationUtil::serializeDataType(this->getDataType(), serializedFunction.mutable_data_type());
     return serializedFunction;
 }
 
 LogicalFunctionRegistryReturnType LogicalFunctionGeneratedRegistrar::RegisterTemporalIntersectsGeometryLogicalFunction(LogicalFunctionRegistryArguments arguments)
 {
-    PRECONDITION(arguments.children.size() == 1, "TemporalIntersectsGeometryLogicalFunction requires exactly one child, but got {}", arguments.children.size());
-    return TemporalIntersectsGeometryLogicalFunction(arguments.children[0]);
+    if (arguments.children.size() == 4) {
+        return TemporalIntersectsGeometryLogicalFunction(arguments.children[0], arguments.children[1], arguments.children[2], arguments.children[3]);
+    } else if (arguments.children.size() == 6) {
+        return TemporalIntersectsGeometryLogicalFunction(arguments.children[0], arguments.children[1], arguments.children[2], arguments.children[3], arguments.children[4], arguments.children[5]);
+    } else {
+        PRECONDITION(false, "TemporalIntersectsGeometryLogicalFunction requires 4 or 6 children, but got {}", arguments.children.size());
+    }
 }
 
 }

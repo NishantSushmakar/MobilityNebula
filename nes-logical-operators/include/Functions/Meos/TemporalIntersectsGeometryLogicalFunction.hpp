@@ -1,16 +1,4 @@
-/*
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
 
-        https://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
 
 #pragma once
 
@@ -25,10 +13,13 @@ class TemporalIntersectsGeometryLogicalFunction : public LogicalFunctionConcept 
 public:
     static constexpr std::string_view NAME = "TemporalIntersectsGeometry";
 
-    /// Constructor with single string parameter for temporal geometry WKT
-    explicit TemporalIntersectsGeometryLogicalFunction(LogicalFunction geometryString);
+    /// Constructor with 4 parameters for temporal-static intersection: lon1, lat1, timestamp1, static_geometry_wkt
+    TemporalIntersectsGeometryLogicalFunction(LogicalFunction lon1, LogicalFunction lat1, LogicalFunction timestamp1, LogicalFunction staticGeometry);
+    
+    /// Constructor with 6 parameters for temporal-temporal intersection: lon1, lat1, timestamp1, lon2, lat2, timestamp2
+    TemporalIntersectsGeometryLogicalFunction(LogicalFunction lon1, LogicalFunction lat1, LogicalFunction timestamp1, LogicalFunction lon2, LogicalFunction lat2, LogicalFunction timestamp2);
 
-    /// Get the data type of this function (always BOOLEAN)
+    /// Get the data type of this function (always INT32)
     DataType getDataType() const override;
 
     /// Create a new function with the specified data type
@@ -57,7 +48,8 @@ public:
 
 private:
     DataType dataType;
-    LogicalFunction geometryString;
+    std::vector<LogicalFunction> parameters;  // Stores 4 or 6 parameters
+    bool isTemporal6Param;  // true for 6-param temporal-temporal, false for 4-param temporal-static
 };
 
 }

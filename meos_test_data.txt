@@ -1,0 +1,55 @@
+# MEOS Test Data for TEMPORAL_INTERSECTS_GEOMETRY Validation
+# Format: test_type|test_id|parameters|expected_result|description
+#
+# For 4-parameter tests (temporal-static): lon|lat|timestamp|static_geometry_wkt
+# For 6-parameter tests (temporal-temporal): lon1|lat1|timestamp1|lon2|lat2|timestamp2
+
+# Test 1: Temporal coordinates intersecting with linestring geometries
+4-param|1|-73.9857|40.7484|1609459200|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)|1|Point on linestring
+4-param|2|-73.9855|40.7485|1609459260|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)|1|Point on linestring (different time)
+4-param|3|-73.9865|40.7475|1609459320|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)|0|Point outside linestring
+4-param|4|-73.9855|40.7485|1609459200|SRID=4326;LINESTRING(-73.9855 40.7480, -73.9855 40.7490)|1|Point on vertical linestring
+4-param|5|-73.9857|40.7485|1609459200|SRID=4326;LINESTRING(-73.9850 40.7485, -73.9860 40.7485)|1|Point on horizontal linestring
+4-param|6|-73.9855|40.7485|1609459200|SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490, -73.9870 40.7485)|0|Point not on multi-segment linestring
+
+# Test 2: Temporal-temporal intersection (6-parameter: temporal-temporal coordinates)
+6-param|1|-73.9855|40.7485|1609459200|-73.9855|40.7485|1609459200|1|Same point same time
+6-param|2|-73.9855|40.7485|1609459200|-73.9860|40.7490|1609459200|1|Different points same time
+6-param|3|-73.9850|40.7480|1609459200|-73.9855|40.7485|1609459260|0|Different points different times
+6-param|4|-73.9865|40.7495|1609459200|-73.9860|40.7490|1609459200|1|Nearby points same time
+
+# Test 3: Temporal coordinates with polygon geometries
+4-param|7|-73.9855|40.7485|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point inside rectangular polygon
+4-param|8|-73.9850|40.7485|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point on polygon boundary
+4-param|9|-73.9840|40.7485|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|0|Point outside polygon
+4-param|10|-73.9855|40.7480|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point on polygon edge
+4-param|11|-73.9860|40.7490|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point on polygon corner
+
+# Test 4: Temporal coordinates with different polygon shapes
+4-param|12|-73.9855|40.7485|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9855 40.7490, -73.9860 40.7480))|1|Point in triangular polygon
+4-param|13|-73.9852|40.7483|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9855 40.7490, -73.9860 40.7480))|1|Point in triangular polygon
+4-param|14|-73.9845|40.7475|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9855 40.7490, -73.9860 40.7480))|0|Point outside triangular polygon
+4-param|15|-73.9855|40.7485|1609459200|SRID=4326;POLYGON((-73.9865 40.7475, -73.9845 40.7475, -73.9845 40.7495, -73.9865 40.7495, -73.9865 40.7475))|1|Point in larger rectangular polygon
+
+# Test 5: Complex polygon with hole
+4-param|16|-73.9855|40.7485|1609459200|SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470), (-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|0|Point in hole (should not intersect)
+4-param|17|-73.9845|40.7485|1609459200|SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470), (-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point in polygon but outside hole
+4-param|18|-73.9865|40.7475|1609459200|SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470), (-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point in polygon but outside hole
+
+# Test 6: Mixed temporal coordinates with different geometry combinations
+4-param|19|-73.9855|40.7485|1609459200|SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)|1|Point intersects linestring
+4-param|20|-73.9840|40.7470|1609459200|SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)|0|Point does not intersect linestring
+4-param|21|-73.9855|40.7485|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|1|Point intersects polygon
+4-param|22|-73.9840|40.7470|1609459200|SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))|0|Point does not intersect polygon
+
+# Test 7: NYC Street Grid Simulation with temporal coordinates
+4-param|23|-73.9857|40.7484|1609488000|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9840 40.7500)|1|Vehicle on street
+4-param|24|-73.9850|40.7490|1609488000|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9840 40.7500)|1|Vehicle on street
+4-param|25|-73.9870|40.7470|1609488000|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9840 40.7500)|0|Vehicle off street
+4-param|26|-73.9845|40.7495|1609488000|SRID=4326;LINESTRING(-73.9860 40.7480, -73.9840 40.7500)|1|Vehicle on street
+
+# Test 8: Manhattan Block Zones with temporal coordinates
+4-param|27|-73.9855|40.7485|1609502400|SRID=4326;POLYGON((-73.9870 40.7480, -73.9850 40.7480, -73.9850 40.7500, -73.9870 40.7500, -73.9870 40.7480))|1|Pedestrian in zone
+4-param|28|-73.9860|40.7490|1609502400|SRID=4326;POLYGON((-73.9870 40.7480, -73.9850 40.7480, -73.9850 40.7500, -73.9870 40.7500, -73.9870 40.7480))|1|Pedestrian in zone
+4-param|29|-73.9875|40.7505|1609502400|SRID=4326;POLYGON((-73.9870 40.7480, -73.9850 40.7480, -73.9850 40.7500, -73.9870 40.7500, -73.9870 40.7480))|0|Pedestrian outside zone
+4-param|30|-73.9820|40.7450|1609502400|SRID=4326;POLYGON((-73.9870 40.7480, -73.9850 40.7480, -73.9850 40.7500, -73.9870 40.7500, -73.9870 40.7480))|0|Pedestrian outside zone

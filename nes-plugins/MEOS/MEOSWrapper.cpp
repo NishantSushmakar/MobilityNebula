@@ -142,38 +142,81 @@ namespace MEOS {
         }
     }
 
-    bool Meos::TemporalGeometry::intersects(const TemporalGeometry& geom) const{
+    int Meos::TemporalGeometry::intersects(const TemporalGeometry& geom) const{
         std::cout << "TemporalGeometry::intersects called" << std::endl;
         
-        // // Debug test with hardcoded values from first test case
-        // std::cout << "=== HARDCODED MEOS TEST ===" << std::endl;
-        // try {
-        //     // Test case 1: Point that should intersect
-        //     std::string test_point = "SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 12:00:00";
-        //     std::string test_polygon = "SRID=4326;{POLYGON((-73.9900 40.7450, -73.9800 40.7450, -73.9800 40.7500, -73.9900 40.7500, -73.9900 40.7450))@2021-01-01 00:00:00, POLYGON((-73.9850 40.7475, -73.9750 40.7475, -73.9750 40.7525, -73.9850 40.7525, -73.9850 40.7475))@2021-01-01 12:00:00}";
-            
-        //     std::cout << "Creating test point: " << test_point << std::endl;
-        //     TemporalGeometry hardcoded_point(test_point);
-            
-        //     std::cout << "Creating test polygon: " << test_polygon << std::endl;
-        //     TemporalGeometry hardcoded_polygon(test_polygon);
-            
-        //     std::cout << "Testing hardcoded intersection..." << std::endl;
-        //     bool hardcoded_result = eintersects_tgeo_tgeo((const Temporal *)hardcoded_polygon.geometry, (const Temporal *)hardcoded_point.geometry);
-        //     std::cout << "Hardcoded test result: " << hardcoded_result << std::endl;
-        // } catch (...) {
-        //     std::cout << "Error in hardcoded test" << std::endl;
-        // }
-        // std::cout << "=== END HARDCODED TEST ===" << std::endl;
         
-        bool result = eintersects_tgeo_tgeo((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
-        if (result) {
+        
+        int result = eintersects_tgeo_tgeo((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
+
+        // Hardcoded comparison test with known geometries
+        std::cout << "=== HARDCODED MEOS TEST ===" << std::endl;
+        try {
+            // Create two test temporal geometries for direct comparison
+            std::string test1 = "SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 00:02:00";
+            std::string test2 = "SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 00:00:00";
+            
+            Temporal* temp1 = tgeometry_in(test1.c_str());
+            Temporal* temp2 = tgeometry_in(test2.c_str());
+            
+            if (temp1 && temp2) {
+                int hardcoded_result = eintersects_tgeo_tgeo(temp1, temp2);
+                std::cout << "Hardcoded MEOS eintersects_tgeo_tgeo result: " << hardcoded_result << std::endl;
+                std::cout << "Test1: " << test1 << std::endl;
+                std::cout << "Test2: " << test2 << std::endl;
+                
+                free(temp1);
+                free(temp2);
+            } else {
+                std::cout << "Failed to create hardcoded temporal geometries" << std::endl;
+            }
+        } catch (...) {
+            std::cout << "Exception in hardcoded test" << std::endl;
+        }
+        std::cout << "=== END HARDCODED TEST ===" << std::endl;
+        if (result==1) {
             std::cout << "TemporalGeometry Intersects" << std::endl;
         }
 
         return result;
     }   
 
+    // StaticGeometry implementation
+    Meos::StaticGeometry::StaticGeometry(const std::string& wkt_string) {
+        ensureMeosInitialized();
+
+        std::cout << "Creating MEOS StaticGeometry from: " << wkt_string << std::endl;
+
+        // Use geom_in to parse static WKT geometry (no temporal component)
+        geometry = geom_in(wkt_string.c_str(), -1);
+
+        if (geometry == nullptr) {
+            std::cout << "Failed to parse static geometry" << std::endl;
+        } else {
+            std::cout << "Successfully created static geometry" << std::endl;
+        }
+    }
+
+    Meos::StaticGeometry::~StaticGeometry() {
+        if (geometry) {
+            free(geometry);
+        }
+    }
+
+    int Meos::TemporalGeometry::intersectsStatic(const StaticGeometry& static_geom) const {
+        std::cout << "TemporalGeometry::intersectsStatic called" << std::endl;
+        
+        // Use eintersects_tgeo_geo for temporal-static intersection
+        int result = eintersects_tgeo_geo((const Temporal*)this->geometry, static_geom.getGeometry());
+        
+        if (result==1) {
+            std::cout << "TemporalGeometry intersects StaticGeometry" << std::endl;
+        } else {
+            std::cout << "TemporalGeometry does NOT intersect StaticGeometry" << std::endl;
+        }
+
+        return result;
+    }
 
     // Constructor for creating trajectory from multiple temporal instants
     Meos::TemporalSequence::TemporalSequence(const std::vector<TemporalInstant*>& instants) {
