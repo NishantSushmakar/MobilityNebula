@@ -249,7 +249,7 @@ timeUnit: MS
 
 timestampParameter: IDENTIFIER;
 
-functionName:  IDENTIFIER | AVG | MAX | MIN | SUM | COUNT | MEDIAN | ARRAY_AGG | VAR | TEMPORAL_SEQUENCE;
+functionName:  IDENTIFIER | AVG | MAX | MIN | SUM | COUNT | MEDIAN | ARRAY_AGG | VAR | TEMPORAL_SEQUENCE | TEMPORAL_INTERSECTS_GEOMETRY;
 
 sinkClause: INTO sink (',' sink)*;
 
@@ -430,6 +430,7 @@ COUNT: 'COUNT' | 'count';
 MEDIAN: 'MEDIAN' | 'median';
 VAR: 'VAR' | 'var';
 TEMPORAL_SEQUENCE: 'TEMPORAL_SEQUENCE' | 'temporal_sequence';
+TEMPORAL_INTERSECTS_GEOMETRY: 'TEMPORAL_INTERSECTS_GEOMETRY' | 'temporal_intersects_geometry';
 WATERMARK: 'WATERMARK' | 'watermark';
 OFFSET: 'OFFSET' | 'offset';
 LOCALHOST: 'LOCALHOST' | 'localhost';
