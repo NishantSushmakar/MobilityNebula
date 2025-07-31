@@ -58,6 +58,7 @@
 #include <Operators/Windows/Aggregations/Meos/VarAggregationLogicalFunction.hpp>
 #include <Operators/Windows/Aggregations/Meos/TemporalSequenceAggregationLogicalFunction.hpp>
 #include <Functions/Meos/TemporalIntersectsGeometryLogicalFunction.hpp>
+#include <Functions/Meos/TemporalAIntersectsGeometryLogicalFunction.hpp>
 #include <Operators/Windows/JoinLogicalOperator.hpp>
 #include <Plans/LogicalPlan.hpp>
 #include <Plans/LogicalPlanBuilder.hpp>
@@ -1003,7 +1004,7 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
                 helpers.top().functionBuilder.push_back(longitudeFunction);
             }
             break;
-        case AntlrSQLLexer::TEMPORAL_INTERSECTS_GEOMETRY:
+        case AntlrSQLLexer::TEMPORAL_EINTERSECTS_GEOMETRY:
             {
                 // Convert constants from constantBuilder to ConstantValueLogicalFunction objects
                 while (!helpers.top().constantBuilder.empty()) {
@@ -1017,7 +1018,7 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
 
                 const auto argCount = helpers.top().functionBuilder.size();
                 if (argCount != 4 && argCount != 6) {
-                    throw InvalidQuerySyntax("TEMPORAL_INTERSECTS_GEOMETRY requires either 4 arguments (lon1, lat1, timestamp1, static_geometry) or 6 arguments (lon1, lat1, timestamp1, lon2, lat2, timestamp2), but got {}", argCount);
+                    throw InvalidQuerySyntax("TEMPORAL_EINTERSECTS_GEOMETRY requires either 4 arguments (lon1, lat1, timestamp1, static_geometry) or 6 arguments (lon1, lat1, timestamp1, lon2, lat2, timestamp2), but got {}", argCount);
                 }
 
                 if (argCount == 4) {
@@ -1049,6 +1050,54 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
                     helpers.top().functionBuilder.pop_back();
                     
                     const auto function = TemporalIntersectsGeometryLogicalFunction(lon1Function, lat1Function, timestamp1Function, lon2Function, lat2Function, timestamp2Function);
+                    helpers.top().functionBuilder.push_back(function);
+                }
+            }
+            break;
+        case AntlrSQLLexer::TEMPORAL_AINTERSECTS_GEOMETRY:
+            {
+                // Convert constants from constantBuilder to ConstantValueLogicalFunction objects
+                while (!helpers.top().constantBuilder.empty()) {
+                    auto constantValue = std::move(helpers.top().constantBuilder.back());
+                    helpers.top().constantBuilder.pop_back();
+                    // Assume string constants are VARSIZED (WKT strings)
+                    auto dataType = DataTypeProvider::provideDataType(DataType::Type::VARSIZED);
+                    auto constFunction = ConstantValueLogicalFunction(dataType, std::move(constantValue));
+                    helpers.top().functionBuilder.push_back(constFunction);
+                }
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 4 && argCount != 6) {
+                    throw InvalidQuerySyntax("TEMPORAL_AINTERSECTS_GEOMETRY requires either 4 arguments (lon1, lat1, timestamp1, static_geometry) or 6 arguments (lon1, lat1, timestamp1, lon2, lat2, timestamp2), but got {}", argCount);
+                }
+                if (argCount == 4) {
+                    // 4-parameter case: temporal-static intersection (lon1, lat1, timestamp1, static_geometry)
+                    const auto staticGeometryFunction = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto timestamp1Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto lat1Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto lon1Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    
+                    const auto function = TemporalAIntersectsGeometryLogicalFunction(lon1Function, lat1Function, timestamp1Function, staticGeometryFunction);
+                    helpers.top().functionBuilder.push_back(function);
+                } else {
+                    // 6-parameter case: temporal-temporal intersection (lon1, lat1, timestamp1, lon2, lat2, timestamp2)
+                    const auto timestamp2Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto lat2Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto lon2Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto timestamp1Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto lat1Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    const auto lon1Function = helpers.top().functionBuilder.back();
+                    helpers.top().functionBuilder.pop_back();
+                    
+                    const auto function = TemporalAIntersectsGeometryLogicalFunction(lon1Function, lat1Function, timestamp1Function, lon2Function, lat2Function, timestamp2Function);
                     helpers.top().functionBuilder.push_back(function);
                 }
             }

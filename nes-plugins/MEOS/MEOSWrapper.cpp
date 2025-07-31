@@ -179,6 +179,21 @@ namespace MEOS {
         return result;
     }
 
+    int Meos::TemporalGeometry::aintersects(const TemporalGeometry& geom) const{
+        std::cout << "TemporalGeometry::aintersects called" << std::endl;        
+        int result = aintersects_tgeo_tgeo((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
+        return result;
+    }   
+
+    int Meos::TemporalGeometry::aintersectsStatic(const StaticGeometry& static_geom) const {
+        std::cout << "TemporalGeometry::aintersectsStatic called" << std::endl;
+        
+        // Use aintersects_tgeo_geo for temporal-static intersection
+        int result = aintersects_tgeo_geo((const Temporal*)this->geometry, static_geom.getGeometry());
+
+        return result;
+    }
+
     // Constructor for creating trajectory from multiple temporal instants
     Meos::TemporalSequence::TemporalSequence(const std::vector<TemporalInstant*>& instants) {
         // Ensure MEOS is initialized
