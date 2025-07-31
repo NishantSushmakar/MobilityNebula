@@ -35,7 +35,7 @@ public:
     QueryEngineConfiguration(const std::string& name, const std::string& description) : BaseConfiguration(name, description) { }
 
     NES::Configurations::UIntOption numberOfWorkerThreads
-        = {"numberOfWorkerThreads", "4", "Number of worker threads used within the QueryEngine", {numberOfThreadsValidator()}};
+        = {"numberOfWorkerThreads", "2", "Number of worker threads used within the QueryEngine", {numberOfThreadsValidator()}};
     NES::Configurations::UIntOption taskQueueSize
         = {"taskQueueSize", "10000", "Size of the bounded task queue used within the QueryEngine", {taskQueueSizeValidator()}};
     NES::Configurations::UIntOption admissionQueueSize
