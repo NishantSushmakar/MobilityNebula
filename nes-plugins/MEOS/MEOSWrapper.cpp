@@ -143,41 +143,8 @@ namespace MEOS {
     }
 
     int Meos::TemporalGeometry::intersects(const TemporalGeometry& geom) const{
-        std::cout << "TemporalGeometry::intersects called" << std::endl;
-        
-        
-        
+        std::cout << "TemporalGeometry::intersects called" << std::endl;        
         int result = eintersects_tgeo_tgeo((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
-
-        // Hardcoded comparison test with known geometries
-        std::cout << "=== HARDCODED MEOS TEST ===" << std::endl;
-        try {
-            // Create two test temporal geometries for direct comparison
-            std::string test1 = "SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 00:02:00";
-            std::string test2 = "SRID=4326;POINT(-73.9857 40.7484)@2021-01-01 00:00:00";
-            
-            Temporal* temp1 = tgeometry_in(test1.c_str());
-            Temporal* temp2 = tgeometry_in(test2.c_str());
-            
-            if (temp1 && temp2) {
-                int hardcoded_result = eintersects_tgeo_tgeo(temp1, temp2);
-                std::cout << "Hardcoded MEOS eintersects_tgeo_tgeo result: " << hardcoded_result << std::endl;
-                std::cout << "Test1: " << test1 << std::endl;
-                std::cout << "Test2: " << test2 << std::endl;
-                
-                free(temp1);
-                free(temp2);
-            } else {
-                std::cout << "Failed to create hardcoded temporal geometries" << std::endl;
-            }
-        } catch (...) {
-            std::cout << "Exception in hardcoded test" << std::endl;
-        }
-        std::cout << "=== END HARDCODED TEST ===" << std::endl;
-        if (result==1) {
-            std::cout << "TemporalGeometry Intersects" << std::endl;
-        }
-
         return result;
     }   
 
@@ -208,12 +175,21 @@ namespace MEOS {
         
         // Use eintersects_tgeo_geo for temporal-static intersection
         int result = eintersects_tgeo_geo((const Temporal*)this->geometry, static_geom.getGeometry());
+
+        return result;
+    }
+
+    int Meos::TemporalGeometry::aintersects(const TemporalGeometry& geom) const{
+        std::cout << "TemporalGeometry::aintersects called" << std::endl;        
+        int result = aintersects_tgeo_tgeo((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
+        return result;
+    }   
+
+    int Meos::TemporalGeometry::aintersectsStatic(const StaticGeometry& static_geom) const {
+        std::cout << "TemporalGeometry::aintersectsStatic called" << std::endl;
         
-        if (result==1) {
-            std::cout << "TemporalGeometry intersects StaticGeometry" << std::endl;
-        } else {
-            std::cout << "TemporalGeometry does NOT intersect StaticGeometry" << std::endl;
-        }
+        // Use aintersects_tgeo_geo for temporal-static intersection
+        int result = aintersects_tgeo_geo((const Temporal*)this->geometry, static_geom.getGeometry());
 
         return result;
     }
