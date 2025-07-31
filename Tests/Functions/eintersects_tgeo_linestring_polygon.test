@@ -1,5 +1,5 @@
-# name: function/spatiotemporal/MEOS_Intersects_Temporal_Geometry_Linestring_Polygon.test
-# description: Test TEMPORAL_INTERSECTS_GEOMETRY with temporal coordinates, linestrings, and polygons
+# name: function/spatiotemporal/MEOS_EIntersects_Temporal_Geometry_Linestring_Polygon.test
+# description: Test TEMPORAL_EINTERSECTS_GEOMETRY with temporal coordinates, linestrings, and polygons
 # groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, Linestring, Polygon]
 
 # Test 1: Temporal coordinates intersecting with linestring geometries (4-parameter: temporal-static)
@@ -15,7 +15,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml lin
 SINK linestring_results UINT32 linestring_tests$test_id INT32 linestring_tests$intersects
 
 SELECT test_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, linestring_geom) AS intersects
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, linestring_geom) AS intersects
 FROM linestring_tests
 INTO linestring_results
 ----
@@ -37,7 +37,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml tem
 SINK temporal_temporal_results UINT32 temporal_temporal_tests$tt_id INT32 temporal_temporal_tests$intersects
 
 SELECT tt_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon1, lat1, timestamp1, lon2, lat2, timestamp2) AS intersects
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon1, lat1, timestamp1, lon2, lat2, timestamp2) AS intersects
 FROM temporal_temporal_tests
 INTO temporal_temporal_results
 ----
@@ -58,7 +58,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml pol
 SINK polygon_results UINT32 polygon_tests$point_id INT32 polygon_tests$in_polygon
 
 SELECT point_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, polygon_geom) AS in_polygon
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, polygon_geom) AS in_polygon
 FROM polygon_tests
 INTO polygon_results
 ----
@@ -79,7 +79,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml pol
 SINK polygon_shape_results UINT32 polygon_shapes$shape_id INT32 polygon_shapes$intersects_shape
 
 SELECT shape_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, polygon_shape) AS intersects_shape
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, polygon_shape) AS intersects_shape
 FROM polygon_shapes
 INTO polygon_shape_results
 ----
@@ -98,7 +98,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml pol
 SINK polygon_hole_results UINT32 polygon_hole_tests$test_id INT32 polygon_hole_tests$intersects_complex
 
 SELECT test_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, complex_polygon) AS intersects_complex
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, complex_polygon) AS intersects_complex
 FROM polygon_hole_tests
 INTO polygon_hole_results
 ----
@@ -117,7 +117,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml mix
 SINK mixed_results UINT32 mixed_tests$mix_id INT32 mixed_tests$intersects UINT32 mixed_tests$expected
 
 SELECT mix_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, static_geom) AS intersects,
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, static_geom) AS intersects,
        expected_result AS expected
 FROM mixed_tests
 INTO mixed_results
@@ -138,7 +138,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml nyc
 SINK nyc_street_results UINT32 nyc_streets$vehicle_id INT32 nyc_streets$on_street
 
 SELECT vehicle_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, street_geometry) AS on_street
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, street_geometry) AS on_street
 FROM nyc_streets
 INTO nyc_street_results
 ----
@@ -158,7 +158,7 @@ Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml man
 SINK manhattan_zone_results UINT32 manhattan_zones$pedestrian_id INT32 manhattan_zones$in_zone
 
 SELECT pedestrian_id,
-       TEMPORAL_INTERSECTS_GEOMETRY(lon, lat, timestamp, zone_polygon) AS in_zone
+       TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, zone_polygon) AS in_zone
 FROM manhattan_zones
 INTO manhattan_zone_results
 ----

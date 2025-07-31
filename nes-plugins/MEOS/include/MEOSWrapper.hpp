@@ -79,6 +79,9 @@ class Meos {
 
         int intersects(const TemporalGeometry& geom) const;
         int intersectsStatic(const StaticGeometry& static_geom) const;
+        
+        int aintersects(const TemporalGeometry& geom) const;
+        int aintersectsStatic(const StaticGeometry& static_geom) const;
 
     private:
         Temporal* geometry;
