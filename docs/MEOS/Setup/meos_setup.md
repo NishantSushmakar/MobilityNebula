@@ -1,6 +1,13 @@
-# MobilityDB Build Instructions
+# MEOS Build Instructions
+> **Note:** MEOS setup is required to validate test cases.
 
-
+## Clone Repository
+```bash
+# Fork the MobilityDB repository on GitHub
+# Then clone and open it in your IDE
+git clone https://github.com/<your-username>/MobilityDB.git
+cd MobilityDB
+```
 
 ## Setup
 Create build directory:
