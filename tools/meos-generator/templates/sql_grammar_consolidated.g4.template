@@ -1,0 +1,4 @@
+// Generated SQL grammar tokens for MEOS functions
+{{#functions}}
+TEMPORAL_{{functionNameUpper}}_GEOMETRY: 'TEMPORAL_{{functionNameUpper}}_GEOMETRY';
+{{/functions}}

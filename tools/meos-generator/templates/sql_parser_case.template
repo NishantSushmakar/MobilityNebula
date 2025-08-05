@@ -1,0 +1,17 @@
+        case AntlrSQLParser::TEMPORAL_{{functionNameUpper}}_GEOMETRY: {
+            auto arguments = ctx->argument();
+            if (arguments.size() == 4) {
+                // 4-parameter version: temporal-static intersection
+                return std::make_shared<{{functionNamePascalCase}}LogicalFunction>(
+                    visit(arguments[0]), visit(arguments[1]), visit(arguments[2]), visit(arguments[3])
+                );
+            } else if (arguments.size() == 6) {
+                // 6-parameter version: temporal-temporal intersection  
+                return std::make_shared<{{functionNamePascalCase}}LogicalFunction>(
+                    visit(arguments[0]), visit(arguments[1]), visit(arguments[2]), 
+                    visit(arguments[3]), visit(arguments[4]), visit(arguments[5])
+                );
+            } else {
+                throw std::invalid_argument("TEMPORAL_{{functionNameUpper}}_GEOMETRY requires either 4 or 6 arguments");
+            }
+        }

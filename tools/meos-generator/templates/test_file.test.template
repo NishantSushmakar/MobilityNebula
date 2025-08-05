@@ -1,0 +1,75 @@
+# name: function/spatiotemporal/MEOS_{{functionNamePascalCase}}_Temporal_Geometry.test
+# description: Test TEMPORAL_{{functionNameUpper}}_GEOMETRY with temporal coordinates and various geometries
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, {{functionNamePascalCase}}]
+
+# Test 1: Temporal-temporal intersection (6-parameter: temporal-temporal coordinates)
+Source temporal_temporal_tests UINT32 tt_id FLOAT64 lon1 FLOAT64 lat1 UINT64 timestamp1 FLOAT64 lon2 FLOAT64 lat2 UINT64 timestamp2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml temporal_temporal_tests INLINE
+1|-73.9855|40.7485|1609459200|-73.9855|40.7485|1609459200
+2|-73.9855|40.7485|1609459200|-73.9860|40.7490|1609459200
+3|-73.9850|40.7480|1609459200|-73.9855|40.7485|1609459260
+
+SINK temporal_temporal_results UINT32 temporal_temporal_tests$tt_id {{returnTypeNebulaStream}} temporal_temporal_tests${{functionNameCamelCase}}
+
+SELECT tt_id,
+       TEMPORAL_{{functionNameUpper}}_GEOMETRY(lon1, lat1, timestamp1, lon2, lat2, timestamp2) AS {{functionNameCamelCase}}
+FROM temporal_temporal_tests
+INTO temporal_temporal_results
+----
+1,{{expectedResult1}}
+2,{{expectedResult2}}
+3,{{expectedResult3}}
+
+# Test 2: Temporal coordinates with point geometries (4-parameter: temporal-static)
+Source point_tests UINT32 point_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED point_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml point_tests INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+2|-73.9850|40.7490|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+3|-73.9860|40.7480|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+
+SINK point_results UINT32 point_tests$point_id {{returnTypeNebulaStream}} point_tests${{functionNameCamelCase}}
+
+SELECT point_id,
+       TEMPORAL_{{functionNameUpper}}_GEOMETRY(lon, lat, timestamp, point_geom) AS {{functionNameCamelCase}}
+FROM point_tests
+INTO point_results
+----
+1,{{expectedPointResult1}}
+2,{{expectedPointResult2}}
+3,{{expectedPointResult3}}
+
+# Test 3: Temporal coordinates with linestring geometries (4-parameter: temporal-static)
+Source linestring_tests UINT32 test_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED linestring_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml linestring_tests INLINE
+1|-73.9857|40.7484|1609459200|'SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)'
+2|-73.9855|40.7485|1609459260|'SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)'
+3|-73.9865|40.7475|1609459320|'SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)'
+
+SINK linestring_results UINT32 linestring_tests$test_id {{returnTypeNebulaStream}} linestring_tests${{functionNameCamelCase}}
+
+SELECT test_id,
+       TEMPORAL_{{functionNameUpper}}_GEOMETRY(lon, lat, timestamp, linestring_geom) AS {{functionNameCamelCase}}
+FROM linestring_tests
+INTO linestring_results
+----
+1,{{expectedLinestringResult1}}
+2,{{expectedLinestringResult2}}
+3,{{expectedLinestringResult3}}
+
+# Test 4: Temporal coordinates with polygon geometries (4-parameter: temporal-static)
+Source polygon_tests UINT32 point_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED polygon_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml polygon_tests INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+2|-73.9850|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+3|-73.9840|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+
+SINK polygon_results UINT32 polygon_tests$point_id {{returnTypeNebulaStream}} polygon_tests${{functionNameCamelCase}}
+
+SELECT point_id,
+       TEMPORAL_{{functionNameUpper}}_GEOMETRY(lon, lat, timestamp, polygon_geom) AS {{functionNameCamelCase}}
+FROM polygon_tests
+INTO polygon_results
+----
+1,{{expectedPolygonResult1}}
+2,{{expectedPolygonResult2}}
+3,{{expectedPolygonResult3}}

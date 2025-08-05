@@ -1,0 +1,2 @@
+    /// Generated MEOS function: extern bool geom_intersects2d
+    void externBoolGeomIntersects2d({{#parameters}}{{#isConst}}const {{/isConst}}{{type}}{{#isPointer}}*{{/isPointer}}{{#isReference}}&{{/isReference}} {{name}}{{#notLast}}, {{/notLast}}{{/parameters}}) const;

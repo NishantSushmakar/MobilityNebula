@@ -1,0 +1,2 @@
+    /// Generated MEOS function: extern bool geom_contains
+    void externBoolGeomContains({{#parameters}}{{#isConst}}const {{/isConst}}{{type}}{{#isPointer}}*{{/isPointer}}{{#isReference}}&{{/isReference}} {{name}}{{#notLast}}, {{/notLast}}{{/parameters}}) const;

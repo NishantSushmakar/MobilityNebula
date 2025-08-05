@@ -1,0 +1,2 @@
+    /// Generated MEOS function: extern bool contains_numspan_tnumber
+    void externBoolContainsNumspanTnumber({{#parameters}}{{#isConst}}const {{/isConst}}{{type}}{{#isPointer}}*{{/isPointer}}{{#isReference}}&{{/isReference}} {{name}}{{#notLast}}, {{/notLast}}{{/parameters}}) const;

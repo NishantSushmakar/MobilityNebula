@@ -1,0 +1,2 @@
+    /// Generated MEOS function: tintersects_geo_tgeo
+    extern Temporal * tintersectsGeoTgeo({{#parameters}}{{#isConst}}const {{/isConst}}{{type}}{{#isPointer}}*{{/isPointer}}{{#isReference}}&{{/isReference}} {{name}}{{#notLast}}, {{/notLast}}{{/parameters}}) const;

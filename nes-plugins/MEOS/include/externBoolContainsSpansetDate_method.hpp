@@ -1,0 +1,2 @@
+    /// Generated MEOS function: extern bool contains_spanset_date
+    void externBoolContainsSpansetDate({{#parameters}}{{#isConst}}const {{/isConst}}{{type}}{{#isPointer}}*{{/isPointer}}{{#isReference}}&{{/isReference}} {{name}}{{#notLast}}, {{/notLast}}{{/parameters}}) const;

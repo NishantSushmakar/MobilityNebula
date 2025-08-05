@@ -240,6 +240,25 @@ endif ()
 
 add_custom_target(build_all_plugins)
 
+# Add MEOS function generator tool
+option(ENABLE_MEOS_GENERATOR "Enable MEOS function generator tool" ON)
+if (ENABLE_MEOS_GENERATOR)
+    add_subdirectory(tools/meos-generator)
+    
+    # Custom target to run MEOS function generation
+    add_custom_target(generate_meos_functions
+        COMMAND meos-generator 
+            --meos-include ${meos_INCLUDE_DIR}
+            --template ${CMAKE_SOURCE_DIR}/tools/meos-generator/templates
+            --mobility-root ${CMAKE_SOURCE_DIR}
+            --pattern "*intersects*"
+            --pattern "*contains*"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMENT "Generating MEOS function integration code"
+        DEPENDS meos-generator
+    )
+endif ()
+
 # Add target for common lib, which contains a minimal set
 # of shared functionality used by all components of nes
 file(GLOB NES_DIRECTORIES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "nes-*")

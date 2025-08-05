@@ -1,0 +1,75 @@
+# name: function/spatiotemporal/MEOS_ExternBoolGeomIntersects2d_Temporal_Geometry.test
+# description: Test TEMPORAL_EXTERN BOOL GEOM_INTERSECTS2D_GEOMETRY with temporal coordinates and various geometries
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, ExternBoolGeomIntersects2d]
+
+# Test 1: Temporal-temporal intersection (6-parameter: temporal-temporal coordinates)
+Source temporal_temporal_tests UINT32 tt_id FLOAT64 lon1 FLOAT64 lat1 UINT64 timestamp1 FLOAT64 lon2 FLOAT64 lat2 UINT64 timestamp2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml temporal_temporal_tests INLINE
+1|-73.9855|40.7485|1609459200|-73.9855|40.7485|1609459200
+2|-73.9855|40.7485|1609459200|-73.9860|40.7490|1609459200
+3|-73.9850|40.7480|1609459200|-73.9855|40.7485|1609459260
+
+SINK temporal_temporal_results UINT32 temporal_temporal_tests$tt_id INT32 temporal_temporal_tests$externBoolGeomIntersects2d
+
+SELECT tt_id,
+       TEMPORAL_EXTERN BOOL GEOM_INTERSECTS2D_GEOMETRY(lon1, lat1, timestamp1, lon2, lat2, timestamp2) AS externBoolGeomIntersects2d
+FROM temporal_temporal_tests
+INTO temporal_temporal_results
+----
+1,1
+2,0
+3,-1
+
+# Test 2: Temporal coordinates with point geometries (4-parameter: temporal-static)
+Source point_tests UINT32 point_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED point_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml point_tests INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+2|-73.9850|40.7490|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+3|-73.9860|40.7480|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+
+SINK point_results UINT32 point_tests$point_id INT32 point_tests$externBoolGeomIntersects2d
+
+SELECT point_id,
+       TEMPORAL_EXTERN BOOL GEOM_INTERSECTS2D_GEOMETRY(lon, lat, timestamp, point_geom) AS externBoolGeomIntersects2d
+FROM point_tests
+INTO point_results
+----
+1,1
+2,0
+3,0
+
+# Test 3: Temporal coordinates with linestring geometries (4-parameter: temporal-static)
+Source linestring_tests UINT32 test_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED linestring_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml linestring_tests INLINE
+1|-73.9857|40.7484|1609459200|'SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)'
+2|-73.9855|40.7485|1609459260|'SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)'
+3|-73.9865|40.7475|1609459320|'SRID=4326;LINESTRING(-73.9860 40.7480, -73.9850 40.7490)'
+
+SINK linestring_results UINT32 linestring_tests$test_id INT32 linestring_tests$externBoolGeomIntersects2d
+
+SELECT test_id,
+       TEMPORAL_EXTERN BOOL GEOM_INTERSECTS2D_GEOMETRY(lon, lat, timestamp, linestring_geom) AS externBoolGeomIntersects2d
+FROM linestring_tests
+INTO linestring_results
+----
+1,0
+2,1
+3,0
+
+# Test 4: Temporal coordinates with polygon geometries (4-parameter: temporal-static)
+Source polygon_tests UINT32 point_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED polygon_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml polygon_tests INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+2|-73.9850|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+3|-73.9840|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+
+SINK polygon_results UINT32 polygon_tests$point_id INT32 polygon_tests$externBoolGeomIntersects2d
+
+SELECT point_id,
+       TEMPORAL_EXTERN BOOL GEOM_INTERSECTS2D_GEOMETRY(lon, lat, timestamp, polygon_geom) AS externBoolGeomIntersects2d
+FROM polygon_tests
+INTO polygon_results
+----
+1,1
+2,1
+3,0

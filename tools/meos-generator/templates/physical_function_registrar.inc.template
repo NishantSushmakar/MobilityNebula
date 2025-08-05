@@ -1,0 +1,3 @@
+{{#functions}}
+{{functionNamePascalCase}}PhysicalFunction{{#notLast}},{{/notLast}}
+{{/functions}}

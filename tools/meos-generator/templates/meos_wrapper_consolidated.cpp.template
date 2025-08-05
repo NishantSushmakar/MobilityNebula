@@ -1,0 +1,17 @@
+// Generated MEOS function implementations
+{{#functions}}
+{{returnTypeCpp}} Meos::TemporalGeometry::{{functionNameCamelCase}}(const TemporalGeometry& geom) const {
+    std::cout << "TemporalGeometry::{{functionNameCamelCase}} called" << std::endl;        
+    {{returnTypeCpp}} result = {{meosCallName}}((const Temporal *)this->geometry, (const Temporal *)geom.geometry);
+    return result;
+}
+
+{{#isTemporalStatic}}
+{{returnTypeCpp}} Meos::TemporalGeometry::{{functionNameCamelCase}}Static(const StaticGeometry& static_geom) const {
+    std::cout << "TemporalGeometry::{{functionNameCamelCase}}Static called" << std::endl;        
+    {{returnTypeCpp}} result = {{meosCallName}}((const Temporal *)this->geometry, (const GSERIALIZED *)static_geom.geometry);
+    return result;
+}
+{{/isTemporalStatic}}
+
+{{/functions}}

@@ -1,0 +1,6 @@
+    // Generated MEOS function methods
+{{#functions}}
+    /// {{functionDescription}}
+    {{returnTypeCpp}} {{functionNameCamelCase}}({{#isTemporalTemporal}}const TemporalGeometry& geom{{/isTemporalTemporal}}{{#isTemporalStatic}}const StaticGeometry& static_geom{{/isTemporalStatic}}) const;
+{{#isTemporalStatic}}    {{returnTypeCpp}} {{functionNameCamelCase}}Static(const StaticGeometry& static_geom) const;{{/isTemporalStatic}}
+{{/functions}}

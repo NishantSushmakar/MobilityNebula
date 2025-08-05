@@ -1,0 +1,2 @@
+    /// Generated MEOS function: tcontains_tgeo_geo
+    extern Temporal * tcontainsTgeoGeo({{#parameters}}{{#isConst}}const {{/isConst}}{{type}}{{#isPointer}}*{{/isPointer}}{{#isReference}}&{{/isReference}} {{name}}{{#notLast}}, {{/notLast}}{{/parameters}}) const;
