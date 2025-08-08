@@ -15,19 +15,17 @@
 #include <utility>
 #include <vector>
 #include <Functions/Meos/TemporalIntersectsPhysicalFunction.hpp>
-// #include <Functions/PhysicalFunction.hpp>
-// #include <Nautilus/DataTypes/VarVal.hpp>
-// #include <Nautilus/Interface/Record.hpp>
-#include <Nautilus/DataTypes/VariableSizedData.hpp>
+#include <Functions/PhysicalFunction.hpp>
+#include <Nautilus/DataTypes/VarVal.hpp>
+#include <Nautilus/Interface/Record.hpp>
 #include <ErrorHandling.hpp>
-// #include <ExecutionContext.hpp>
+#include <ExecutionContext.hpp>
 #include <PhysicalFunctionRegistry.hpp>
 #include <MEOSWrapper.hpp>
 #include <fmt/format.h>
 #include <iostream>
 #include <val.hpp>
 #include <function.hpp>
-
 
 
 namespace NES {
@@ -49,7 +47,7 @@ VarVal TemporalIntersectsPhysicalFunction::execute(const Record& record, ArenaRe
     
     // Use nautilus::invoke to call external MEOS function with raw values
     const auto result = nautilus::invoke(
-        +[](double lon, double lat, double ts) -> int {
+        +[](double lon, double lat, double ts) -> bool {
             try {
                 // Ensure MEOS is initialized but don't create a Meos object that will finalize it
                 static MEOS::Meos* meos_instance = nullptr;
