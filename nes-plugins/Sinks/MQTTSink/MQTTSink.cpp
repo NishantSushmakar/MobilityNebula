@@ -43,6 +43,8 @@ MQTTSink::MQTTSink(const SinkDescriptor& sinkDescriptor)
     , serverUri(sinkDescriptor.getFromConfig(ConfigParametersMQTT::SERVER_URI))
     , clientId(sinkDescriptor.getFromConfig(ConfigParametersMQTT::CLIENT_ID))
     , topic(sinkDescriptor.getFromConfig(ConfigParametersMQTT::TOPIC))
+    , username(sinkDescriptor.tryGetFromConfig(ConfigParametersMQTT::USERNAME))
+    , password(sinkDescriptor.tryGetFromConfig(ConfigParametersMQTT::PASSWORD))
     , qos(sinkDescriptor.getFromConfig(ConfigParametersMQTT::QOS))
 {
     switch (const auto inputFormat = sinkDescriptor.getFromConfig(ConfigParametersMQTT::INPUT_FORMAT))
@@ -70,7 +72,19 @@ void MQTTSink::start(PipelineExecutionContext&)
 
     try
     {
-        const auto connectOptions = mqtt::connect_options_builder().automatic_reconnect(true).clean_session(true).finalize();
+        auto optionsBuilder = mqtt::connect_options_builder()
+            .automatic_reconnect(true)
+            .clean_session(true);
+        
+        // Add authentication if username is provided
+        if (username.has_value() && !username->empty()) {
+            optionsBuilder.user_name(*username);
+            if (password.has_value()) {
+                optionsBuilder.password(*password);
+            }
+        }
+        
+        const auto connectOptions = optionsBuilder.finalize();
 
         client->connect(connectOptions)->wait();
     }

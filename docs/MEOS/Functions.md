@@ -29,7 +29,7 @@
 # Functions Location
 Functions should be located in MEOS directories in each corresponding layer
 
-# Functions Naming
+# Adding a Functions
 - Logical layer
 - Physical layer
 - MEOSWrapper layer

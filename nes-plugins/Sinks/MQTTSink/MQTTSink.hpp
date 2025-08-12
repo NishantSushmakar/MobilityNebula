@@ -61,6 +61,8 @@ private:
     std::string serverUri;
     std::string clientId;
     std::string topic;
+    std::optional<std::string> username;
+    std::optional<std::string> password;
     int32_t qos;
 
     std::unique_ptr<mqtt::async_client> client;
@@ -133,6 +135,26 @@ struct ConfigParametersMQTT
         std::nullopt,
         [](const std::unordered_map<std::string, std::string>& config) { return Configurations::DescriptorConfig::tryGet(TOPIC, config); }};
 
+    static inline const Configurations::DescriptorConfig::ConfigParameter<std::string> USERNAME{
+        "username",
+        std::nullopt,
+        [](const std::unordered_map<std::string, std::string>& config) -> std::optional<std::string> {
+            if (auto it = config.find("username"); it != config.end() && !it->second.empty()) {
+                return it->second;
+            }
+            return std::nullopt;
+        }};
+
+    static inline const Configurations::DescriptorConfig::ConfigParameter<std::string> PASSWORD{
+        "password",
+        std::nullopt,
+        [](const std::unordered_map<std::string, std::string>& config) -> std::optional<std::string> {
+            if (auto it = config.find("password"); it != config.end() && !it->second.empty()) {
+                return it->second;
+            }
+            return std::nullopt;
+        }};
+
     static inline const Configurations::DescriptorConfig::ConfigParameter<int32_t> QOS{
         "qos",
         1,
@@ -155,7 +177,7 @@ struct ConfigParametersMQTT
             { return Configurations::DescriptorConfig::tryGet(INPUT_FORMAT, config); }};
 
     static inline std::unordered_map<std::string, Configurations::DescriptorConfig::ConfigParameterContainer> parameterMap
-        = Configurations::DescriptorConfig::createConfigParameterContainerMap(SERVER_URI, CLIENT_ID, QOS, TOPIC, INPUT_FORMAT);
+        = Configurations::DescriptorConfig::createConfigParameterContainerMap(SERVER_URI, CLIENT_ID, QOS, TOPIC, USERNAME, PASSWORD, INPUT_FORMAT);
 };
 
 }
