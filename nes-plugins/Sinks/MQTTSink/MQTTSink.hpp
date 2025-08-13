@@ -149,7 +149,8 @@ struct ConfigParametersMQTT
         "password",
         std::nullopt,
         [](const std::unordered_map<std::string, std::string>& config) -> std::optional<std::string> {
-            if (auto it = config.find("password"); it != config.end() && !it->second.empty()) {
+            if (auto it = config.find("password"); it != config.end()) {
+                // Allow empty passwords for Belgian Railway (NULL password with username)
                 return it->second;
             }
             return std::nullopt;
