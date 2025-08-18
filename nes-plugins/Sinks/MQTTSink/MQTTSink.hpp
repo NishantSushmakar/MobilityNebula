@@ -161,13 +161,17 @@ struct ConfigParametersMQTT
         1,
         [](const std::unordered_map<std::string, std::string>& config) -> std::optional<uint8_t>
         {
-            int32_t qos = std::stoi(config.at(QOS));
-            if (qos != 0 && qos != 1 && qos != 2)
-            {
-                NES_ERROR("MQTTSink: QualityOfService is: {}, but must be 0, 1, or 2.", qos);
-                return std::nullopt;
+            // Check if qos is present in config, if not use default value
+            if (auto it = config.find("qos"); it != config.end()) {
+                int32_t qos = std::stoi(it->second);
+                if (qos != 0 && qos != 1 && qos != 2)
+                {
+                    NES_ERROR("MQTTSink: QualityOfService is: {}, but must be 0, 1, or 2.", qos);
+                    return std::nullopt;
+                }
+                return qos;
             }
-            return qos;
+            return 1; // Default QOS value
         }};
 
     static inline const Configurations::DescriptorConfig::ConfigParameter<Configurations::EnumWrapper, Configurations::InputFormat>
