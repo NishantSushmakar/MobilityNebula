@@ -89,4 +89,4 @@ International Conference on Advances in Geographic Information Systems
 
 
 # Acknowledgements
-This work was supported in part by the Horizon Framework Programme of the European Union under grant agreement No. 101070279 (MobiSpaces).
+This work was supported in part by the Horizon Framework Programme of the European Union under grant agreement No. 101070279 ([MobiSpaces](https://mobispaces.eu)).
