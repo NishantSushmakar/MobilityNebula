@@ -12,8 +12,7 @@
     limitations under the License.
 */
 
-#include <MEOSWrapper.hpp>
-
+// Include standard library headers first, before MEOS
 #include <string>
 #include <chrono>
 #include <ctime>
@@ -21,6 +20,10 @@
 #include <sstream>
 #include <iostream>
 #include <cstdlib>
+#include <cstdint>
+
+// Include MEOS wrapper after standard headers
+#include <MEOSWrapper.hpp>
 
 
 

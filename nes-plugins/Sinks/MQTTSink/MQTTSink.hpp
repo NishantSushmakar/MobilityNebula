@@ -61,6 +61,8 @@ private:
     std::string serverUri;
     std::string clientId;
     std::string topic;
+    std::optional<std::string> username;
+    std::optional<std::string> password;
     int32_t qos;
 
     std::unique_ptr<mqtt::async_client> client;
@@ -133,18 +135,43 @@ struct ConfigParametersMQTT
         std::nullopt,
         [](const std::unordered_map<std::string, std::string>& config) { return Configurations::DescriptorConfig::tryGet(TOPIC, config); }};
 
+    static inline const Configurations::DescriptorConfig::ConfigParameter<std::string> USERNAME{
+        "username",
+        std::nullopt,
+        [](const std::unordered_map<std::string, std::string>& config) -> std::optional<std::string> {
+            if (auto it = config.find("username"); it != config.end() && !it->second.empty()) {
+                return it->second;
+            }
+            return std::nullopt;
+        }};
+
+    static inline const Configurations::DescriptorConfig::ConfigParameter<std::string> PASSWORD{
+        "password",
+        std::nullopt,
+        [](const std::unordered_map<std::string, std::string>& config) -> std::optional<std::string> {
+            if (auto it = config.find("password"); it != config.end()) {
+                // Allow empty passwords for Belgian Railway (NULL password with username)
+                return it->second;
+            }
+            return std::nullopt;
+        }};
+
     static inline const Configurations::DescriptorConfig::ConfigParameter<int32_t> QOS{
         "qos",
         1,
         [](const std::unordered_map<std::string, std::string>& config) -> std::optional<uint8_t>
         {
-            int32_t qos = std::stoi(config.at(QOS));
-            if (qos != 0 && qos != 1 && qos != 2)
-            {
-                NES_ERROR("MQTTSink: QualityOfService is: {}, but must be 0, 1, or 2.", qos);
-                return std::nullopt;
+            // Check if qos is present in config, if not use default value
+            if (auto it = config.find("qos"); it != config.end()) {
+                int32_t qos = std::stoi(it->second);
+                if (qos != 0 && qos != 1 && qos != 2)
+                {
+                    NES_ERROR("MQTTSink: QualityOfService is: {}, but must be 0, 1, or 2.", qos);
+                    return std::nullopt;
+                }
+                return qos;
             }
-            return qos;
+            return 1; // Default QOS value
         }};
 
     static inline const Configurations::DescriptorConfig::ConfigParameter<Configurations::EnumWrapper, Configurations::InputFormat>
@@ -155,7 +182,7 @@ struct ConfigParametersMQTT
             { return Configurations::DescriptorConfig::tryGet(INPUT_FORMAT, config); }};
 
     static inline std::unordered_map<std::string, Configurations::DescriptorConfig::ConfigParameterContainer> parameterMap
-        = Configurations::DescriptorConfig::createConfigParameterContainerMap(SERVER_URI, CLIENT_ID, QOS, TOPIC, INPUT_FORMAT);
+        = Configurations::DescriptorConfig::createConfigParameterContainerMap(SERVER_URI, CLIENT_ID, QOS, TOPIC, USERNAME, PASSWORD, INPUT_FORMAT);
 };
 
 }

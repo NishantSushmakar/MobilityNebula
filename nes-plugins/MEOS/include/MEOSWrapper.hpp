@@ -18,11 +18,12 @@
 #include <string>
 #include <vector>
 
-namespace MEOS {
 extern "C" {
     #include <meos.h>
     #include <meos_geo.h>
 }
+
+namespace MEOS {
 
 class Meos {
   public:
