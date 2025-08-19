@@ -33,7 +33,7 @@ More information about MobilityDB, including publications, presentations, etc., 
 </div>
 
 ----
-NebulaStream is our TU Berlin/ BIFOLD attempt to develop a general-purpose, end-to-end data management system for the IoT.
+NebulaStream is TU Berlin/ BIFOLD attempt to develop a general-purpose, end-to-end data management system for the IoT.
 It provides an out-of-the-box experience with rich data processing functionalities and a high ease-of-use.
 
 NebulaStream is a joint research project between the DIMA group at TU Berlin and BIFOLD.
@@ -77,3 +77,16 @@ This project supports multiple build types to cater to different stages of devel
 - **Use Case**: Designed for maximum performance, omitting all logging and assert checks, including null pointer checks. Suitable for thoroughly tested environments where performance is critical.
 - Use this with care, as this is not regularly tested, i.e., Release terminates deterministically if a bug occurs (failed invariant/precondition), whereas Benchmark will be in an undefined state.
 
+
+
+# Publications
+[1] Mariana M. Garcez Duarte, Dwi P. A. Nugroho, Georges Tod, Evert Bevernage, Pieter Moelans, Emine Tas, Esteban Zimányi, Mahmoud Sakr, Steffen Zeuch, and Volker Markl. 2025. Mobility Stream Processing on NebulaStream and MEOS. In Companion of the 2025 International Conference on Management of Data (SIGMOD/PODS '25). Association for Computing Machinery, New York, NY, USA, 79–82. https://doi.org/10.1145/3722212.3725116
+
+[2] Mariana M. Garcez Duarte, Dwi P. A. Nugroho, Georges Tod, Evert Bevernage, Pieter Moelans, Elias Saerens, Esteban Zimányi, Mahmoud Sakr, Steffen Zeuch. 2025. 
+Mobility Data Stream Processing Beyond the Cloud. 33rd ACM SIGSPATIAL
+International Conference on Advances in Geographic Information Systems
+(ACM SIGSPATIAL 2025).
+
+
+# Acknowledgements
+This work was supported in part by the Horizon Framework Programme of the European Union under grant agreement No. 101070279 (MobiSpaces).
