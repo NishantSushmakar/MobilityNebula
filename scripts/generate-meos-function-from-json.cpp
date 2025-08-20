@@ -288,6 +288,10 @@ private:
                 oss << "    INVARIANT(newChildren[" << i << "].getDataType().isType(DataType::Type::VARSIZED), \"param" << i << " must be VARSIZED for Temporal type, but was: {}\", newChildren[" << i << "].getDataType());\n";
             } else if (paramType.find("GSERIALIZED") != std::string::npos) {
                 oss << "    INVARIANT(newChildren[" << i << "].getDataType().isType(DataType::Type::VARSIZED), \"param" << i << " must be VARSIZED for geometry type, but was: {}\", newChildren[" << i << "].getDataType());\n";
+            } else if (paramType.find("STBox") != std::string::npos || paramType.find("TBox") != std::string::npos) {
+                oss << "    INVARIANT(newChildren[" << i << "].getDataType().isType(DataType::Type::VARSIZED), \"param" << i << " must be VARSIZED for box type, but was: {}\", newChildren[" << i << "].getDataType());\n";
+            } else if (paramType.find("Set") != std::string::npos || paramType.find("Span") != std::string::npos) {
+                oss << "    INVARIANT(newChildren[" << i << "].getDataType().isType(DataType::Type::VARSIZED), \"param" << i << " must be VARSIZED for set/span type, but was: {}\", newChildren[" << i << "].getDataType());\n";
             } else if (paramType.find("double") != std::string::npos || paramType.find("float") != std::string::npos) {
                 oss << "    INVARIANT(newChildren[" << i << "].getDataType().isNumeric(), \"param" << i << " must be numeric, but was: {}\", newChildren[" << i << "].getDataType());\n";
             } else if (paramType.find("int") != std::string::npos || paramType.find("bool") != std::string::npos) {
@@ -416,6 +420,14 @@ private:
                 oss << "    auto param" << i << "_varsized = parameterValues[" << i << "].cast<VariableSizedData>();\n";
             } else if (func.param_types[i].find("GSERIALIZED") != std::string::npos) {
                 oss << "    auto param" << i << "_varsized = parameterValues[" << i << "].cast<VariableSizedData>();\n";
+            } else if (func.param_types[i].find("STBox") != std::string::npos) {
+                oss << "    auto param" << i << "_varsized = parameterValues[" << i << "].cast<VariableSizedData>();\n";
+            } else if (func.param_types[i].find("TBox") != std::string::npos) {
+                oss << "    auto param" << i << "_varsized = parameterValues[" << i << "].cast<VariableSizedData>();\n";
+            } else if (func.param_types[i].find("Set") != std::string::npos) {
+                oss << "    auto param" << i << "_varsized = parameterValues[" << i << "].cast<VariableSizedData>();\n";
+            } else if (func.param_types[i].find("Span") != std::string::npos) {
+                oss << "    auto param" << i << "_varsized = parameterValues[" << i << "].cast<VariableSizedData>();\n";
             } else if (func.param_types[i].find("double") != std::string::npos) {
                 oss << "    auto param" << i << " = parameterValues[" << i << "].cast<nautilus::val<double>>();\n";
             } else if (func.param_types[i].find("bool") != std::string::npos) {
@@ -436,7 +448,11 @@ private:
             
             // Map MEOS types to nautilus::invoke compatible types (raw data for conversion)
             if (func.param_types[i].find("Temporal") != std::string::npos || 
-                func.param_types[i].find("GSERIALIZED") != std::string::npos) {
+                func.param_types[i].find("GSERIALIZED") != std::string::npos ||
+                func.param_types[i].find("STBox") != std::string::npos ||
+                func.param_types[i].find("TBox") != std::string::npos ||
+                func.param_types[i].find("Set") != std::string::npos ||
+                func.param_types[i].find("Span") != std::string::npos) {
                 oss << "const char* param" << i << "_ptr, uint32_t param" << i << "_size";
             } else if (func.param_types[i].find("double") != std::string::npos) {
                 oss << "double param" << i;
@@ -455,7 +471,11 @@ private:
             if (i > 0) oss << ",\n";
             // Map parameter types to appropriate nautilus::invoke arguments
             if (func.param_types[i].find("Temporal") != std::string::npos || 
-                func.param_types[i].find("GSERIALIZED") != std::string::npos) {
+                func.param_types[i].find("GSERIALIZED") != std::string::npos ||
+                func.param_types[i].find("STBox") != std::string::npos ||
+                func.param_types[i].find("TBox") != std::string::npos ||
+                func.param_types[i].find("Set") != std::string::npos ||
+                func.param_types[i].find("Span") != std::string::npos) {
                 oss << "        param" << i << "_varsized.getContent(), param" << i << "_varsized.getContentSize()";
             } else {
                 oss << "        param" << i;
@@ -799,8 +819,9 @@ private:
             
             std::string tokenDefinition = upperToken + ": '" + upperToken + "' | '" + lowerToken + "';";
             
-            // Check if token already exists (same as single)
-            if (content.find(upperToken + ":") != std::string::npos) {
+            // Check if token already exists (exact match with word boundaries)
+            std::regex tokenRegex("\\b" + upperToken + ":");
+            if (std::regex_search(content, tokenRegex)) {
                 std::cout << "Token " << upperToken << " already exists in grammar" << std::endl;
                 continue;
             }
@@ -863,10 +884,11 @@ private:
             std::string caseHandler = replaceTemplatePlaceholders(queryPlanTemplate, func);
             std::string include = "#include <Functions/Meos/" + func.logical_class + ".hpp>";
             
-            // Check if function already exists (same as single)
+            // Check if function already exists (exact match)
             std::string upperToken = func.name;
             std::transform(upperToken.begin(), upperToken.end(), upperToken.begin(), ::toupper);
-            if (content.find("case AntlrSQLLexer::" + upperToken + ":") != std::string::npos) {
+            std::string casePattern = "case AntlrSQLLexer::" + upperToken + ":";
+            if (content.find(casePattern) != std::string::npos) {
                 std::cout << "Function " << upperToken << " already exists in query plan creator" << std::endl;
                 continue;
             }
@@ -979,8 +1001,9 @@ private:
         
         std::string tokenDefinition = upperToken + ": '" + upperToken + "' | '" + lowerToken + "';";
         
-        // Check if token already exists
-        if (content.find(upperToken + ":") != std::string::npos) {
+        // Check if token already exists (exact match with word boundaries)
+        std::regex tokenRegex("\\b" + upperToken + ":");
+        if (std::regex_search(content, tokenRegex)) {
             std::cout << "Token " << upperToken << " already exists in grammar" << std::endl;
             return true;
         }
@@ -1038,10 +1061,11 @@ private:
         std::string content((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
         file.close();
         
-        // Check if function already exists
+        // Check if function already exists (exact match)
         std::string upperToken = func.name;
         std::transform(upperToken.begin(), upperToken.end(), upperToken.begin(), ::toupper);
-        if (content.find("case AntlrSQLLexer::" + upperToken + ":") != std::string::npos) {
+        std::string casePattern = "case AntlrSQLLexer::" + upperToken + ":";
+        if (content.find(casePattern) != std::string::npos) {
             std::cout << "Function " << upperToken << " already exists in query plan creator" << std::endl;
             return true;
         }

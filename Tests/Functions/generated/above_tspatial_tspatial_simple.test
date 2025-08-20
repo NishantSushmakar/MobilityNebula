@@ -1,0 +1,55 @@
+# name: function/spatiotemporal/MEOS_Above_TSpatial_TSpatial_Simple.test
+# description: Test ABOVE_TSPATIAL_TSPATIAL function with temporal geometry vs temporal geometry parameters
+# groups: [Function, MEOS, SpatioTemporal, TSpatial, Above]
+
+# Test 1: Temporal geometry above temporal geometry (true cases)
+Source tspatial_above_tests UINT32 test_id VARSIZED tgeo1 VARSIZED tgeo2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml tspatial_above_tests INLINE
+1|'SRID=4326;POINT(1.0 3.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(1.0 1.0)@2000-01-01 00:00:00+00'
+2|'SRID=4326;POINT(0.0 5.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(0.0 2.0)@2000-01-01 00:00:00+00'
+3|'SRID=4326;POINT(2.0 8.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(2.0 4.0)@2000-01-01 00:00:00+00'
+
+SINK tspatial_above_results UINT32 tspatial_above_tests$test_id INT32 tspatial_above_tests$above_result
+
+SELECT test_id,
+       ABOVE_TSPATIAL_TSPATIAL(tgeo1, tgeo2) AS above_result
+FROM tspatial_above_tests
+INTO tspatial_above_results
+----
+1,1
+2,1
+3,1
+
+# Test 2: Temporal geometry not above temporal geometry (false cases)
+Source tspatial_not_above_tests UINT32 test_id VARSIZED tgeo1 VARSIZED tgeo2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml tspatial_not_above_tests INLINE
+1|'SRID=4326;POINT(1.0 1.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(1.0 3.0)@2000-01-01 00:00:00+00'
+2|'SRID=4326;POINT(0.0 2.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(0.0 5.0)@2000-01-01 00:00:00+00'
+3|'SRID=4326;POINT(2.0 4.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(2.0 8.0)@2000-01-01 00:00:00+00'
+
+SINK tspatial_not_above_results UINT32 tspatial_not_above_tests$test_id INT32 tspatial_not_above_tests$above_result
+
+SELECT test_id,
+       ABOVE_TSPATIAL_TSPATIAL(tgeo1, tgeo2) AS above_result
+FROM tspatial_not_above_tests
+INTO tspatial_not_above_results
+----
+1,0
+2,0
+3,0
+
+# Test 3: Same Y coordinate (edge case)
+Source tspatial_same_y_tests UINT32 test_id VARSIZED tgeo1 VARSIZED tgeo2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml tspatial_same_y_tests INLINE
+1|'SRID=4326;POINT(1.0 2.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(2.0 2.0)@2000-01-01 00:00:00+00'
+2|'SRID=4326;POINT(3.0 5.0)@2000-01-01 00:00:00+00'|'SRID=4326;POINT(4.0 5.0)@2000-01-01 00:00:00+00'
+
+SINK tspatial_same_y_results UINT32 tspatial_same_y_tests$test_id INT32 tspatial_same_y_tests$above_result
+
+SELECT test_id,
+       ABOVE_TSPATIAL_TSPATIAL(tgeo1, tgeo2) AS above_result
+FROM tspatial_same_y_tests
+INTO tspatial_same_y_results
+----
+1,0
+2,0
