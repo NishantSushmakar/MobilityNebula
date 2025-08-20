@@ -1,0 +1,90 @@
+/*
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+#include <Functions/Meos/{{CLASS_NAME}}PhysicalFunction.hpp>
+#include <Functions/PhysicalFunction.hpp>
+#include <Nautilus/DataTypes/VarVal.hpp>
+#include <Nautilus/DataTypes/VariableSizedData.hpp>
+#include <Nautilus/Interface/Record.hpp>
+#include <ErrorHandling.hpp>
+#include <ExecutionContext.hpp>
+#include <PhysicalFunctionRegistry.hpp>
+#include <MEOSWrapper.hpp>
+#include <fmt/format.h>
+#include <iostream>
+#include <val.hpp>
+#include <function.hpp>
+
+namespace NES {
+
+{{CLASS_NAME}}PhysicalFunction::{{CLASS_NAME}}PhysicalFunction({{PHYSICAL_CONSTRUCTOR_PARAMS}})
+{
+    parameterFunctions.reserve({{PARAM_COUNT}});
+{{CONSTRUCTOR_ASSIGNMENTS}}
+}
+
+VarVal {{CLASS_NAME}}PhysicalFunction::execute(const Record& record, ArenaRef& arena) const
+{
+    
+    // Execute all parameter functions to get their values
+    std::vector<VarVal> parameterValues;
+    parameterValues.reserve({{PARAM_COUNT}});
+    for (const auto& paramFunc : parameterFunctions) {
+        parameterValues.push_back(paramFunc.execute(record, arena));
+    }
+    
+    
+{{PARAMETER_EXTRACTIONS}}
+    
+    
+    // Use nautilus::invoke to call direct MEOS function
+    const auto result = nautilus::invoke(
+        +[]({{MEOS_PARAM_TYPES}}) -> {{CONVERTED_RETURN_TYPE}} {
+            try {
+                // Use the existing global MEOS initialization mechanism
+                MEOS::Meos::ensureMeosInitialized();
+                
+                {{MEOS_TYPE_CONVERSIONS}}
+                
+                // Call the direct MEOS function
+                auto meos_result = {{MEOS_FUNCTION_CALL}};
+                
+                {{MEOS_CLEANUP}}
+                
+                return static_cast<{{CONVERTED_RETURN_TYPE}}>(meos_result);
+            } catch (const std::exception& e) {
+                // MEOS exception occurred
+                return static_cast<{{CONVERTED_RETURN_TYPE}}>(-1);  // Error case
+            } catch (...) {
+                // Unknown error occurred
+                return static_cast<{{CONVERTED_RETURN_TYPE}}>(-1);  // Error case
+            }
+        },
+{{MEOS_FUNCTION_ARGS}}
+    );
+    
+    // Convert result to NES VarVal type
+    return VarVal(result);
+}
+
+{{CONVERSION_METHOD_IMPLEMENTATIONS}}
+
+PhysicalFunctionRegistryReturnType
+PhysicalFunctionGeneratedRegistrar::Register{{CLASS_NAME}}PhysicalFunction(PhysicalFunctionRegistryArguments physicalFunctionRegistryArguments)
+{
+    PRECONDITION(physicalFunctionRegistryArguments.childFunctions.size() == {{PARAM_COUNT}}, "{{CLASS_NAME}}PhysicalFunction requires exactly {{PARAM_COUNT}} child functions, but got {}", physicalFunctionRegistryArguments.childFunctions.size());
+    return {{CLASS_NAME}}PhysicalFunction({{PHYSICAL_REGISTRY_CONSTRUCTOR_ARGS}});
+}
+
+} // namespace NES

@@ -1,0 +1,27 @@
+# name: function/spatiotemporal/MEOS_EDwithin_TgeoGeo_Simple.test  
+# description: Simple test for EDWITHIN_TGEO_GEO function with temporal geometry within distance of static geometry
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, EDwithin, Simple]
+
+# Test temporal geometry being within specified distance of static geometry
+Source edwithin_tgeo_test UINT32 test_id VARSIZED tgeo VARSIZED static_geo FLOAT64 distance
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml edwithin_tgeo_test INLINE
+1|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)'|0.0
+2|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9856 40.7486)'|100.0
+3|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9900 40.7500)'|50.0
+4|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9852 40.7482)'|10.0
+5|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)'|0.0
+6|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470))'|0.0
+
+SINK edwithin_tgeo_results UINT32 edwithin_tgeo_test$test_id INT32 edwithin_tgeo_test$within_distance
+
+SELECT test_id,
+       EDWITHIN_TGEO_GEO(tgeo, static_geo, distance) AS within_distance
+FROM edwithin_tgeo_test
+INTO edwithin_tgeo_results
+----
+1,1
+2,1
+3,0
+4,1
+5,1
+6,1

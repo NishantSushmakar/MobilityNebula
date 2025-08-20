@@ -1,0 +1,69 @@
+# name: function/spatiotemporal/MEOS_EIntersects_Temporal_Geometry_Static_Geometry_Isolated.test
+# description: Test isolated TEMPORAL_EINTERSECTS_TGEO_GEO function with temporal coordinates intersecting static geometries (4-parameter format only)
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, StaticGeometry, EIntersects, Isolated]
+
+# Test 1: Temporal points intersecting static points (4-parameter: temporal-static)
+Source point_intersection UINT32 test_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED static_point
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml point_intersection INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+2|-73.9855|40.7485|1609459260|'SRID=4326;POINT(-73.9860 40.7490)'
+3|-73.9865|40.7475|1609459320|'SRID=4326;POINT(-73.9865 40.7475)'
+4|-73.9850|40.7480|1609459380|'SRID=4326;POINT(-73.9855 40.7485)'
+5|-73.9860|40.7490|1609459440|'SRID=4326;POINT(-73.9860 40.7490)'
+
+SINK point_intersection_results UINT32 point_intersection$test_id INT32 point_intersection$intersects_point
+
+SELECT test_id,
+       TEMPORAL_EINTERSECTS_TGEO_GEO(lon, lat, timestamp, static_point) AS intersects_point
+FROM point_intersection
+INTO point_intersection_results
+----
+1,1
+2,0
+3,1
+4,0
+5,1
+
+# Test 2: Temporal points with static polygon geometries
+Source polygon_intersection UINT32 poly_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED polygon_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml polygon_intersection INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+2|-73.9850|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+3|-73.9840|40.7485|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+4|-73.9855|40.7480|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+5|-73.9860|40.7490|1609459200|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+
+SINK polygon_results UINT32 polygon_intersection$poly_id INT32 polygon_intersection$intersects_polygon
+
+SELECT poly_id,
+       TEMPORAL_EINTERSECTS_TGEO_GEO(lon, lat, timestamp, polygon_geom) AS intersects_polygon
+FROM polygon_intersection
+INTO polygon_results
+----
+1,1
+2,1
+3,0
+4,1
+5,1
+
+# Test 3: Temporal points with static linestring geometries
+Source linestring_intersection UINT32 line_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED linestring_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml linestring_intersection INLINE
+1|-73.9855|40.7485|1609459200|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+2|-73.9857|40.7487|1609459260|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+3|-73.9845|40.7475|1609459320|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+4|-73.9850|40.7480|1609459380|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+5|-73.9860|40.7490|1609459440|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+
+SINK linestring_results UINT32 linestring_intersection$line_id INT32 linestring_intersection$intersects_line
+
+SELECT line_id,
+       TEMPORAL_EINTERSECTS_TGEO_GEO(lon, lat, timestamp, linestring_geom) AS intersects_line
+FROM linestring_intersection
+INTO linestring_results
+----
+1,1
+2,1
+3,0
+4,1
+5,1

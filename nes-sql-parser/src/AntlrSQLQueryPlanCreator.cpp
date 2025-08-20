@@ -59,6 +59,33 @@
 #include <Operators/Windows/Aggregations/Meos/TemporalSequenceAggregationLogicalFunction.hpp>
 #include <Functions/Meos/TemporalIntersectsGeometryLogicalFunction.hpp>
 #include <Functions/Meos/TemporalAIntersectsGeometryLogicalFunction.hpp>
+#include <Functions/Meos/EintersectsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EintersectsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AintersectsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AintersectsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AcontainsGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AcontainsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AcontainsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdisjointTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdisjointTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AtouchesTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AtouchesTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AtouchesTpointGeoLogicalFunction.hpp>
+#include <Functions/Meos/EtouchesTpointGeoLogicalFunction.hpp>
+#include <Functions/Meos/EtouchesTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EtouchesTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EdwithinTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdwithinTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdwithinTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcontainsGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcontainsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EcontainsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcoversGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcoversTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcoversTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EdisjointTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EdisjointTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EdwithinTgeoTgeoLogicalFunction.hpp>
 #include <Operators/Windows/JoinLogicalOperator.hpp>
 #include <Plans/LogicalPlan.hpp>
 #include <Plans/LogicalPlanBuilder.hpp>
@@ -1100,6 +1127,500 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
                     const auto function = TemporalAIntersectsGeometryLogicalFunction(lon1Function, lat1Function, timestamp1Function, lon2Function, lat2Function, timestamp2Function);
                     helpers.top().functionBuilder.push_back(function);
                 }
+            }
+            break;
+        case AntlrSQLLexer::EINTERSECTS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EINTERSECTS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EintersectsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EINTERSECTS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EINTERSECTS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EintersectsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AINTERSECTS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AINTERSECTS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AintersectsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AINTERSECTS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AINTERSECTS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AintersectsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ACONTAINS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ACONTAINS_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AcontainsGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ACONTAINS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ACONTAINS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AcontainsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ACONTAINS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ACONTAINS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AcontainsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADISJOINT_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADISJOINT_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdisjointTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADISJOINT_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADISJOINT_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdisjointTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ATOUCHES_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ATOUCHES_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AtouchesTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ATOUCHES_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ATOUCHES_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AtouchesTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ATOUCHES_TPOINT_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ATOUCHES_TPOINT_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AtouchesTpointGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ETOUCHES_TPOINT_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ETOUCHES_TPOINT_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EtouchesTpointGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ETOUCHES_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ETOUCHES_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EtouchesTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ETOUCHES_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ETOUCHES_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EtouchesTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDWITHIN_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("EDWITHIN_TGEO_GEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdwithinTgeoGeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADWITHIN_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("ADWITHIN_TGEO_GEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdwithinTgeoGeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADWITHIN_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("ADWITHIN_TGEO_TGEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdwithinTgeoTgeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECONTAINS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECONTAINS_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcontainsGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECONTAINS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECONTAINS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcontainsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECONTAINS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECONTAINS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcontainsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECOVERS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECOVERS_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcoversGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECOVERS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECOVERS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcoversTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECOVERS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECOVERS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcoversTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDISJOINT_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EDISJOINT_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdisjointTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDISJOINT_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EDISJOINT_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdisjointTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDWITHIN_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("EDWITHIN_TGEO_TGEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdwithinTgeoTgeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
             }
             break;
         default:

@@ -1,0 +1,29 @@
+# name: function/spatiotemporal/MEOS_EIntersects_TgeoTgeo_Simple.test  
+# description: Simple test for EINTERSECTS_TGEO_TGEO function with various WKT geometry types and SRID
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, EIntersects, Simple]
+
+# Test various temporal geometry intersection cases: Points, LineStrings, and Polygons with SRID=4326
+Source tgeo_intersection_test UINT32 test_id VARSIZED tgeo1 VARSIZED tgeo2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml tgeo_intersection_test INLINE
+1|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'
+2|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9860 40.7490)@2021-01-01 00:00:00+00'
+3|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9852 40.7482)@2021-01-01 00:00:00+00'
+4|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;LINESTRING(-73.9860 40.7490, -73.9865 40.7495)@2021-01-01 00:00:00+00'
+5|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'
+6|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9870 40.7495)@2021-01-01 00:00:00+00'
+7|'SRID=4326;{POINT(-73.9850 40.7480)@2021-01-01 00:00:00+00, POINT(-73.9855 40.7485)@2021-01-01 00:01:00+00}'|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:30+00'
+
+SINK tgeo_intersection_results UINT32 tgeo_intersection_test$test_id INT32 tgeo_intersection_test$intersects
+
+SELECT test_id,
+       EINTERSECTS_TGEO_TGEO(tgeo1, tgeo2) AS intersects
+FROM tgeo_intersection_test
+INTO tgeo_intersection_results
+----
+1,1
+2,0
+3,0
+4,0
+5,1
+6,0
+7,-1

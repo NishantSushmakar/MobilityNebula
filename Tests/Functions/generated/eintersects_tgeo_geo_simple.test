@@ -1,0 +1,31 @@
+# name: function/spatiotemporal/MEOS_EIntersects_TgeoGeo_Simple.test  
+# description: Simple test for EINTERSECTS_TGEO_GEO function with temporal geometry vs static geometry
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, EIntersects, Simple]
+
+# Test temporal geometry intersection with static geometry: Points, LineStrings, and Polygons with SRID=4326
+Source tgeo_static_intersection_test UINT32 test_id VARSIZED tgeo VARSIZED static_geo
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml tgeo_static_intersection_test INLINE
+1|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)'
+2|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9860 40.7490)'
+3|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9852 40.7482)'
+4|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;LINESTRING(-73.9860 40.7490, -73.9865 40.7495)'
+5|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)'
+6|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9870 40.7495)'
+7|'SRID=4326;{POINT(-73.9850 40.7480)@2021-01-01 00:00:00+00, POINT(-73.9855 40.7485)@2021-01-01 00:01:00+00}'|'SRID=4326;POLYGON((-73.9848 40.7478, -73.9857 40.7478, -73.9857 40.7487, -73.9848 40.7487, -73.9848 40.7478))'
+8|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+
+SINK tgeo_static_intersection_results UINT32 tgeo_static_intersection_test$test_id INT32 tgeo_static_intersection_test$intersects
+
+SELECT test_id,
+       EINTERSECTS_TGEO_GEO(tgeo, static_geo) AS intersects
+FROM tgeo_static_intersection_test
+INTO tgeo_static_intersection_results
+----
+1,1
+2,0
+3,1
+4,0
+5,1
+6,0
+7,1
+8,1

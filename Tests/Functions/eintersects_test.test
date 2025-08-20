@@ -1,0 +1,29 @@
+# name: function/meos/eintersects_test.test
+# description: Test original vs generated EIntersects functions
+# groups: [Function, MEOS, EIntersects]
+
+# Test 1: Use the working TEMPORAL_EINTERSECTS_GEOMETRY function first
+Source test_original UINT32 test_id FLOAT64 lon FLOAT64 lat UINT64 timestamp FLOAT64 ref_lon FLOAT64 ref_lat UINT64 ref_timestamp
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml test_original INLINE  
+1|-73.9855|40.7485|1609459200|-73.9855|40.7485|1609459200
+
+SINK original_results UINT32 test_original$test_id INT32 test_original$intersects
+
+SELECT test_id, TEMPORAL_EINTERSECTS_GEOMETRY(lon, lat, timestamp, ref_lon, ref_lat, ref_timestamp) AS intersects
+FROM test_original
+INTO original_results
+----
+1,1
+
+# Test 2: Now try our generated 4-param TgeoGeo function
+Source test_generated UINT32 test_id FLOAT64 lon FLOAT64 lat UINT64 timestamp VARSIZED static_geom
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml test_generated INLINE  
+1|-73.9855|40.7485|1609459200|'SRID=4326;POINT(-73.9855 40.7485)'
+
+SINK generated_results UINT32 test_generated$test_id INT32 test_generated$intersects
+
+SELECT test_id, TEMPORAL_EINTERSECTS_TGEO_GEO(lon, lat, timestamp, static_geom) AS intersects
+FROM test_generated  
+INTO generated_results
+----
+1,1
