@@ -162,3 +162,33 @@ add_plugin(RightStboxTspatial PhysicalFunction nes-physical-operators RightStbox
 add_plugin(RightTspatialStbox PhysicalFunction nes-physical-operators RightTspatialStboxPhysicalFunction.cpp)
 
 add_plugin(RightTspatialTspatial PhysicalFunction nes-physical-operators RightTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(AdjacentStboxTspatial PhysicalFunction nes-physical-operators AdjacentStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(AdjacentTspatialStbox PhysicalFunction nes-physical-operators AdjacentTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(AdjacentTspatialTspatial PhysicalFunction nes-physical-operators AdjacentTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainedStboxTspatial PhysicalFunction nes-physical-operators ContainedStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainedTspatialStbox PhysicalFunction nes-physical-operators ContainedTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(ContainedTspatialTspatial PhysicalFunction nes-physical-operators ContainedTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainsStboxTspatial PhysicalFunction nes-physical-operators ContainsStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainsTspatialStbox PhysicalFunction nes-physical-operators ContainsTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(ContainsTspatialTspatial PhysicalFunction nes-physical-operators ContainsTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverlapsStboxTspatial PhysicalFunction nes-physical-operators OverlapsStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverlapsTspatialStbox PhysicalFunction nes-physical-operators OverlapsTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverlapsTspatialTspatial PhysicalFunction nes-physical-operators OverlapsTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(SameStboxTspatial PhysicalFunction nes-physical-operators SameStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(SameTspatialStbox PhysicalFunction nes-physical-operators SameTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(SameTspatialTspatial PhysicalFunction nes-physical-operators SameTspatialTspatialPhysicalFunction.cpp)

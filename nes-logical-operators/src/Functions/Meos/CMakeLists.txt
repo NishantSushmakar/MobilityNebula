@@ -163,3 +163,33 @@ add_plugin(RightStboxTspatial LogicalFunction nes-logical-operators RightStboxTs
 add_plugin(RightTspatialStbox LogicalFunction nes-logical-operators RightTspatialStboxLogicalFunction.cpp)
 
 add_plugin(RightTspatialTspatial LogicalFunction nes-logical-operators RightTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(AdjacentStboxTspatial LogicalFunction nes-logical-operators AdjacentStboxTspatialLogicalFunction.cpp)
+
+add_plugin(AdjacentTspatialStbox LogicalFunction nes-logical-operators AdjacentTspatialStboxLogicalFunction.cpp)
+
+add_plugin(AdjacentTspatialTspatial LogicalFunction nes-logical-operators AdjacentTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(ContainedStboxTspatial LogicalFunction nes-logical-operators ContainedStboxTspatialLogicalFunction.cpp)
+
+add_plugin(ContainedTspatialStbox LogicalFunction nes-logical-operators ContainedTspatialStboxLogicalFunction.cpp)
+
+add_plugin(ContainedTspatialTspatial LogicalFunction nes-logical-operators ContainedTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(ContainsStboxTspatial LogicalFunction nes-logical-operators ContainsStboxTspatialLogicalFunction.cpp)
+
+add_plugin(ContainsTspatialStbox LogicalFunction nes-logical-operators ContainsTspatialStboxLogicalFunction.cpp)
+
+add_plugin(ContainsTspatialTspatial LogicalFunction nes-logical-operators ContainsTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverlapsStboxTspatial LogicalFunction nes-logical-operators OverlapsStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverlapsTspatialStbox LogicalFunction nes-logical-operators OverlapsTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverlapsTspatialTspatial LogicalFunction nes-logical-operators OverlapsTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(SameStboxTspatial LogicalFunction nes-logical-operators SameStboxTspatialLogicalFunction.cpp)
+
+add_plugin(SameTspatialStbox LogicalFunction nes-logical-operators SameTspatialStboxLogicalFunction.cpp)
+
+add_plugin(SameTspatialTspatial LogicalFunction nes-logical-operators SameTspatialTspatialLogicalFunction.cpp)
