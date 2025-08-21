@@ -193,3 +193,27 @@ add_plugin(SameStboxTspatial LogicalFunction nes-logical-operators SameStboxTspa
 add_plugin(SameTspatialStbox LogicalFunction nes-logical-operators SameTspatialStboxLogicalFunction.cpp)
 
 add_plugin(SameTspatialTspatial LogicalFunction nes-logical-operators SameTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(AlwaysEqGeoTgeo LogicalFunction nes-logical-operators AlwaysEqGeoTgeoLogicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoGeo LogicalFunction nes-logical-operators AlwaysEqTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoTgeo LogicalFunction nes-logical-operators AlwaysEqTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AlwaysNeGeoTgeo LogicalFunction nes-logical-operators AlwaysNeGeoTgeoLogicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoGeo LogicalFunction nes-logical-operators AlwaysNeTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoTgeo LogicalFunction nes-logical-operators AlwaysNeTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverEqGeoTgeo LogicalFunction nes-logical-operators EverEqGeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverEqTgeoGeo LogicalFunction nes-logical-operators EverEqTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EverEqTgeoTgeo LogicalFunction nes-logical-operators EverEqTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverNeGeoTgeo LogicalFunction nes-logical-operators EverNeGeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverNeTgeoGeo LogicalFunction nes-logical-operators EverNeTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EverNeTgeoTgeo LogicalFunction nes-logical-operators EverNeTgeoTgeoLogicalFunction.cpp)

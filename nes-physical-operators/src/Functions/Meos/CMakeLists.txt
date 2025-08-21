@@ -192,3 +192,27 @@ add_plugin(SameStboxTspatial PhysicalFunction nes-physical-operators SameStboxTs
 add_plugin(SameTspatialStbox PhysicalFunction nes-physical-operators SameTspatialStboxPhysicalFunction.cpp)
 
 add_plugin(SameTspatialTspatial PhysicalFunction nes-physical-operators SameTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(AlwaysEqGeoTgeo PhysicalFunction nes-physical-operators AlwaysEqGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoGeo PhysicalFunction nes-physical-operators AlwaysEqTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoTgeo PhysicalFunction nes-physical-operators AlwaysEqTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysNeGeoTgeo PhysicalFunction nes-physical-operators AlwaysNeGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoGeo PhysicalFunction nes-physical-operators AlwaysNeTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoTgeo PhysicalFunction nes-physical-operators AlwaysNeTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverEqGeoTgeo PhysicalFunction nes-physical-operators EverEqGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverEqTgeoGeo PhysicalFunction nes-physical-operators EverEqTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EverEqTgeoTgeo PhysicalFunction nes-physical-operators EverEqTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverNeGeoTgeo PhysicalFunction nes-physical-operators EverNeGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverNeTgeoGeo PhysicalFunction nes-physical-operators EverNeTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EverNeTgeoTgeo PhysicalFunction nes-physical-operators EverNeTgeoTgeoPhysicalFunction.cpp)

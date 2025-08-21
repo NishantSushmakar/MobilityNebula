@@ -149,6 +149,18 @@
 #include <Functions/Meos/SameStboxTspatialLogicalFunction.hpp>
 #include <Functions/Meos/SameTspatialStboxLogicalFunction.hpp>
 #include <Functions/Meos/SameTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysEqGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysEqTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysEqTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysNeGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysNeTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysNeTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverEqGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverEqTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EverEqTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverNeGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverNeTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EverNeTgeoTgeoLogicalFunction.hpp>
 #include <Operators/Windows/JoinLogicalOperator.hpp>
 #include <Plans/LogicalPlan.hpp>
 #include <Plans/LogicalPlanBuilder.hpp>
@@ -2817,6 +2829,222 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
 
                 
                 const auto function = SameTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_EQ_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_EQ_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysEqGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_EQ_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_EQ_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysEqTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_EQ_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_EQ_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysEqTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_NE_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_NE_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysNeGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_NE_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_NE_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysNeTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_NE_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_NE_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysNeTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_EQ_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_EQ_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverEqGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_EQ_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_EQ_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverEqTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_EQ_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_EQ_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverEqTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_NE_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_NE_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverNeGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_NE_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_NE_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverNeTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_NE_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_NE_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverNeTgeoTgeoLogicalFunction(param0Function, param1Function);
                 helpers.top().functionBuilder.push_back(function);
             }
             break;
