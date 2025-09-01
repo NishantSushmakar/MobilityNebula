@@ -1,0 +1,50 @@
+# name: function/spatiotemporal/MEOS_TContains_Geo_TGeo_Mixed_Results.test
+# description: Test TCONTAINS_GEO_TGEO function with mixed true/false temporal boolean results
+# groups: [Function, MEOS, SpatioTemporal, TContains, MixedResults]
+
+# Test cases designed to return temporal boolean sequences with both true and false values
+# This tests scenarios where containment changes over time
+
+# Test 1: Trajectory that moves in and out of a polygon
+Source mixed_containment UINT32 test_id VARSIZED polygon_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml mixed_containment INLINE
+1|'POLYGON((0 0, 2 0, 2 2, 0 2, 0 0))'|'{POINT(1 1)@2021-01-01 00:00:00, POINT(3 3)@2021-01-01 00:01:00, POINT(1 1)@2021-01-01 00:02:00}'|0|1
+2|'POLYGON((0 0, 2 0, 2 2, 0 2, 0 0))'|'{POINT(3 3)@2021-01-01 00:00:00, POINT(1 1)@2021-01-01 00:01:00, POINT(3 3)@2021-01-01 00:02:00}'|0|1
+
+SINK mixed_results UINT32 mixed_containment$test_id VARSIZED mixed_containment$temporal_result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(polygon_geom, trajectory_geom, atPeriodOrInstant, restr) AS temporal_result
+FROM mixed_containment
+INTO mixed_results
+----
+1,{t@2021-01-01 00:00:00+00, f@2021-01-01 00:01:00+00, t@2021-01-01 00:02:00+00}
+2,{f@2021-01-01 00:00:00+00, t@2021-01-01 00:01:00+00, f@2021-01-01 00:02:00+00}
+
+# Test 2: Linestring containment with mixed results
+Source line_mixed UINT32 test_id VARSIZED line_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml line_mixed INLINE
+1|'LINESTRING(0 0, 2 2)'|'{POINT(1 1)@2021-01-01 00:00:00, POINT(0 2)@2021-01-01 00:01:00}'|0|1
+
+SINK line_mixed_results UINT32 line_mixed$test_id VARSIZED line_mixed$temporal_result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(line_geom, trajectory_geom, atPeriodOrInstant, restr) AS temporal_result
+FROM line_mixed
+INTO line_mixed_results
+----
+1,{t@2021-01-01 00:00:00+00, f@2021-01-01 00:01:00+00}
+
+# Test 3: Point containment - should only be true for exact matches
+Source point_mixed UINT32 test_id VARSIZED point_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml point_mixed INLINE
+1|'POINT(1 1)'|'{POINT(1 1)@2021-01-01 00:00:00, POINT(1 2)@2021-01-01 00:01:00, POINT(1 1)@2021-01-01 00:02:00}'|0|1
+
+SINK point_mixed_results UINT32 point_mixed$test_id VARSIZED point_mixed$temporal_result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(point_geom, trajectory_geom, atPeriodOrInstant, restr) AS temporal_result  
+FROM point_mixed
+INTO point_mixed_results
+----
+1,{t@2021-01-01 00:00:00+00, f@2021-01-01 00:01:00+00, t@2021-01-01 00:02:00+00}

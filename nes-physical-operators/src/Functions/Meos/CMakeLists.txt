@@ -216,3 +216,5 @@ add_plugin(EverNeGeoTgeo PhysicalFunction nes-physical-operators EverNeGeoTgeoPh
 add_plugin(EverNeTgeoGeo PhysicalFunction nes-physical-operators EverNeTgeoGeoPhysicalFunction.cpp)
 
 add_plugin(EverNeTgeoTgeo PhysicalFunction nes-physical-operators EverNeTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(TcontainsGeoTgeo PhysicalFunction nes-physical-operators TcontainsGeoTgeoPhysicalFunction.cpp)

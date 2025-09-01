@@ -161,6 +161,7 @@
 #include <Functions/Meos/EverNeGeoTgeoLogicalFunction.hpp>
 #include <Functions/Meos/EverNeTgeoGeoLogicalFunction.hpp>
 #include <Functions/Meos/EverNeTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/TcontainsGeoTgeoLogicalFunction.hpp>
 #include <Operators/Windows/JoinLogicalOperator.hpp>
 #include <Plans/LogicalPlan.hpp>
 #include <Plans/LogicalPlanBuilder.hpp>
@@ -3045,6 +3046,28 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
 
                 
                 const auto function = EverNeTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::TCONTAINS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 4) {
+                    throw InvalidQuerySyntax("TCONTAINS_GEO_TGEO requires 4 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param3Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = TcontainsGeoTgeoLogicalFunction(param0Function, param1Function, param2Function, param3Function);
                 helpers.top().functionBuilder.push_back(function);
             }
             break;

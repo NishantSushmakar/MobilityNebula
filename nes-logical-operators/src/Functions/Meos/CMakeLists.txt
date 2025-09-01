@@ -217,3 +217,5 @@ add_plugin(EverNeGeoTgeo LogicalFunction nes-logical-operators EverNeGeoTgeoLogi
 add_plugin(EverNeTgeoGeo LogicalFunction nes-logical-operators EverNeTgeoGeoLogicalFunction.cpp)
 
 add_plugin(EverNeTgeoTgeo LogicalFunction nes-logical-operators EverNeTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(TcontainsGeoTgeo LogicalFunction nes-logical-operators TcontainsGeoTgeoLogicalFunction.cpp)

@@ -1,0 +1,17 @@
+# name: function/spatiotemporal/MEOS_TContains_Geo_TGeo_Minimal.test
+# description: Minimal test for TCONTAINS_GEO_TGEO function to verify basic functionality
+# groups: [Function, MEOS, SpatioTemporal, TContains, Minimal]
+
+# Test 1: Simple geometry and trajectory test - just verify function executes
+Source minimal_tcontains UINT32 test_id VARSIZED polygon_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml minimal_tcontains INLINE
+1|'POLYGON((-1 -1, 1 -1, 1 1, -1 1, -1 -1))'|'{POINT(0 0)@2021-01-01 00:00:00}'|1|1
+
+SINK minimal_results UINT32 minimal_tcontains$test_id VARSIZED minimal_tcontains$result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(polygon_geom, trajectory_geom, atPeriodOrInstant, restr) AS result
+FROM minimal_tcontains
+INTO minimal_results
+----
+1,<any_result>

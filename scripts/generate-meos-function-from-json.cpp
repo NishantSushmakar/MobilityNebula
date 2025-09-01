@@ -101,6 +101,10 @@ private:
         result = std::regex_replace(result, std::regex(R"(\{\{CONVERTED_RETURN_TYPE\}\})"), generateConvertedReturnType(func));
         result = std::regex_replace(result, std::regex(R"(\{\{MEOS_TYPE_CONVERSIONS\}\})"), generateMeosTypeConversions(func));
         result = std::regex_replace(result, std::regex(R"(\{\{MEOS_CLEANUP\}\})"), generateMeosCleanup(func));
+        result = std::regex_replace(result, std::regex(R"(\{\{TEMPORAL_RETURN_HANDLING\}\})"), generateTemporalReturnHandling(func));
+        result = std::regex_replace(result, std::regex(R"(\{\{RETURN_CONVERSION\}\})"), generateReturnConversion(func));
+        result = std::regex_replace(result, std::regex(R"(\{\{ERROR_RETURN\}\})"), generateErrorReturn(func));
+        result = std::regex_replace(result, std::regex(R"(\{\{RESULT_TO_VARVAL_CONVERSION\}\})"), generateResultToVarValConversion(func));
         result = std::regex_replace(result, std::regex(R"(\{\{SQL_TOKEN\}\})"), generateSqlToken(func));
         result = std::regex_replace(result, std::regex(R"(\{\{LOGICAL_CLASS\}\})"), func.logical_class);
         result = std::regex_replace(result, std::regex(R"(\{\{SQL_PARAMETER_EXTRACTIONS\}\})"), generateSqlParameterExtractions(func));
@@ -147,10 +151,10 @@ private:
         if (paramType.find("Set") != std::string::npos) return "MEOS::set_in";
         if (paramType.find("Span") != std::string::npos) return "MEOS::span_in";
         
-        // Primitive types - text input
-        if (paramType.find("bool") != std::string::npos) return "MEOS::bool_in";
+        // Primitive types - no conversion needed, passed directly
+        if (paramType == "bool" || paramType == "int" || paramType == "double" || paramType == "float") return "";
         
-        return ""; // No conversion needed for int, double, char*, etc.
+        return ""; // No conversion needed for other primitive types
     }
 
     
@@ -489,6 +493,8 @@ private:
             return "int32_t";
         } else if (func.return_type == "double") {
             return "double";
+        } else if (func.return_type.find("Temporal") != std::string::npos) {
+            return "const char*"; // Return C string pointer for temporal data
         }
         return "int32_t"; // default
     }
@@ -499,6 +505,12 @@ private:
         oss << "                // MEOS Type Conversions\n";
         
         for (int i = 0; i < func.param_count; ++i) {
+            // Check if this is a primitive type that doesn't need string parsing
+            if (func.param_types[i] == "bool" || func.param_types[i] == "int" || func.param_types[i] == "double") {
+                // Primitive types are passed directly, no conversion needed
+                continue;
+            }
+            
             std::string textConverter = getMEOSTextInputConverter(func.param_types[i]);
             
             if (!textConverter.empty()) {
@@ -527,7 +539,11 @@ private:
                 }
                 
                 oss << "                if (!param" << i << "_obj) {\n";
-                oss << "                    return -1; // Failed to parse parameter\n";
+                if (func.return_type.find("Temporal") != std::string::npos) {
+                    oss << "                    return \"ERROR: Failed to parse parameter " << i << "\";\n";
+                } else {
+                    oss << "                    return -1; // Failed to parse parameter\n";
+                }
                 oss << "                }\n\n";
             }
         }
@@ -537,6 +553,11 @@ private:
     std::string generateMeosCleanup(const FunctionInfo& func) {
         std::ostringstream oss;
         for (int i = 0; i < func.param_count; ++i) {
+            // Skip primitive types - they don't need cleanup
+            if (func.param_types[i] == "bool" || func.param_types[i] == "int" || func.param_types[i] == "double") {
+                continue;
+            }
+            
             std::string converter = getMEOSTextInputConverter(func.param_types[i]);
             
             if (!converter.empty()) {
@@ -546,6 +567,61 @@ private:
             }
         }
         return oss.str();
+    }
+    
+    std::string generateTemporalReturnHandling(const FunctionInfo& func) {
+        if (func.return_type.find("Temporal") != std::string::npos) {
+            return R"(// Serialize Temporal* result to C string
+                if (!meos_result) {
+                    return "ERROR: Failed to compute result";
+                }
+                
+                // Serialize temporal result
+                char* temporal_str = MEOS::tgeo_out(meos_result, 15);
+                if (!temporal_str) {
+                    free(meos_result);
+                    return "ERROR: Failed to serialize temporal result";
+                }
+                
+                // Store result in static buffer (Nautilus-compatible approach)
+                static thread_local char result_buffer[4096];
+                strncpy(result_buffer, temporal_str, sizeof(result_buffer) - 1);
+                result_buffer[sizeof(result_buffer) - 1] = '\0';
+                
+                // Cleanup MEOS allocated memory
+                free(temporal_str);
+                free(meos_result);
+                
+                return result_buffer;)";
+        }
+        return "";
+    }
+    
+    std::string generateReturnConversion(const FunctionInfo& func) {
+        if (func.return_type.find("Temporal") != std::string::npos) {
+            return ""; // Already handled in temporal return handling
+        } else {
+            return "return static_cast<" + generateConvertedReturnType(func) + ">(meos_result);";
+        }
+    }
+    
+    std::string generateErrorReturn(const FunctionInfo& func) {
+        if (func.return_type.find("Temporal") != std::string::npos) {
+            return "return \"ERROR: Exception occurred\"; // Error case";
+        } else {
+            return "return static_cast<" + generateConvertedReturnType(func) + ">(-1);  // Error case";
+        }
+    }
+    
+    std::string generateResultToVarValConversion(const FunctionInfo& func) {
+        if (func.return_type.find("Temporal") != std::string::npos) {
+            return R"(// Convert C string result to VariableSizedData for temporal return
+    size_t result_len = strlen(result);
+    VariableSizedData resultData(result, result_len);
+    return VarVal(resultData);)";
+        } else {
+            return "// Convert result to NES VarVal type\n    return VarVal(result);";
+        }
     }
 
 public:

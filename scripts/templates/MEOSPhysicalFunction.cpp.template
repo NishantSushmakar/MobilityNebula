@@ -60,22 +60,23 @@ VarVal {{CLASS_NAME}}PhysicalFunction::execute(const Record& record, ArenaRef& a
                 // Call the direct MEOS function
                 auto meos_result = {{MEOS_FUNCTION_CALL}};
                 
+                {{TEMPORAL_RETURN_HANDLING}}
+                
                 {{MEOS_CLEANUP}}
                 
-                return static_cast<{{CONVERTED_RETURN_TYPE}}>(meos_result);
+                {{RETURN_CONVERSION}}
             } catch (const std::exception& e) {
                 // MEOS exception occurred
-                return static_cast<{{CONVERTED_RETURN_TYPE}}>(-1);  // Error case
+                {{ERROR_RETURN}}
             } catch (...) {
                 // Unknown error occurred
-                return static_cast<{{CONVERTED_RETURN_TYPE}}>(-1);  // Error case
+                {{ERROR_RETURN}}
             }
         },
 {{MEOS_FUNCTION_ARGS}}
     );
     
-    // Convert result to NES VarVal type
-    return VarVal(result);
+    {{RESULT_TO_VARVAL_CONVERSION}}
 }
 
 {{CONVERSION_METHOD_IMPLEMENTATIONS}}
