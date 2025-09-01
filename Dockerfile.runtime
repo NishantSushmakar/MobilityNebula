@@ -1,0 +1,6 @@
+FROM nebulastream/nes-development:local
+COPY . /app/
+WORKDIR /app
+ENV LD_LIBRARY_PATH=/app/build:/app/build/lib:/vcpkg/installed/x64-linux-none-local/lib:$LD_LIBRARY_PATH
+RUN find /app/build -type f -executable -exec chmod +x {} \;
+CMD ["/app/build/nes-single-node-worker/nes-single-node-worker"]
