@@ -1,0 +1,27 @@
+# name: function/spatiotemporal/MEOS_ETouches_TpointGeo_Simple.test  
+# description: Simple test for ETOUCHES_TPOINT_GEO function with temporal point vs static geometry
+# groups: [Function, MEOS, SpatioTemporal, TemporalPoint, ETouches, Simple]
+
+# Test temporal point touching static geometry boundaries
+Source etouches_tpoint_test UINT32 test_id VARSIZED tpoint VARSIZED static_geo
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml etouches_tpoint_test INLINE
+1|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POINT(-73.9855 40.7485)'
+2|'SRID=4326;POINT(-73.9850 40.7480)@2021-01-01 00:00:00+00'|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+3|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'
+4|'SRID=4326;POINT(-73.9850 40.7480)@2021-01-01 00:00:00+00'|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+5|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+6|'SRID=4326;POINT(-73.9999 40.7999)@2021-01-01 00:00:00+00'|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'
+
+SINK etouches_tpoint_results UINT32 etouches_tpoint_test$test_id INT32 etouches_tpoint_test$touches
+
+SELECT test_id,
+       ETOUCHES_TPOINT_GEO(tpoint, static_geo) AS touches
+FROM etouches_tpoint_test
+INTO etouches_tpoint_results
+----
+1,1
+2,1
+3,0
+4,1
+5,0
+6,0

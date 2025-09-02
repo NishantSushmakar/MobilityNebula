@@ -1,0 +1,682 @@
+{
+  "geog_dwithin": {
+    "signature": "extern bool geog_dwithin(const GSERIALIZED *g1, const GSERIALIZED *g2, double tolerance, bool use_spheroid);",
+    "return_type": "bool",
+    "param_count": 4,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *", "double", "bool"],
+    "function_family": "within",
+    "logical_class": "GeogDwithinLogicalFunction",
+    "physical_class": "GeogDwithinPhysicalFunction",
+    "sql_token": "GEOG_DWITHIN"
+  },
+  "geog_intersects": {
+    "signature": "extern bool geog_intersects(const GSERIALIZED *gs1, const GSERIALIZED *gs2, bool use_spheroid);",
+    "return_type": "bool",
+    "param_count": 3,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *", "bool"],
+    "function_family": "intersects",
+    "logical_class": "GeogIntersectsLogicalFunction",
+    "physical_class": "GeogIntersectsPhysicalFunction",
+    "sql_token": "GEOG_INTERSECTS"
+  },
+  "geom_contains": {
+    "signature": "extern bool geom_contains(const GSERIALIZED *gs1, const GSERIALIZED *gs2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *"],
+    "function_family": "contains",
+    "logical_class": "GeomContainsLogicalFunction",
+    "physical_class": "GeomContainsPhysicalFunction",
+    "sql_token": "GEOM_CONTAINS"
+  },
+  "geom_covers": {
+    "signature": "extern bool geom_covers(const GSERIALIZED *gs1, const GSERIALIZED *gs2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *"],
+    "function_family": "covers",
+    "logical_class": "GeomCoversLogicalFunction",
+    "physical_class": "GeomCoversPhysicalFunction",
+    "sql_token": "GEOM_COVERS"
+  },
+  "geom_disjoint2d": {
+    "signature": "extern bool geom_disjoint2d(const GSERIALIZED *gs1, const GSERIALIZED *gs2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *"],
+    "function_family": "disjoint",
+    "logical_class": "GeomDisjoint2dLogicalFunction",
+    "physical_class": "GeomDisjoint2dPhysicalFunction",
+    "sql_token": "GEOM_DISJOINT2D"
+  },
+  "geom_dwithin2d": {
+    "signature": "extern bool geom_dwithin2d(const GSERIALIZED *gs1, const GSERIALIZED *gs2, double tolerance);",
+    "return_type": "bool",
+    "param_count": 3,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *", "double"],
+    "function_family": "within",
+    "logical_class": "GeomDwithin2dLogicalFunction",
+    "physical_class": "GeomDwithin2dPhysicalFunction",
+    "sql_token": "GEOM_DWITHIN2D"
+  },
+  "geom_dwithin3d": {
+    "signature": "extern bool geom_dwithin3d(const GSERIALIZED *gs1, const GSERIALIZED *gs2, double tolerance);",
+    "return_type": "bool",
+    "param_count": 3,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *", "double"],
+    "function_family": "within",
+    "logical_class": "GeomDwithin3dLogicalFunction",
+    "physical_class": "GeomDwithin3dPhysicalFunction",
+    "sql_token": "GEOM_DWITHIN3D"
+  },
+  "geom_intersects2d": {
+    "signature": "extern bool geom_intersects2d(const GSERIALIZED *gs1, const GSERIALIZED *gs2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *"],
+    "function_family": "intersects",
+    "logical_class": "GeomIntersects2dLogicalFunction",
+    "physical_class": "GeomIntersects2dPhysicalFunction",
+    "sql_token": "GEOM_INTERSECTS2D"
+  },
+  "geom_intersects3d": {
+    "signature": "extern bool geom_intersects3d(const GSERIALIZED *gs1, const GSERIALIZED *gs2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *"],
+    "function_family": "intersects",
+    "logical_class": "GeomIntersects3dLogicalFunction",
+    "physical_class": "GeomIntersects3dPhysicalFunction",
+    "sql_token": "GEOM_INTERSECTS3D"
+  },
+  "geom_touches": {
+    "signature": "extern bool geom_touches(const GSERIALIZED *gs1, const GSERIALIZED *gs2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const GSERIALIZED *"],
+    "function_family": "touches",
+    "logical_class": "GeomTouchesLogicalFunction",
+    "physical_class": "GeomTouchesPhysicalFunction",
+    "sql_token": "GEOM_TOUCHES"
+  },
+  "contains_set_geo": {
+    "signature": "extern bool contains_set_geo(const Set *s, GSERIALIZED *gs);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const Set *", "GSERIALIZED *"],
+    "function_family": "contains",
+    "logical_class": "ContainsSetGeoLogicalFunction",
+    "physical_class": "ContainsSetGeoPhysicalFunction",
+    "sql_token": "CONTAINS_SET_GEO"
+  },
+  "contains_stbox_stbox": {
+    "signature": "extern bool contains_stbox_stbox(const STBox *box1, const STBox *box2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const STBox *", "const STBox *"],
+    "function_family": "contains",
+    "logical_class": "ContainsStboxStboxLogicalFunction",
+    "physical_class": "ContainsStboxStboxPhysicalFunction",
+    "sql_token": "CONTAINS_STBOX_STBOX"
+  },
+  "overlaps_stbox_stbox": {
+    "signature": "extern bool overlaps_stbox_stbox(const STBox *box1, const STBox *box2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const STBox *", "const STBox *"],
+    "function_family": "overlaps",
+    "logical_class": "OverlapsStboxStboxLogicalFunction",
+    "physical_class": "OverlapsStboxStboxPhysicalFunction",
+    "sql_token": "OVERLAPS_STBOX_STBOX"
+  },
+  "tpoint_as_mvtgeom": {
+    "signature": "extern bool tpoint_as_mvtgeom(const Temporal *temp, const STBox *bounds, int32_t extent, int32_t buffer, bool clip_geom, GSERIALIZED **gsarr, int64 **timesarr, int *count);",
+    "return_type": "bool",
+    "param_count": 8,
+    "param_types": ["const Temporal *", "const STBox *", "int32_t", "int32_t", "bool", "GSERIALIZED **", "int64 **", "int *"],
+    "function_family": "other",
+    "logical_class": "TpointAsMvtgeomLogicalFunction",
+    "physical_class": "TpointAsMvtgeomPhysicalFunction",
+    "sql_token": "TPOINT_AS_MVTGEOM"
+  },
+  "tpoint_tfloat_to_geomeas": {
+    "signature": "extern bool tpoint_tfloat_to_geomeas(const Temporal *tpoint, const Temporal *measure, bool segmentize, GSERIALIZED **result);",
+    "return_type": "bool",
+    "param_count": 4,
+    "param_types": ["const Temporal *", "const Temporal *", "bool", "GSERIALIZED **"],
+    "function_family": "other",
+    "logical_class": "TpointTfloatToGeomeasLogicalFunction",
+    "physical_class": "TpointTfloatToGeomeasPhysicalFunction",
+    "sql_token": "TPOINT_TFLOAT_TO_GEOMEAS"
+  },
+  "tgeo_value_at_timestamptz": {
+    "signature": "extern bool tgeo_value_at_timestamptz(const Temporal *temp, TimestampTz t, bool strict, GSERIALIZED **value);",
+    "return_type": "bool",
+    "param_count": 4,
+    "param_types": ["const Temporal *", "TimestampTz", "bool", "GSERIALIZED **"],
+    "function_family": "other",
+    "logical_class": "TgeoValueAtTimestamptzLogicalFunction",
+    "physical_class": "TgeoValueAtTimestamptzPhysicalFunction",
+    "sql_token": "TGEO_VALUE_AT_TIMESTAMPTZ"
+  },
+  "tgeo_value_n": {
+    "signature": "extern bool tgeo_value_n(const Temporal *temp, int n, GSERIALIZED **result);",
+    "return_type": "bool",
+    "param_count": 3,
+    "param_types": ["const Temporal *", "int", "GSERIALIZED **"],
+    "function_family": "other",
+    "logical_class": "TgeoValueNLogicalFunction",
+    "physical_class": "TgeoValueNPhysicalFunction",
+    "sql_token": "TGEO_VALUE_N"
+  },
+  "tpoint_direction": {
+    "signature": "extern bool tpoint_direction(const Temporal *temp, double *result);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "double *"],
+    "function_family": "other",
+    "logical_class": "TpointDirectionLogicalFunction",
+    "physical_class": "TpointDirectionPhysicalFunction",
+    "sql_token": "TPOINT_DIRECTION"
+  },
+  "tpoint_is_simple": {
+    "signature": "extern bool tpoint_is_simple(const Temporal *temp);",
+    "return_type": "bool",
+    "param_count": 1,
+    "param_types": ["const Temporal *"],
+    "function_family": "other",
+    "logical_class": "TpointIsSimpleLogicalFunction",
+    "physical_class": "TpointIsSimplePhysicalFunction",
+    "sql_token": "TPOINT_IS_SIMPLE"
+  },
+  "tpoint_length": {
+    "signature": "extern double tpoint_length(const Temporal *temp);",
+    "return_type": "double",
+    "param_count": 1,
+    "param_types": ["const Temporal *"],
+    "function_family": "other",
+    "logical_class": "TpointLengthLogicalFunction",
+    "physical_class": "TpointLengthPhysicalFunction",
+    "sql_token": "TPOINT_LENGTH"
+  },
+  "always_eq_geo_tgeo": {
+    "signature": "extern int always_eq_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "AlwaysEqGeoTgeoLogicalFunction",
+    "physical_class": "AlwaysEqGeoTgeoPhysicalFunction",
+    "sql_token": "ALWAYS_EQ_GEO_TGEO"
+  },
+  "always_eq_tgeo_geo": {
+    "signature": "extern int always_eq_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "other",
+    "logical_class": "AlwaysEqTgeoGeoLogicalFunction",
+    "physical_class": "AlwaysEqTgeoGeoPhysicalFunction",
+    "sql_token": "ALWAYS_EQ_TGEO_GEO"
+  },
+  "always_eq_tgeo_tgeo": {
+    "signature": "extern int always_eq_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "AlwaysEqTgeoTgeoLogicalFunction",
+    "physical_class": "AlwaysEqTgeoTgeoPhysicalFunction",
+    "sql_token": "ALWAYS_EQ_TGEO_TGEO"
+  },
+  "always_ne_geo_tgeo": {
+    "signature": "extern int always_ne_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "AlwaysNeGeoTgeoLogicalFunction",
+    "physical_class": "AlwaysNeGeoTgeoPhysicalFunction",
+    "sql_token": "ALWAYS_NE_GEO_TGEO"
+  },
+  "always_ne_tgeo_geo": {
+    "signature": "extern int always_ne_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "other",
+    "logical_class": "AlwaysNeTgeoGeoLogicalFunction",
+    "physical_class": "AlwaysNeTgeoGeoPhysicalFunction",
+    "sql_token": "ALWAYS_NE_TGEO_GEO"
+  },
+  "always_ne_tgeo_tgeo": {
+    "signature": "extern int always_ne_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "AlwaysNeTgeoTgeoLogicalFunction",
+    "physical_class": "AlwaysNeTgeoTgeoPhysicalFunction",
+    "sql_token": "ALWAYS_NE_TGEO_TGEO"
+  },
+  "ever_eq_geo_tgeo": {
+    "signature": "extern int ever_eq_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "EverEqGeoTgeoLogicalFunction",
+    "physical_class": "EverEqGeoTgeoPhysicalFunction",
+    "sql_token": "EVER_EQ_GEO_TGEO"
+  },
+  "ever_eq_tgeo_geo": {
+    "signature": "extern int ever_eq_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "other",
+    "logical_class": "EverEqTgeoGeoLogicalFunction",
+    "physical_class": "EverEqTgeoGeoPhysicalFunction",
+    "sql_token": "EVER_EQ_TGEO_GEO"
+  },
+  "ever_eq_tgeo_tgeo": {
+    "signature": "extern int ever_eq_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "EverEqTgeoTgeoLogicalFunction",
+    "physical_class": "EverEqTgeoTgeoPhysicalFunction",
+    "sql_token": "EVER_EQ_TGEO_TGEO"
+  },
+  "ever_ne_geo_tgeo": {
+    "signature": "extern int ever_ne_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "EverNeGeoTgeoLogicalFunction",
+    "physical_class": "EverNeGeoTgeoPhysicalFunction",
+    "sql_token": "EVER_NE_GEO_TGEO"
+  },
+  "ever_ne_tgeo_geo": {
+    "signature": "extern int ever_ne_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "other",
+    "logical_class": "EverNeTgeoGeoLogicalFunction",
+    "physical_class": "EverNeTgeoGeoPhysicalFunction",
+    "sql_token": "EVER_NE_TGEO_GEO"
+  },
+  "ever_ne_tgeo_tgeo": {
+    "signature": "extern int ever_ne_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "EverNeTgeoTgeoLogicalFunction",
+    "physical_class": "EverNeTgeoTgeoPhysicalFunction",
+    "sql_token": "EVER_NE_TGEO_TGEO"
+  },
+  "contains_stbox_tspatial": {
+    "signature": "extern bool contains_stbox_tspatial(const STBox *box, const Temporal *temp);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const STBox *", "const Temporal *"],
+    "function_family": "contains",
+    "logical_class": "ContainsStboxTspatialLogicalFunction",
+    "physical_class": "ContainsStboxTspatialPhysicalFunction",
+    "sql_token": "CONTAINS_STBOX_TSPATIAL"
+  },
+  "contains_tspatial_stbox": {
+    "signature": "extern bool contains_tspatial_stbox(const Temporal *temp, const STBox *box);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const STBox *"],
+    "function_family": "contains",
+    "logical_class": "ContainsTspatialStboxLogicalFunction",
+    "physical_class": "ContainsTspatialStboxPhysicalFunction",
+    "sql_token": "CONTAINS_TSPATIAL_STBOX"
+  },
+  "contains_tspatial_tspatial": {
+    "signature": "extern bool contains_tspatial_tspatial(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "contains",
+    "logical_class": "ContainsTspatialTspatialLogicalFunction",
+    "physical_class": "ContainsTspatialTspatialPhysicalFunction",
+    "sql_token": "CONTAINS_TSPATIAL_TSPATIAL"
+  },
+  "overlaps_stbox_tspatial": {
+    "signature": "extern bool overlaps_stbox_tspatial(const STBox *box, const Temporal *temp);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const STBox *", "const Temporal *"],
+    "function_family": "overlaps",
+    "logical_class": "OverlapsStboxTspatialLogicalFunction",
+    "physical_class": "OverlapsStboxTspatialPhysicalFunction",
+    "sql_token": "OVERLAPS_STBOX_TSPATIAL"
+  },
+  "overlaps_tspatial_stbox": {
+    "signature": "extern bool overlaps_tspatial_stbox(const Temporal *temp, const STBox *box);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const STBox *"],
+    "function_family": "overlaps",
+    "logical_class": "OverlapsTspatialStboxLogicalFunction",
+    "physical_class": "OverlapsTspatialStboxPhysicalFunction",
+    "sql_token": "OVERLAPS_TSPATIAL_STBOX"
+  },
+  "overlaps_tspatial_tspatial": {
+    "signature": "extern bool overlaps_tspatial_tspatial(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "bool",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "overlaps",
+    "logical_class": "OverlapsTspatialTspatialLogicalFunction",
+    "physical_class": "OverlapsTspatialTspatialPhysicalFunction",
+    "sql_token": "OVERLAPS_TSPATIAL_TSPATIAL"
+  },
+  "acontains_geo_tgeo": {
+    "signature": "extern int acontains_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "acontains",
+    "logical_class": "AcontainsGeoTgeoLogicalFunction",
+    "physical_class": "AcontainsGeoTgeoPhysicalFunction",
+    "sql_token": "ACONTAINS_GEO_TGEO"
+  },
+  "acontains_tgeo_geo": {
+    "signature": "extern int acontains_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "acontains",
+    "logical_class": "AcontainsTgeoGeoLogicalFunction",
+    "physical_class": "AcontainsTgeoGeoPhysicalFunction",
+    "sql_token": "ACONTAINS_TGEO_GEO"
+  },
+  "acontains_tgeo_tgeo": {
+    "signature": "extern int acontains_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "acontains",
+    "logical_class": "AcontainsTgeoTgeoLogicalFunction",
+    "physical_class": "AcontainsTgeoTgeoPhysicalFunction",
+    "sql_token": "ACONTAINS_TGEO_TGEO"
+  },
+  "adisjoint_tgeo_geo": {
+    "signature": "extern int adisjoint_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "adisjoint",
+    "logical_class": "AdisjointTgeoGeoLogicalFunction",
+    "physical_class": "AdisjointTgeoGeoPhysicalFunction",
+    "sql_token": "ADISJOINT_TGEO_GEO"
+  },
+  "adisjoint_tgeo_tgeo": {
+    "signature": "extern int adisjoint_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "adisjoint",
+    "logical_class": "AdisjointTgeoTgeoLogicalFunction",
+    "physical_class": "AdisjointTgeoTgeoPhysicalFunction",
+    "sql_token": "ADISJOINT_TGEO_TGEO"
+  },
+  "adwithin_tgeo_geo": {
+    "signature": "extern int adwithin_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs, double dist);",
+    "return_type": "int",
+    "param_count": 3,
+    "param_types": ["const Temporal *", "const GSERIALIZED *", "double"],
+    "function_family": "within",
+    "logical_class": "AdwithinTgeoGeoLogicalFunction",
+    "physical_class": "AdwithinTgeoGeoPhysicalFunction",
+    "sql_token": "ADWITHIN_TGEO_GEO"
+  },
+  "adwithin_tgeo_tgeo": {
+    "signature": "extern int adwithin_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2, double dist);",
+    "return_type": "int",
+    "param_count": 3,
+    "param_types": ["const Temporal *", "const Temporal *", "double"],
+    "function_family": "within",
+    "logical_class": "AdwithinTgeoTgeoLogicalFunction",
+    "physical_class": "AdwithinTgeoTgeoPhysicalFunction",
+    "sql_token": "ADWITHIN_TGEO_TGEO"
+  },
+  "aintersects_tgeo_geo": {
+    "signature": "extern int aintersects_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "aintersects",
+    "logical_class": "AintersectsTgeoGeoLogicalFunction",
+    "physical_class": "AintersectsTgeoGeoPhysicalFunction",
+    "sql_token": "AINTERSECTS_TGEO_GEO"
+  },
+  "aintersects_tgeo_tgeo": {
+    "signature": "extern int aintersects_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "aintersects",
+    "logical_class": "AintersectsTgeoTgeoLogicalFunction",
+    "physical_class": "AintersectsTgeoTgeoPhysicalFunction",
+    "sql_token": "AINTERSECTS_TGEO_TGEO"
+  },
+  "atouches_tgeo_geo": {
+    "signature": "extern int atouches_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "atouches",
+    "logical_class": "AtouchesTgeoGeoLogicalFunction",
+    "physical_class": "AtouchesTgeoGeoPhysicalFunction",
+    "sql_token": "ATOUCHES_TGEO_GEO"
+  },
+  "atouches_tgeo_tgeo": {
+    "signature": "extern int atouches_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "atouches",
+    "logical_class": "AtouchesTgeoTgeoLogicalFunction",
+    "physical_class": "AtouchesTgeoTgeoPhysicalFunction",
+    "sql_token": "ATOUCHES_TGEO_TGEO"
+  },
+  "atouches_tpoint_geo": {
+    "signature": "extern int atouches_tpoint_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "atouches",
+    "logical_class": "AtouchesTpointGeoLogicalFunction",
+    "physical_class": "AtouchesTpointGeoPhysicalFunction",
+    "sql_token": "ATOUCHES_TPOINT_GEO"
+  },
+  "econtains_geo_tgeo": {
+    "signature": "extern int econtains_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "contains",
+    "logical_class": "EcontainsGeoTgeoLogicalFunction",
+    "physical_class": "EcontainsGeoTgeoPhysicalFunction",
+    "sql_token": "ECONTAINS_GEO_TGEO"
+  },
+  "econtains_tgeo_geo": {
+    "signature": "extern int econtains_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "contains",
+    "logical_class": "EcontainsTgeoGeoLogicalFunction",
+    "physical_class": "EcontainsTgeoGeoPhysicalFunction",
+    "sql_token": "ECONTAINS_TGEO_GEO"
+  },
+  "econtains_tgeo_tgeo": {
+    "signature": "extern int econtains_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "contains",
+    "logical_class": "EcontainsTgeoTgeoLogicalFunction",
+    "physical_class": "EcontainsTgeoTgeoPhysicalFunction",
+    "sql_token": "ECONTAINS_TGEO_TGEO"
+  },
+  "ecovers_geo_tgeo": {
+    "signature": "extern int ecovers_geo_tgeo(const GSERIALIZED *gs, const Temporal *temp);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const GSERIALIZED *", "const Temporal *"],
+    "function_family": "covers",
+    "logical_class": "EcoversGeoTgeoLogicalFunction",
+    "physical_class": "EcoversGeoTgeoPhysicalFunction",
+    "sql_token": "ECOVERS_GEO_TGEO"
+  },
+  "ecovers_tgeo_geo": {
+    "signature": "extern int ecovers_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "covers",
+    "logical_class": "EcoversTgeoGeoLogicalFunction",
+    "physical_class": "EcoversTgeoGeoPhysicalFunction",
+    "sql_token": "ECOVERS_TGEO_GEO"
+  },
+  "ecovers_tgeo_tgeo": {
+    "signature": "extern int ecovers_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "covers",
+    "logical_class": "EcoversTgeoTgeoLogicalFunction",
+    "physical_class": "EcoversTgeoTgeoPhysicalFunction",
+    "sql_token": "ECOVERS_TGEO_TGEO"
+  },
+  "edisjoint_tgeo_geo": {
+    "signature": "extern int edisjoint_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "disjoint",
+    "logical_class": "EdisjointTgeoGeoLogicalFunction",
+    "physical_class": "EdisjointTgeoGeoPhysicalFunction",
+    "sql_token": "EDISJOINT_TGEO_GEO"
+  },
+  "edisjoint_tgeo_tgeo": {
+    "signature": "extern int edisjoint_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "disjoint",
+    "logical_class": "EdisjointTgeoTgeoLogicalFunction",
+    "physical_class": "EdisjointTgeoTgeoPhysicalFunction",
+    "sql_token": "EDISJOINT_TGEO_TGEO"
+  },
+  "edwithin_tgeo_geo": {
+    "signature": "extern int edwithin_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs, double dist);",
+    "return_type": "int",
+    "param_count": 3,
+    "param_types": ["const Temporal *", "const GSERIALIZED *", "double"],
+    "function_family": "within",
+    "logical_class": "EdwithinTgeoGeoLogicalFunction",
+    "physical_class": "EdwithinTgeoGeoPhysicalFunction",
+    "sql_token": "EDWITHIN_TGEO_GEO"
+  },
+  "edwithin_tgeo_tgeo": {
+    "signature": "extern int edwithin_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2, double dist);",
+    "return_type": "int",
+    "param_count": 3,
+    "param_types": ["const Temporal *", "const Temporal *", "double"],
+    "function_family": "within",
+    "logical_class": "EdwithinTgeoTgeoLogicalFunction",
+    "physical_class": "EdwithinTgeoTgeoPhysicalFunction",
+    "sql_token": "EDWITHIN_TGEO_TGEO"
+  },
+  "eintersects_tgeo_geo": {
+    "signature": "extern int eintersects_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "eintersects",
+    "logical_class": "EintersectsTgeoGeoLogicalFunction",
+    "physical_class": "EintersectsTgeoGeoPhysicalFunction",
+    "sql_token": "EINTERSECTS_TGEO_GEO"
+  },
+  "eintersects_tgeo_tgeo": {
+    "signature": "extern int eintersects_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "eintersects",
+    "logical_class": "EintersectsTgeoTgeoLogicalFunction",
+    "physical_class": "EintersectsTgeoTgeoPhysicalFunction",
+    "sql_token": "EINTERSECTS_TGEO_TGEO"
+  },
+  "etouches_tgeo_geo": {
+    "signature": "extern int etouches_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "etouches",
+    "logical_class": "EtouchesTgeoGeoLogicalFunction",
+    "physical_class": "EtouchesTgeoGeoPhysicalFunction",
+    "sql_token": "ETOUCHES_TGEO_GEO"
+  },
+  "etouches_tgeo_tgeo": {
+    "signature": "extern int etouches_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "etouches",
+    "logical_class": "EtouchesTgeoTgeoLogicalFunction",
+    "physical_class": "EtouchesTgeoTgeoPhysicalFunction",
+    "sql_token": "ETOUCHES_TGEO_TGEO"
+  },
+  "etouches_tpoint_geo": {
+    "signature": "extern int etouches_tpoint_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "int",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "etouches",
+    "logical_class": "EtouchesTpointGeoLogicalFunction",
+    "physical_class": "EtouchesTpointGeoPhysicalFunction",
+    "sql_token": "ETOUCHES_TPOINT_GEO"
+  },
+  "nad_tgeo_geo": {
+    "signature": "extern double nad_tgeo_geo(const Temporal *temp, const GSERIALIZED *gs);",
+    "return_type": "double",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const GSERIALIZED *"],
+    "function_family": "other",
+    "logical_class": "NadTgeoGeoLogicalFunction",
+    "physical_class": "NadTgeoGeoPhysicalFunction",
+    "sql_token": "NAD_TGEO_GEO"
+  },
+  "nad_tgeo_stbox": {
+    "signature": "extern double nad_tgeo_stbox(const Temporal *temp, const STBox *box);",
+    "return_type": "double",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const STBox *"],
+    "function_family": "other",
+    "logical_class": "NadTgeoStboxLogicalFunction",
+    "physical_class": "NadTgeoStboxPhysicalFunction",
+    "sql_token": "NAD_TGEO_STBOX"
+  },
+  "nad_tgeo_tgeo": {
+    "signature": "extern double nad_tgeo_tgeo(const Temporal *temp1, const Temporal *temp2);",
+    "return_type": "double",
+    "param_count": 2,
+    "param_types": ["const Temporal *", "const Temporal *"],
+    "function_family": "other",
+    "logical_class": "NadTgeoTgeoLogicalFunction",
+    "physical_class": "NadTgeoTgeoPhysicalFunction",
+    "sql_token": "NAD_TGEO_TGEO"
+  }
+}

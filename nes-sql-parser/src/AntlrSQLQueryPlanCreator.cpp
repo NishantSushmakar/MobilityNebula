@@ -61,6 +61,109 @@
 #include <Operators/Windows/Aggregations/Meos/TemporalSequenceAggregationLogicalFunction.hpp>
 #include <Functions/Meos/TemporalIntersectsGeometryLogicalFunction.hpp>
 #include <Functions/Meos/TemporalAIntersectsGeometryLogicalFunction.hpp>
+#include <Functions/Meos/EintersectsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EintersectsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AintersectsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AintersectsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AcontainsGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AcontainsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AcontainsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdisjointTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdisjointTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AtouchesTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AtouchesTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AtouchesTpointGeoLogicalFunction.hpp>
+#include <Functions/Meos/EtouchesTpointGeoLogicalFunction.hpp>
+#include <Functions/Meos/EtouchesTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EtouchesTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EdwithinTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdwithinTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AdwithinTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcontainsGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcontainsTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EcontainsTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcoversGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcoversTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EcoversTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EdisjointTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EdisjointTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EdwithinTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AboveStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AboveTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/AboveTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AfterStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AfterTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/AfterTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/BackStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/BackTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/BackTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/BeforeStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/BeforeTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/BeforeTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/BelowStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/BelowTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/BelowTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/FrontStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/FrontTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/FrontTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/LeftStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/LeftTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/LeftTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OveraboveStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OveraboveTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OveraboveTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverafterStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverafterTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverafterTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverbackStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverbackTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverbackTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverbeforeStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverbeforeTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverbeforeTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverbelowStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverbelowTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverbelowTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverfrontStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverfrontTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverfrontTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverleftStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverleftTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverleftTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverrightStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverrightTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverrightTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/RightStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/RightTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/RightTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AdjacentStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AdjacentTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/AdjacentTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/ContainedStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/ContainedTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/ContainedTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/ContainsStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/ContainsTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/ContainsTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverlapsStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/OverlapsTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/OverlapsTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/SameStboxTspatialLogicalFunction.hpp>
+#include <Functions/Meos/SameTspatialStboxLogicalFunction.hpp>
+#include <Functions/Meos/SameTspatialTspatialLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysEqGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysEqTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysEqTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysNeGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysNeTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/AlwaysNeTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverEqGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverEqTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EverEqTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverNeGeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/EverNeTgeoGeoLogicalFunction.hpp>
+#include <Functions/Meos/EverNeTgeoTgeoLogicalFunction.hpp>
+#include <Functions/Meos/TcontainsGeoTgeoLogicalFunction.hpp>
 #include <Operators/Windows/JoinLogicalOperator.hpp>
 #include <Plans/LogicalPlan.hpp>
 #include <Plans/LogicalPlanBuilder.hpp>
@@ -1154,6 +1257,1872 @@ void AntlrSQLQueryPlanCreator::exitFunctionCall(AntlrSQLParser::FunctionCallCont
         }
         break;
         
+        case AntlrSQLLexer::EINTERSECTS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EINTERSECTS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EintersectsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EINTERSECTS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EINTERSECTS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EintersectsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AINTERSECTS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AINTERSECTS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AintersectsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AINTERSECTS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AINTERSECTS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AintersectsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ACONTAINS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ACONTAINS_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AcontainsGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ACONTAINS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ACONTAINS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AcontainsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ACONTAINS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ACONTAINS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AcontainsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADISJOINT_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADISJOINT_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdisjointTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADISJOINT_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADISJOINT_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdisjointTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ATOUCHES_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ATOUCHES_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AtouchesTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ATOUCHES_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ATOUCHES_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AtouchesTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ATOUCHES_TPOINT_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ATOUCHES_TPOINT_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AtouchesTpointGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ETOUCHES_TPOINT_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ETOUCHES_TPOINT_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EtouchesTpointGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ETOUCHES_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ETOUCHES_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EtouchesTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ETOUCHES_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ETOUCHES_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EtouchesTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDWITHIN_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("EDWITHIN_TGEO_GEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdwithinTgeoGeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADWITHIN_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("ADWITHIN_TGEO_GEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdwithinTgeoGeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADWITHIN_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("ADWITHIN_TGEO_TGEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdwithinTgeoTgeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECONTAINS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECONTAINS_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcontainsGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECONTAINS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECONTAINS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcontainsTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECONTAINS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECONTAINS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcontainsTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECOVERS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECOVERS_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcoversGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECOVERS_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECOVERS_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcoversTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ECOVERS_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ECOVERS_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EcoversTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDISJOINT_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EDISJOINT_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdisjointTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDISJOINT_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EDISJOINT_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdisjointTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EDWITHIN_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 3) {
+                    throw InvalidQuerySyntax("EDWITHIN_TGEO_TGEO requires 3 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EdwithinTgeoTgeoLogicalFunction(param0Function, param1Function, param2Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ABOVE_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ABOVE_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AboveStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ABOVE_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ABOVE_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AboveTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ABOVE_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ABOVE_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AboveTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AFTER_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AFTER_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AfterStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AFTER_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AFTER_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AfterTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::AFTER_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("AFTER_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AfterTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BACK_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BACK_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BackStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BACK_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BACK_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BackTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BACK_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BACK_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BackTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BEFORE_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BEFORE_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BeforeStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BEFORE_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BEFORE_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BeforeTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BEFORE_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BEFORE_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BeforeTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BELOW_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BELOW_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BelowStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BELOW_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BELOW_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BelowTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::BELOW_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("BELOW_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = BelowTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::FRONT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("FRONT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = FrontStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::FRONT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("FRONT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = FrontTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::FRONT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("FRONT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = FrontTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::LEFT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("LEFT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = LeftStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::LEFT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("LEFT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = LeftTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::LEFT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("LEFT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = LeftTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERABOVE_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERABOVE_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OveraboveStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERABOVE_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERABOVE_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OveraboveTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERABOVE_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERABOVE_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OveraboveTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERAFTER_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERAFTER_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverafterStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERAFTER_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERAFTER_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverafterTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERAFTER_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERAFTER_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverafterTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBACK_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBACK_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbackStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBACK_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBACK_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbackTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBACK_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBACK_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbackTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBEFORE_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBEFORE_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbeforeStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBEFORE_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBEFORE_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbeforeTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBEFORE_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBEFORE_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbeforeTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBELOW_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBELOW_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbelowStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBELOW_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBELOW_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbelowTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERBELOW_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERBELOW_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverbelowTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERFRONT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERFRONT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverfrontStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERFRONT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERFRONT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverfrontTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERFRONT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERFRONT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverfrontTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERLEFT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERLEFT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverleftStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERLEFT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERLEFT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverleftTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERLEFT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERLEFT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverleftTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERRIGHT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERRIGHT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverrightStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERRIGHT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERRIGHT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverrightTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERRIGHT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERRIGHT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverrightTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::RIGHT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("RIGHT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = RightStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::RIGHT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("RIGHT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = RightTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::RIGHT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("RIGHT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = RightTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADJACENT_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADJACENT_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdjacentStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADJACENT_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADJACENT_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdjacentTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ADJACENT_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ADJACENT_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AdjacentTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::CONTAINED_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("CONTAINED_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = ContainedStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::CONTAINED_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("CONTAINED_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = ContainedTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::CONTAINED_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("CONTAINED_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = ContainedTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::CONTAINS_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("CONTAINS_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = ContainsStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::CONTAINS_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("CONTAINS_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = ContainsTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::CONTAINS_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("CONTAINS_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = ContainsTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERLAPS_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERLAPS_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverlapsStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERLAPS_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERLAPS_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverlapsTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::OVERLAPS_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("OVERLAPS_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = OverlapsTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::SAME_STBOX_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("SAME_STBOX_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = SameStboxTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::SAME_TSPATIAL_STBOX:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("SAME_TSPATIAL_STBOX requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = SameTspatialStboxLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::SAME_TSPATIAL_TSPATIAL:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("SAME_TSPATIAL_TSPATIAL requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = SameTspatialTspatialLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_EQ_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_EQ_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysEqGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_EQ_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_EQ_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysEqTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_EQ_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_EQ_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysEqTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_NE_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_NE_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysNeGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_NE_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_NE_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysNeTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::ALWAYS_NE_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("ALWAYS_NE_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = AlwaysNeTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_EQ_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_EQ_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverEqGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_EQ_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_EQ_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverEqTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_EQ_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_EQ_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverEqTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_NE_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_NE_GEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverNeGeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_NE_TGEO_GEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_NE_TGEO_GEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverNeTgeoGeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::EVER_NE_TGEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 2) {
+                    throw InvalidQuerySyntax("EVER_NE_TGEO_TGEO requires 2 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = EverNeTgeoTgeoLogicalFunction(param0Function, param1Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
+        case AntlrSQLLexer::TCONTAINS_GEO_TGEO:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != 4) {
+                    throw InvalidQuerySyntax("TCONTAINS_GEO_TGEO requires 4 arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                                const auto param3Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param2Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param1Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+                const auto param0Function = helpers.top().functionBuilder.back();
+                helpers.top().functionBuilder.pop_back();
+
+                
+                const auto function = TcontainsGeoTgeoLogicalFunction(param0Function, param1Function, param2Function, param3Function);
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;
         default:
             /// Check if the function is a constructor for a datatype
             if (const auto dataType = DataTypeProvider::tryProvideDataType(funcName); dataType.has_value())

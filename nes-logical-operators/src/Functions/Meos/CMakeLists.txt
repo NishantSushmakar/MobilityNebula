@@ -15,4 +15,209 @@ add_plugin(Intersect LogicalFunction nes-logical-operators IntersectLogicalFunct
 add_plugin(TemporalIntersects LogicalFunction nes-logical-operators TemporalIntersectsFunction.cpp)
 add_plugin(TemporalIntersectsGeometry LogicalFunction nes-logical-operators TemporalIntersectsGeometryLogicalFunction.cpp)
 add_plugin(TemporalAIntersectsGeometry LogicalFunction nes-logical-operators TemporalAIntersectsGeometryLogicalFunction.cpp)
+add_plugin(EintersectsTgeoTgeo LogicalFunction nes-logical-operators EintersectsTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EintersectsTgeoGeo LogicalFunction nes-logical-operators EintersectsTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AintersectsTgeoTgeo LogicalFunction nes-logical-operators AintersectsTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AintersectsTgeoGeo LogicalFunction nes-logical-operators AintersectsTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AcontainsGeoTgeo LogicalFunction nes-logical-operators AcontainsGeoTgeoLogicalFunction.cpp)
+
+add_plugin(AcontainsTgeoTgeo LogicalFunction nes-logical-operators AcontainsTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AcontainsTgeoGeo LogicalFunction nes-logical-operators AcontainsTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AdisjointTgeoGeo LogicalFunction nes-logical-operators AdisjointTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AdisjointTgeoTgeo LogicalFunction nes-logical-operators AdisjointTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AtouchesTgeoGeo LogicalFunction nes-logical-operators AtouchesTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AtouchesTgeoTgeo LogicalFunction nes-logical-operators AtouchesTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AtouchesTpointGeo LogicalFunction nes-logical-operators AtouchesTpointGeoLogicalFunction.cpp)
+
+add_plugin(EtouchesTpointGeo LogicalFunction nes-logical-operators EtouchesTpointGeoLogicalFunction.cpp)
+
+add_plugin(EtouchesTgeoGeo LogicalFunction nes-logical-operators EtouchesTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EtouchesTgeoTgeo LogicalFunction nes-logical-operators EtouchesTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EdwithinTgeoGeo LogicalFunction nes-logical-operators EdwithinTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AdwithinTgeoGeo LogicalFunction nes-logical-operators AdwithinTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AdwithinTgeoTgeo LogicalFunction nes-logical-operators AdwithinTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EcontainsGeoTgeo LogicalFunction nes-logical-operators EcontainsGeoTgeoLogicalFunction.cpp)
+
+add_plugin(EcontainsTgeoGeo LogicalFunction nes-logical-operators EcontainsTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EcontainsTgeoTgeo LogicalFunction nes-logical-operators EcontainsTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EcoversGeoTgeo LogicalFunction nes-logical-operators EcoversGeoTgeoLogicalFunction.cpp)
+
+add_plugin(EcoversTgeoTgeo LogicalFunction nes-logical-operators EcoversTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EcoversTgeoGeo LogicalFunction nes-logical-operators EcoversTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EdisjointTgeoGeo LogicalFunction nes-logical-operators EdisjointTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EdisjointTgeoTgeo LogicalFunction nes-logical-operators EdisjointTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EdwithinTgeoTgeo LogicalFunction nes-logical-operators EdwithinTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AboveStboxTspatial LogicalFunction nes-logical-operators AboveStboxTspatialLogicalFunction.cpp)
+
+add_plugin(AboveTspatialStbox LogicalFunction nes-logical-operators AboveTspatialStboxLogicalFunction.cpp)
+
+add_plugin(AboveTspatialTspatial LogicalFunction nes-logical-operators AboveTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(AfterStboxTspatial LogicalFunction nes-logical-operators AfterStboxTspatialLogicalFunction.cpp)
+
+add_plugin(AfterTspatialStbox LogicalFunction nes-logical-operators AfterTspatialStboxLogicalFunction.cpp)
+
+add_plugin(AfterTspatialTspatial LogicalFunction nes-logical-operators AfterTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(BackStboxTspatial LogicalFunction nes-logical-operators BackStboxTspatialLogicalFunction.cpp)
+
+add_plugin(BackTspatialStbox LogicalFunction nes-logical-operators BackTspatialStboxLogicalFunction.cpp)
+
+add_plugin(BackTspatialTspatial LogicalFunction nes-logical-operators BackTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(BeforeStboxTspatial LogicalFunction nes-logical-operators BeforeStboxTspatialLogicalFunction.cpp)
+
+add_plugin(BeforeTspatialStbox LogicalFunction nes-logical-operators BeforeTspatialStboxLogicalFunction.cpp)
+
+add_plugin(BeforeTspatialTspatial LogicalFunction nes-logical-operators BeforeTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(BelowStboxTspatial LogicalFunction nes-logical-operators BelowStboxTspatialLogicalFunction.cpp)
+
+add_plugin(BelowTspatialStbox LogicalFunction nes-logical-operators BelowTspatialStboxLogicalFunction.cpp)
+
+add_plugin(BelowTspatialTspatial LogicalFunction nes-logical-operators BelowTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(FrontStboxTspatial LogicalFunction nes-logical-operators FrontStboxTspatialLogicalFunction.cpp)
+
+add_plugin(FrontTspatialStbox LogicalFunction nes-logical-operators FrontTspatialStboxLogicalFunction.cpp)
+
+add_plugin(FrontTspatialTspatial LogicalFunction nes-logical-operators FrontTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(LeftStboxTspatial LogicalFunction nes-logical-operators LeftStboxTspatialLogicalFunction.cpp)
+
+add_plugin(LeftTspatialStbox LogicalFunction nes-logical-operators LeftTspatialStboxLogicalFunction.cpp)
+
+add_plugin(LeftTspatialTspatial LogicalFunction nes-logical-operators LeftTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OveraboveStboxTspatial LogicalFunction nes-logical-operators OveraboveStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OveraboveTspatialStbox LogicalFunction nes-logical-operators OveraboveTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OveraboveTspatialTspatial LogicalFunction nes-logical-operators OveraboveTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverafterStboxTspatial LogicalFunction nes-logical-operators OverafterStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverafterTspatialStbox LogicalFunction nes-logical-operators OverafterTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverafterTspatialTspatial LogicalFunction nes-logical-operators OverafterTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverbackStboxTspatial LogicalFunction nes-logical-operators OverbackStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverbackTspatialStbox LogicalFunction nes-logical-operators OverbackTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverbackTspatialTspatial LogicalFunction nes-logical-operators OverbackTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverbeforeStboxTspatial LogicalFunction nes-logical-operators OverbeforeStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverbeforeTspatialStbox LogicalFunction nes-logical-operators OverbeforeTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverbeforeTspatialTspatial LogicalFunction nes-logical-operators OverbeforeTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverbelowStboxTspatial LogicalFunction nes-logical-operators OverbelowStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverbelowTspatialStbox LogicalFunction nes-logical-operators OverbelowTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverbelowTspatialTspatial LogicalFunction nes-logical-operators OverbelowTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverfrontStboxTspatial LogicalFunction nes-logical-operators OverfrontStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverfrontTspatialStbox LogicalFunction nes-logical-operators OverfrontTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverfrontTspatialTspatial LogicalFunction nes-logical-operators OverfrontTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverleftStboxTspatial LogicalFunction nes-logical-operators OverleftStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverleftTspatialStbox LogicalFunction nes-logical-operators OverleftTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverleftTspatialTspatial LogicalFunction nes-logical-operators OverleftTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverrightStboxTspatial LogicalFunction nes-logical-operators OverrightStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverrightTspatialStbox LogicalFunction nes-logical-operators OverrightTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverrightTspatialTspatial LogicalFunction nes-logical-operators OverrightTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(RightStboxTspatial LogicalFunction nes-logical-operators RightStboxTspatialLogicalFunction.cpp)
+
+add_plugin(RightTspatialStbox LogicalFunction nes-logical-operators RightTspatialStboxLogicalFunction.cpp)
+
+add_plugin(RightTspatialTspatial LogicalFunction nes-logical-operators RightTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(AdjacentStboxTspatial LogicalFunction nes-logical-operators AdjacentStboxTspatialLogicalFunction.cpp)
+
+add_plugin(AdjacentTspatialStbox LogicalFunction nes-logical-operators AdjacentTspatialStboxLogicalFunction.cpp)
+
+add_plugin(AdjacentTspatialTspatial LogicalFunction nes-logical-operators AdjacentTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(ContainedStboxTspatial LogicalFunction nes-logical-operators ContainedStboxTspatialLogicalFunction.cpp)
+
+add_plugin(ContainedTspatialStbox LogicalFunction nes-logical-operators ContainedTspatialStboxLogicalFunction.cpp)
+
+add_plugin(ContainedTspatialTspatial LogicalFunction nes-logical-operators ContainedTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(ContainsStboxTspatial LogicalFunction nes-logical-operators ContainsStboxTspatialLogicalFunction.cpp)
+
+add_plugin(ContainsTspatialStbox LogicalFunction nes-logical-operators ContainsTspatialStboxLogicalFunction.cpp)
+
+add_plugin(ContainsTspatialTspatial LogicalFunction nes-logical-operators ContainsTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(OverlapsStboxTspatial LogicalFunction nes-logical-operators OverlapsStboxTspatialLogicalFunction.cpp)
+
+add_plugin(OverlapsTspatialStbox LogicalFunction nes-logical-operators OverlapsTspatialStboxLogicalFunction.cpp)
+
+add_plugin(OverlapsTspatialTspatial LogicalFunction nes-logical-operators OverlapsTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(SameStboxTspatial LogicalFunction nes-logical-operators SameStboxTspatialLogicalFunction.cpp)
+
+add_plugin(SameTspatialStbox LogicalFunction nes-logical-operators SameTspatialStboxLogicalFunction.cpp)
+
+add_plugin(SameTspatialTspatial LogicalFunction nes-logical-operators SameTspatialTspatialLogicalFunction.cpp)
+
+add_plugin(AlwaysEqGeoTgeo LogicalFunction nes-logical-operators AlwaysEqGeoTgeoLogicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoGeo LogicalFunction nes-logical-operators AlwaysEqTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoTgeo LogicalFunction nes-logical-operators AlwaysEqTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(AlwaysNeGeoTgeo LogicalFunction nes-logical-operators AlwaysNeGeoTgeoLogicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoGeo LogicalFunction nes-logical-operators AlwaysNeTgeoGeoLogicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoTgeo LogicalFunction nes-logical-operators AlwaysNeTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverEqGeoTgeo LogicalFunction nes-logical-operators EverEqGeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverEqTgeoGeo LogicalFunction nes-logical-operators EverEqTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EverEqTgeoTgeo LogicalFunction nes-logical-operators EverEqTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverNeGeoTgeo LogicalFunction nes-logical-operators EverNeGeoTgeoLogicalFunction.cpp)
+
+add_plugin(EverNeTgeoGeo LogicalFunction nes-logical-operators EverNeTgeoGeoLogicalFunction.cpp)
+
+add_plugin(EverNeTgeoTgeo LogicalFunction nes-logical-operators EverNeTgeoTgeoLogicalFunction.cpp)
+
+add_plugin(TcontainsGeoTgeo LogicalFunction nes-logical-operators TcontainsGeoTgeoLogicalFunction.cpp)
 add_plugin(TemporalEContainsGeometry LogicalFunction nes-logical-operators TemporalEContainsGeometryLogicalFunction.cpp)

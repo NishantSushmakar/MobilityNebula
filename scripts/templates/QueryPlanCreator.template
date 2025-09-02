@@ -1,0 +1,14 @@
+        case AntlrSQLLexer::{{SQL_TOKEN}}:
+            {
+                const auto argCount = helpers.top().functionBuilder.size();
+                if (argCount != {{PARAM_COUNT}}) {
+                    throw InvalidQuerySyntax("{{SQL_TOKEN}} requires {{PARAM_COUNT}} arguments, but got {}", argCount);
+                }
+                
+                // Extract parameters in reverse order (LIFO stack)
+                {{SQL_PARAMETER_EXTRACTIONS}}
+                
+                const auto function = {{LOGICAL_CLASS}}({{PARAMETER_LIST}});
+                helpers.top().functionBuilder.push_back(function);
+            }
+            break;

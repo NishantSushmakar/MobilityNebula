@@ -1,0 +1,362 @@
+{
+  "geo_collect_garray": {
+    "signature": "extern GSERIALIZED *geo_collect_garray(GSERIALIZED **gsarr, int count);",
+    "return_type": "GSERIALIZED *",
+    "param_count": 2,
+    "param_types": [
+      "GSERIALIZED **",
+      "int"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeoCollectGarrayLogicalFunction",
+    "physical_class": "GeoCollectGarrayPhysicalFunction",
+    "sql_token": "GEO_COLLECT_GARRAY"
+  },
+  "geo_makeline_garray": {
+    "signature": "extern GSERIALIZED *geo_makeline_garray(GSERIALIZED **gsarr, int count);",
+    "return_type": "GSERIALIZED *",
+    "param_count": 2,
+    "param_types": [
+      "GSERIALIZED **",
+      "int"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeoMakelineGarrayLogicalFunction",
+    "physical_class": "GeoMakelineGarrayPhysicalFunction",
+    "sql_token": "GEO_MAKELINE_GARRAY"
+  },
+  "geo_pointarr": {
+    "signature": "extern GSERIALIZED **geo_pointarr(const GSERIALIZED *gs, int *count);",
+    "return_type": "GSERIALIZED **",
+    "param_count": 2,
+    "param_types": [
+      "const GSERIALIZED *",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeoPointarrLogicalFunction",
+    "physical_class": "GeoPointarrPhysicalFunction",
+    "sql_token": "GEO_POINTARR"
+  },
+  "geom_array_union": {
+    "signature": "extern GSERIALIZED *geom_array_union(GSERIALIZED **gsarr, int count);",
+    "return_type": "GSERIALIZED *",
+    "param_count": 2,
+    "param_types": [
+      "GSERIALIZED **",
+      "int"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeomArrayUnionLogicalFunction",
+    "physical_class": "GeomArrayUnionPhysicalFunction",
+    "sql_token": "GEOM_ARRAY_UNION"
+  },
+  "geoset_make": {
+    "signature": "extern Set *geoset_make(const GSERIALIZED **values, int count);",
+    "return_type": "Set *",
+    "param_count": 2,
+    "param_types": [
+      "const GSERIALIZED **",
+      "int"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeosetMakeLogicalFunction",
+    "physical_class": "GeosetMakePhysicalFunction",
+    "sql_token": "GEOSET_MAKE"
+  },
+  "geoset_value_n": {
+    "signature": "extern bool geoset_value_n(const Set *s, int n, GSERIALIZED **result);",
+    "return_type": "bool",
+    "param_count": 3,
+    "param_types": [
+      "const Set *",
+      "int",
+      "GSERIALIZED **"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeosetValueNLogicalFunction",
+    "physical_class": "GeosetValueNPhysicalFunction",
+    "sql_token": "GEOSET_VALUE_N"
+  },
+  "geoset_values": {
+    "signature": "extern GSERIALIZED **geoset_values(const Set *s);",
+    "return_type": "GSERIALIZED **",
+    "param_count": 1,
+    "param_types": [
+      "const Set *"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeosetValuesLogicalFunction",
+    "physical_class": "GeosetValuesPhysicalFunction",
+    "sql_token": "GEOSET_VALUES"
+  },
+  "stbox_to_box3d": {
+    "signature": "extern BOX3D *stbox_to_box3d(const STBox *box);",
+    "return_type": "BOX3D *",
+    "param_count": 1,
+    "param_types": [
+      "const STBox *"
+    ],
+    "function_family": "meos",
+    "logical_class": "StboxToBox3dLogicalFunction",
+    "physical_class": "StboxToBox3dPhysicalFunction",
+    "sql_token": "STBOX_TO_BOX3D"
+  },
+  "stbox_to_gbox": {
+    "signature": "extern GBOX *stbox_to_gbox(const STBox *box);",
+    "return_type": "GBOX *",
+    "param_count": 1,
+    "param_types": [
+      "const STBox *"
+    ],
+    "function_family": "meos",
+    "logical_class": "StboxToGboxLogicalFunction",
+    "physical_class": "StboxToGboxPhysicalFunction",
+    "sql_token": "STBOX_TO_GBOX"
+  },
+  "rtree_create_stbox": {
+    "signature": "extern RTree *rtree_create_stbox();",
+    "return_type": "RTree *",
+    "param_count": 0,
+    "param_types": [],
+    "function_family": "meos",
+    "logical_class": "RtreeCreateStboxLogicalFunction",
+    "physical_class": "RtreeCreateStboxPhysicalFunction",
+    "sql_token": "RTREE_CREATE_STBOX"
+  },
+  "rtree_free": {
+    "signature": "extern void rtree_free(RTree *rtree);",
+    "return_type": "void",
+    "param_count": 1,
+    "param_types": [
+      "RTree *"
+    ],
+    "function_family": "meos",
+    "logical_class": "RtreeFreeLogicalFunction",
+    "physical_class": "RtreeFreePhysicalFunction",
+    "sql_token": "RTREE_FREE"
+  },
+  "rtree_insert": {
+    "signature": "extern void rtree_insert(RTree *rtree, STBox *box, int64 id);",
+    "return_type": "void",
+    "param_count": 3,
+    "param_types": [
+      "RTree *",
+      "STBox *",
+      "int64"
+    ],
+    "function_family": "meos",
+    "logical_class": "RtreeInsertLogicalFunction",
+    "physical_class": "RtreeInsertPhysicalFunction",
+    "sql_token": "RTREE_INSERT"
+  },
+  "rtree_search": {
+    "signature": "extern int *rtree_search(const RTree *rtree,const STBox *query, int *count);",
+    "return_type": "int *",
+    "param_count": 3,
+    "param_types": [
+      "const RTree *",
+      "const STBox *",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "RtreeSearchLogicalFunction",
+    "physical_class": "RtreeSearchPhysicalFunction",
+    "sql_token": "RTREE_SEARCH"
+  },
+  "box3d_to_stbox": {
+    "signature": "extern STBox *box3d_to_stbox(const BOX3D *box);",
+    "return_type": "STBox *",
+    "param_count": 1,
+    "param_types": [
+      "const BOX3D *"
+    ],
+    "function_family": "meos",
+    "logical_class": "Box3dToStboxLogicalFunction",
+    "physical_class": "Box3dToStboxPhysicalFunction",
+    "sql_token": "BOX3D_TO_STBOX"
+  },
+  "gbox_to_stbox": {
+    "signature": "extern STBox *gbox_to_stbox(const GBOX *box);",
+    "return_type": "STBox *",
+    "param_count": 1,
+    "param_types": [
+      "const GBOX *"
+    ],
+    "function_family": "meos",
+    "logical_class": "GboxToStboxLogicalFunction",
+    "physical_class": "GboxToStboxPhysicalFunction",
+    "sql_token": "GBOX_TO_STBOX"
+  },
+  "tpoint_as_mvtgeom": {
+    "signature": "extern bool tpoint_as_mvtgeom(const Temporal *temp, const STBox *bounds, int32_t extent, int32_t buffer, bool clip_geom, GSERIALIZED **gsarr, int64 **timesarr, int *count);",
+    "return_type": "bool",
+    "param_count": 8,
+    "param_types": [
+      "const Temporal *",
+      "const STBox *",
+      "int32_t",
+      "int32_t",
+      "bool",
+      "GSERIALIZED **",
+      "int64 **",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TpointAsMvtgeomLogicalFunction",
+    "physical_class": "TpointAsMvtgeomPhysicalFunction",
+    "sql_token": "TPOINT_AS_MVTGEOM"
+  },
+  "tpoint_tfloat_to_geomeas": {
+    "signature": "extern bool tpoint_tfloat_to_geomeas(const Temporal *tpoint, const Temporal *measure, bool segmentize, GSERIALIZED **result);",
+    "return_type": "bool",
+    "param_count": 4,
+    "param_types": [
+      "const Temporal *",
+      "const Temporal *",
+      "bool",
+      "GSERIALIZED **"
+    ],
+    "function_family": "meos",
+    "logical_class": "TpointTfloatToGeomeasLogicalFunction",
+    "physical_class": "TpointTfloatToGeomeasPhysicalFunction",
+    "sql_token": "TPOINT_TFLOAT_TO_GEOMEAS"
+  },
+  "tgeo_value_at_timestamptz": {
+    "signature": "extern bool tgeo_value_at_timestamptz(const Temporal *temp, TimestampTz t, bool strict, GSERIALIZED **value);",
+    "return_type": "bool",
+    "param_count": 4,
+    "param_types": [
+      "const Temporal *",
+      "TimestampTz",
+      "bool",
+      "GSERIALIZED **"
+    ],
+    "function_family": "meos",
+    "logical_class": "TgeoValueAtTimestamptzLogicalFunction",
+    "physical_class": "TgeoValueAtTimestamptzPhysicalFunction",
+    "sql_token": "TGEO_VALUE_AT_TIMESTAMPTZ"
+  },
+  "tgeo_value_n": {
+    "signature": "extern bool tgeo_value_n(const Temporal *temp, int n, GSERIALIZED **result);",
+    "return_type": "bool",
+    "param_count": 3,
+    "param_types": [
+      "const Temporal *",
+      "int",
+      "GSERIALIZED **"
+    ],
+    "function_family": "meos",
+    "logical_class": "TgeoValueNLogicalFunction",
+    "physical_class": "TgeoValueNPhysicalFunction",
+    "sql_token": "TGEO_VALUE_N"
+  },
+  "tgeo_values": {
+    "signature": "extern GSERIALIZED **tgeo_values(const Temporal *temp, int *count);",
+    "return_type": "GSERIALIZED **",
+    "param_count": 2,
+    "param_types": [
+      "const Temporal *",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TgeoValuesLogicalFunction",
+    "physical_class": "TgeoValuesPhysicalFunction",
+    "sql_token": "TGEO_VALUES"
+  },
+  "tpoint_make_simple": {
+    "signature": "extern Temporal **tpoint_make_simple(const Temporal *temp, int *count);",
+    "return_type": "Temporal **",
+    "param_count": 2,
+    "param_types": [
+      "const Temporal *",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TpointMakeSimpleLogicalFunction",
+    "physical_class": "TpointMakeSimplePhysicalFunction",
+    "sql_token": "TPOINT_MAKE_SIMPLE"
+  },
+  "tpoint_tcentroid_finalfn": {
+    "signature": "extern Temporal *tpoint_tcentroid_finalfn(SkipList *state);",
+    "return_type": "Temporal *",
+    "param_count": 1,
+    "param_types": [
+      "SkipList *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TpointTcentroidFinalfnLogicalFunction",
+    "physical_class": "TpointTcentroidFinalfnPhysicalFunction",
+    "sql_token": "TPOINT_TCENTROID_FINALFN"
+  },
+  "tpoint_tcentroid_transfn": {
+    "signature": "extern SkipList *tpoint_tcentroid_transfn(SkipList *state, Temporal *temp);",
+    "return_type": "SkipList *",
+    "param_count": 2,
+    "param_types": [
+      "SkipList *",
+      "Temporal *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TpointTcentroidTransfnLogicalFunction",
+    "physical_class": "TpointTcentroidTransfnPhysicalFunction",
+    "sql_token": "TPOINT_TCENTROID_TRANSFN"
+  },
+  "tgeo_space_split": {
+    "signature": "extern Temporal **tgeo_space_split(const Temporal *temp, double xsize, double ysize, double zsize, const GSERIALIZED *sorigin, bool bitmatrix, bool border_inc, GSERIALIZED ***space_bins, int *count);",
+    "return_type": "Temporal **",
+    "param_count": 9,
+    "param_types": [
+      "const Temporal *",
+      "double",
+      "double",
+      "double",
+      "const GSERIALIZED *",
+      "bool",
+      "bool",
+      "GSERIALIZED ***",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TgeoSpaceSplitLogicalFunction",
+    "physical_class": "TgeoSpaceSplitPhysicalFunction",
+    "sql_token": "TGEO_SPACE_SPLIT"
+  },
+  "tgeo_space_time_split": {
+    "signature": "extern Temporal **tgeo_space_time_split(const Temporal *temp, double xsize, double ysize, double zsize, const Interval *duration, const GSERIALIZED *sorigin, TimestampTz torigin, bool bitmatrix, bool border_inc, GSERIALIZED ***space_bins, TimestampTz **time_bins, int *count);",
+    "return_type": "Temporal **",
+    "param_count": 12,
+    "param_types": [
+      "const Temporal *",
+      "double",
+      "double",
+      "double",
+      "const Interval *",
+      "const GSERIALIZED *",
+      "TimestampTz",
+      "bool",
+      "bool",
+      "GSERIALIZED ***",
+      "TimestampTz **",
+      "int *"
+    ],
+    "function_family": "meos",
+    "logical_class": "TgeoSpaceTimeSplitLogicalFunction",
+    "physical_class": "TgeoSpaceTimeSplitPhysicalFunction",
+    "sql_token": "TGEO_SPACE_TIME_SPLIT"
+  },
+  "geo_cluster_kmeans": {
+    "signature": "extern int *geo_cluster_kmeans(const GSERIALIZED **geoms, uint32_t n, uint32_t k);",
+    "return_type": "int *",
+    "param_count": 3,
+    "param_types": [
+      "const GSERIALIZED **",
+      "uint32_t",
+      "uint32_t"
+    ],
+    "function_family": "meos",
+    "logical_class": "GeoClusterKmeansLogicalFunction",
+    "physical_class": "GeoClusterKmeansPhysicalFunction",
+    "sql_token": "GEO_CLUSTER_KMEANS"
+  }
+}

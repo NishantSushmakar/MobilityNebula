@@ -1,0 +1,27 @@
+# name: function/spatiotemporal/MEOS_AContains_GeoTgeo_Simple.test  
+# description: Simple test for ACONTAINS_GEO_TGEO function with static geometry containing temporal geometry
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, AContains, Simple]
+
+# Test static geometry always containing temporal geometry throughout its temporal extent
+Source acontains_geo_test UINT32 test_id VARSIZED static_geo VARSIZED tgeo
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml acontains_geo_test INLINE
+1|'SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470))'|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'
+2|'SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470))'|'SRID=4326;{POINT(-73.9850 40.7480)@2021-01-01 00:00:00+00, POINT(-73.9855 40.7485)@2021-01-01 00:01:00+00}'
+3|'SRID=4326;POLYGON((-73.9870 40.7470, -73.9840 40.7470, -73.9840 40.7500, -73.9870 40.7500, -73.9870 40.7470))'|'SRID=4326;LINESTRING(-73.9850 40.7480, -73.9855 40.7485)@2021-01-01 00:00:00+00'
+4|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'
+5|'SRID=4326;POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'|'SRID=4326;POINT(-73.9999 40.7999)@2021-01-01 00:00:00+00'
+6|'SRID=4326;POINT(-73.9855 40.7485)'|'SRID=4326;POINT(-73.9855 40.7485)@2021-01-01 00:00:00+00'
+
+SINK acontains_geo_results UINT32 acontains_geo_test$test_id INT32 acontains_geo_test$contains
+
+SELECT test_id,
+       ACONTAINS_GEO_TGEO(static_geo, tgeo) AS contains
+FROM acontains_geo_test
+INTO acontains_geo_results
+----
+1,1
+2,1
+3,1
+4,1
+5,0
+6,1

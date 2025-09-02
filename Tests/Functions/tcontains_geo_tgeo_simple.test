@@ -1,0 +1,53 @@
+# name: function/spatiotemporal/MEOS_TContains_Geo_TGeo_Simple.test
+# description: Test TEMPORAL_TCONTAINS_GEOMETRY with static geometry and temporal trajectory (returns temporal result)
+# groups: [Function, MEOS, SpatioTemporal, StaticGeometry, TemporalGeometry, TContains]
+
+# Test 1: Simple polygon containing temporal trajectory points
+Source polygon_tcontains_trajectory UINT32 test_id VARSIZED polygon_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml polygon_tcontains_trajectory INLINE
+1|'POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'|'{POINT(-73.9855 40.7485)@2021-01-01 00:00:00, POINT(-73.9856 40.7486)@2021-01-01 00:01:00, POINT(-73.9857 40.7487)@2021-01-01 00:02:00}'|1|1
+2|'POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'|'{POINT(-73.9855 40.7485)@2021-01-01 00:00:00, POINT(-73.9870 40.7495)@2021-01-01 00:01:00, POINT(-73.9875 40.7500)@2021-01-01 00:02:00}'|1|1
+3|'POLYGON((-73.9860 40.7480, -73.9850 40.7480, -73.9850 40.7490, -73.9860 40.7490, -73.9860 40.7480))'|'{POINT(-73.9840 40.7470)@2021-01-01 00:00:00, POINT(-73.9841 40.7471)@2021-01-01 00:01:00, POINT(-73.9842 40.7472)@2021-01-01 00:02:00}'|1|1
+
+SINK polygon_tcontains_results UINT32 polygon_tcontains_trajectory$test_id VARSIZED polygon_tcontains_trajectory$temporal_result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(polygon_geom, trajectory_geom, atPeriodOrInstant, restr) AS temporal_result
+FROM polygon_tcontains_trajectory
+INTO polygon_tcontains_results
+----
+1,<temporal_result_1>
+2,<temporal_result_2>
+3,<temporal_result_3>
+
+# Test 2: Linestring containing temporal trajectory
+Source linestring_tcontains_trajectory UINT32 test_id VARSIZED line_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml linestring_tcontains_trajectory INLINE
+1|'LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'|'{POINT(-73.9855 40.7485)@2021-01-01 00:00:00, POINT(-73.9856 40.7486)@2021-01-01 00:01:00}'|1|1
+2|'LINESTRING(-73.9850 40.7480, -73.9860 40.7490)'|'{POINT(-73.9840 40.7470)@2021-01-01 00:00:00, POINT(-73.9841 40.7471)@2021-01-01 00:01:00}'|1|1
+
+SINK linestring_tcontains_results UINT32 linestring_tcontains_trajectory$test_id VARSIZED linestring_tcontains_trajectory$temporal_result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(line_geom, trajectory_geom, atPeriodOrInstant, restr) AS temporal_result
+FROM linestring_tcontains_trajectory
+INTO linestring_tcontains_results
+----
+1,<temporal_result_1>
+2,<temporal_result_2>
+
+# Test 3: Point containing temporal trajectory (exact match test)
+Source point_tcontains_trajectory UINT32 test_id VARSIZED point_geom VARSIZED trajectory_geom UINT32 atPeriodOrInstant UINT32 restr
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml point_tcontains_trajectory INLINE
+1|'POINT(-73.9855 40.7485)'|'{POINT(-73.9855 40.7485)@2021-01-01 00:00:00, POINT(-73.9855 40.7485)@2021-01-01 00:01:00}'|1|1
+2|'POINT(-73.9855 40.7485)'|'{POINT(-73.9856 40.7486)@2021-01-01 00:00:00, POINT(-73.9857 40.7487)@2021-01-01 00:01:00}'|1|1
+
+SINK point_tcontains_results UINT32 point_tcontains_trajectory$test_id VARSIZED point_tcontains_trajectory$temporal_result
+
+SELECT test_id,
+       TCONTAINS_GEO_TGEO(point_geom, trajectory_geom, atPeriodOrInstant, restr) AS temporal_result
+FROM point_tcontains_trajectory
+INTO point_tcontains_results
+----
+1,<temporal_result_1>
+2,<temporal_result_2>

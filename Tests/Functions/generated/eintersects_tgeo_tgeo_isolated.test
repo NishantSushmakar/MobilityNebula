@@ -1,0 +1,25 @@
+# name: function/spatiotemporal/MEOS_EIntersects_Temporal_Geometry_Temporal_Geometry_Isolated.test  
+# description: Test isolated TEMPORAL_EINTERSECTS_TGEO_TGEO function with temporal-temporal coordinates (6-parameter format only)
+# groups: [Function, MEOS, SpatioTemporal, TemporalGeometry, EIntersects, Isolated]
+
+# Test 1: Basic temporal-temporal intersection (6-parameter: temporal-temporal coordinates)
+Source basic_intersection UINT32 test_id FLOAT64 lon1 FLOAT64 lat1 UINT64 timestamp1 FLOAT64 lon2 FLOAT64 lat2 UINT64 timestamp2
+Attach File CSV nes-systests/configs/inputFormatters/csv_pipe_delimiter.yaml basic_intersection INLINE
+1|-73.9855|40.7485|1609459200|-73.9855|40.7485|1609459200
+2|-73.9855|40.7485|1609459200|-73.9860|40.7490|1609459200
+3|-73.9850|40.7480|1609459200|-73.9855|40.7485|1609459260
+4|-73.9865|40.7495|1609459200|-73.9860|40.7490|1609459200
+5|-73.9855|40.7485|1609459200|-73.9855|40.7485|1609459300
+
+SINK basic_intersection_results UINT32 basic_intersection$test_id INT32 basic_intersection$intersects
+
+SELECT test_id,
+       TEMPORAL_EINTERSECTS_TGEO_TGEO(lon1, lat1, timestamp1, lon2, lat2, timestamp2) AS intersects
+FROM basic_intersection
+INTO basic_intersection_results
+----
+1,1
+2,0
+3,0
+4,0
+5,0

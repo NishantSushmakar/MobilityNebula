@@ -13,4 +13,209 @@
 add_plugin(TemporalIntersects PhysicalFunction nes-physical-operators TemporalIntersectsPhysicalFunction.cpp)
 add_plugin(TemporalIntersectsGeometry PhysicalFunction nes-physical-operators TemporalIntersectsGeometryPhysicalFunction.cpp)
 add_plugin(TemporalAIntersectsGeometry PhysicalFunction nes-physical-operators TemporalAIntersectsGeometryPhysicalFunction.cpp)
+add_plugin(EintersectsTgeoTgeo PhysicalFunction nes-physical-operators EintersectsTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EintersectsTgeoGeo PhysicalFunction nes-physical-operators EintersectsTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AintersectsTgeoTgeo PhysicalFunction nes-physical-operators AintersectsTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AintersectsTgeoGeo PhysicalFunction nes-physical-operators AintersectsTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AcontainsGeoTgeo PhysicalFunction nes-physical-operators AcontainsGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AcontainsTgeoTgeo PhysicalFunction nes-physical-operators AcontainsTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AcontainsTgeoGeo PhysicalFunction nes-physical-operators AcontainsTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AdisjointTgeoGeo PhysicalFunction nes-physical-operators AdisjointTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AdisjointTgeoTgeo PhysicalFunction nes-physical-operators AdisjointTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AtouchesTgeoGeo PhysicalFunction nes-physical-operators AtouchesTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AtouchesTgeoTgeo PhysicalFunction nes-physical-operators AtouchesTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AtouchesTpointGeo PhysicalFunction nes-physical-operators AtouchesTpointGeoPhysicalFunction.cpp)
+
+add_plugin(EtouchesTpointGeo PhysicalFunction nes-physical-operators EtouchesTpointGeoPhysicalFunction.cpp)
+
+add_plugin(EtouchesTgeoGeo PhysicalFunction nes-physical-operators EtouchesTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EtouchesTgeoTgeo PhysicalFunction nes-physical-operators EtouchesTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EdwithinTgeoGeo PhysicalFunction nes-physical-operators EdwithinTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AdwithinTgeoGeo PhysicalFunction nes-physical-operators AdwithinTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AdwithinTgeoTgeo PhysicalFunction nes-physical-operators AdwithinTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EcontainsGeoTgeo PhysicalFunction nes-physical-operators EcontainsGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EcontainsTgeoGeo PhysicalFunction nes-physical-operators EcontainsTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EcontainsTgeoTgeo PhysicalFunction nes-physical-operators EcontainsTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EcoversGeoTgeo PhysicalFunction nes-physical-operators EcoversGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EcoversTgeoTgeo PhysicalFunction nes-physical-operators EcoversTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EcoversTgeoGeo PhysicalFunction nes-physical-operators EcoversTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EdisjointTgeoGeo PhysicalFunction nes-physical-operators EdisjointTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EdisjointTgeoTgeo PhysicalFunction nes-physical-operators EdisjointTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EdwithinTgeoTgeo PhysicalFunction nes-physical-operators EdwithinTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AboveStboxTspatial PhysicalFunction nes-physical-operators AboveStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(AboveTspatialStbox PhysicalFunction nes-physical-operators AboveTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(AboveTspatialTspatial PhysicalFunction nes-physical-operators AboveTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(AfterStboxTspatial PhysicalFunction nes-physical-operators AfterStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(AfterTspatialStbox PhysicalFunction nes-physical-operators AfterTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(AfterTspatialTspatial PhysicalFunction nes-physical-operators AfterTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(BackStboxTspatial PhysicalFunction nes-physical-operators BackStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(BackTspatialStbox PhysicalFunction nes-physical-operators BackTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(BackTspatialTspatial PhysicalFunction nes-physical-operators BackTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(BeforeStboxTspatial PhysicalFunction nes-physical-operators BeforeStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(BeforeTspatialStbox PhysicalFunction nes-physical-operators BeforeTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(BeforeTspatialTspatial PhysicalFunction nes-physical-operators BeforeTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(BelowStboxTspatial PhysicalFunction nes-physical-operators BelowStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(BelowTspatialStbox PhysicalFunction nes-physical-operators BelowTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(BelowTspatialTspatial PhysicalFunction nes-physical-operators BelowTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(FrontStboxTspatial PhysicalFunction nes-physical-operators FrontStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(FrontTspatialStbox PhysicalFunction nes-physical-operators FrontTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(FrontTspatialTspatial PhysicalFunction nes-physical-operators FrontTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(LeftStboxTspatial PhysicalFunction nes-physical-operators LeftStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(LeftTspatialStbox PhysicalFunction nes-physical-operators LeftTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(LeftTspatialTspatial PhysicalFunction nes-physical-operators LeftTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OveraboveStboxTspatial PhysicalFunction nes-physical-operators OveraboveStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OveraboveTspatialStbox PhysicalFunction nes-physical-operators OveraboveTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OveraboveTspatialTspatial PhysicalFunction nes-physical-operators OveraboveTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverafterStboxTspatial PhysicalFunction nes-physical-operators OverafterStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverafterTspatialStbox PhysicalFunction nes-physical-operators OverafterTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverafterTspatialTspatial PhysicalFunction nes-physical-operators OverafterTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverbackStboxTspatial PhysicalFunction nes-physical-operators OverbackStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverbackTspatialStbox PhysicalFunction nes-physical-operators OverbackTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverbackTspatialTspatial PhysicalFunction nes-physical-operators OverbackTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverbeforeStboxTspatial PhysicalFunction nes-physical-operators OverbeforeStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverbeforeTspatialStbox PhysicalFunction nes-physical-operators OverbeforeTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverbeforeTspatialTspatial PhysicalFunction nes-physical-operators OverbeforeTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverbelowStboxTspatial PhysicalFunction nes-physical-operators OverbelowStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverbelowTspatialStbox PhysicalFunction nes-physical-operators OverbelowTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverbelowTspatialTspatial PhysicalFunction nes-physical-operators OverbelowTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverfrontStboxTspatial PhysicalFunction nes-physical-operators OverfrontStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverfrontTspatialStbox PhysicalFunction nes-physical-operators OverfrontTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverfrontTspatialTspatial PhysicalFunction nes-physical-operators OverfrontTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverleftStboxTspatial PhysicalFunction nes-physical-operators OverleftStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverleftTspatialStbox PhysicalFunction nes-physical-operators OverleftTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverleftTspatialTspatial PhysicalFunction nes-physical-operators OverleftTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverrightStboxTspatial PhysicalFunction nes-physical-operators OverrightStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverrightTspatialStbox PhysicalFunction nes-physical-operators OverrightTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverrightTspatialTspatial PhysicalFunction nes-physical-operators OverrightTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(RightStboxTspatial PhysicalFunction nes-physical-operators RightStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(RightTspatialStbox PhysicalFunction nes-physical-operators RightTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(RightTspatialTspatial PhysicalFunction nes-physical-operators RightTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(AdjacentStboxTspatial PhysicalFunction nes-physical-operators AdjacentStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(AdjacentTspatialStbox PhysicalFunction nes-physical-operators AdjacentTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(AdjacentTspatialTspatial PhysicalFunction nes-physical-operators AdjacentTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainedStboxTspatial PhysicalFunction nes-physical-operators ContainedStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainedTspatialStbox PhysicalFunction nes-physical-operators ContainedTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(ContainedTspatialTspatial PhysicalFunction nes-physical-operators ContainedTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainsStboxTspatial PhysicalFunction nes-physical-operators ContainsStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(ContainsTspatialStbox PhysicalFunction nes-physical-operators ContainsTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(ContainsTspatialTspatial PhysicalFunction nes-physical-operators ContainsTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(OverlapsStboxTspatial PhysicalFunction nes-physical-operators OverlapsStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(OverlapsTspatialStbox PhysicalFunction nes-physical-operators OverlapsTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(OverlapsTspatialTspatial PhysicalFunction nes-physical-operators OverlapsTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(SameStboxTspatial PhysicalFunction nes-physical-operators SameStboxTspatialPhysicalFunction.cpp)
+
+add_plugin(SameTspatialStbox PhysicalFunction nes-physical-operators SameTspatialStboxPhysicalFunction.cpp)
+
+add_plugin(SameTspatialTspatial PhysicalFunction nes-physical-operators SameTspatialTspatialPhysicalFunction.cpp)
+
+add_plugin(AlwaysEqGeoTgeo PhysicalFunction nes-physical-operators AlwaysEqGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoGeo PhysicalFunction nes-physical-operators AlwaysEqTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysEqTgeoTgeo PhysicalFunction nes-physical-operators AlwaysEqTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysNeGeoTgeo PhysicalFunction nes-physical-operators AlwaysNeGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoGeo PhysicalFunction nes-physical-operators AlwaysNeTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(AlwaysNeTgeoTgeo PhysicalFunction nes-physical-operators AlwaysNeTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverEqGeoTgeo PhysicalFunction nes-physical-operators EverEqGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverEqTgeoGeo PhysicalFunction nes-physical-operators EverEqTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EverEqTgeoTgeo PhysicalFunction nes-physical-operators EverEqTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverNeGeoTgeo PhysicalFunction nes-physical-operators EverNeGeoTgeoPhysicalFunction.cpp)
+
+add_plugin(EverNeTgeoGeo PhysicalFunction nes-physical-operators EverNeTgeoGeoPhysicalFunction.cpp)
+
+add_plugin(EverNeTgeoTgeo PhysicalFunction nes-physical-operators EverNeTgeoTgeoPhysicalFunction.cpp)
+
+add_plugin(TcontainsGeoTgeo PhysicalFunction nes-physical-operators TcontainsGeoTgeoPhysicalFunction.cpp)
 add_plugin(TemporalEContainsGeometry PhysicalFunction nes-physical-operators TemporalEContainsGeometryPhysicalFunction.cpp)
